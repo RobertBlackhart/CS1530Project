@@ -1,5 +1,7 @@
 package com.cs1530.group4.classweb.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -8,15 +10,84 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class UserPost extends Composite
 {
-
+	boolean votedUp = false, votedDown = false;
+	int score;
+	
 	public UserPost()
 	{
+		score = Random.nextInt(1000);
+		
+		HorizontalPanel hPanel = new HorizontalPanel();
+		hPanel.setBorderWidth(1);
+		initWidget(hPanel);
+		
+		VerticalPanel verticalPanel_1 = new VerticalPanel();
+		hPanel.add(verticalPanel_1);
+		
+		final Image upArrow = new Image("images/default_up.png");
+		final Image downArrow = new Image("images/default_down.png");
+		final Label scoreLabel = new Label(String.valueOf(score));
+		upArrow.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				if(votedDown)
+					score++;
+				votedDown = false;
+				downArrow.setUrl("images/default_down.png");
+				if(votedUp)
+				{
+					scoreLabel.setText(String.valueOf(--score));
+					votedUp = false;
+					upArrow.setUrl("images/default_up.png");
+				}
+				else
+				{
+					scoreLabel.setText(String.valueOf(++score));
+					votedUp = true;
+					upArrow.setUrl("images/voted_up.png");
+				}
+			}
+		});
+		downArrow.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				if(votedUp)
+					score--;
+				votedUp = false;
+				upArrow.setUrl("images/default_up.png");
+				if(votedDown)
+				{
+					scoreLabel.setText(String.valueOf(++score));
+					votedDown = false;
+					downArrow.setUrl("images/default_down.png");
+				}
+				else
+				{
+					scoreLabel.setText(String.valueOf(--score));
+					votedDown = true;
+					downArrow.setUrl("images/voted_down.png");
+				}
+			}
+		});
+		verticalPanel_1.add(upArrow);
+		upArrow.setSize("24px", "24px");
+		
+		scoreLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		verticalPanel_1.add(scoreLabel);
+		
+		verticalPanel_1.add(downArrow);
+		downArrow.setSize("24px", "24px");
+		
 		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.setBorderWidth(1);
-		initWidget(vPanel);
+		hPanel.add(vPanel);
 		
 		FlexTable flexTable = new FlexTable();
 		vPanel.add(flexTable);

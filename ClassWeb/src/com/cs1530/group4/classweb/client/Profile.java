@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -14,12 +16,13 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Profile extends Composite
 {
 	MainView main;
-	String username;
+	String username, streamLevel = "all";
 	UserServiceAsync userService = UserService.Util.getInstance();
 
 	public Profile(MainView m, String u)
@@ -33,13 +36,6 @@ public class Profile extends Composite
 		userPanel.getElement().getStyle().setProperty("marginLeft", "10px");
 		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
 		dockPanel.add(userPanel, DockPanel.WEST);
-
-		VerticalPanel updatesPanel = new VerticalPanel();
-		updatesPanel.setSpacing(15);
-		updatesPanel.getElement().getStyle().setProperty("marginRight", "10px");
-		dockPanel.add(updatesPanel, DockPanel.CENTER);
-
-		getPosts(updatesPanel);
 
 		Image image = new Image("contact_picture.png");
 		userPanel.add(image);
@@ -68,9 +64,9 @@ public class Profile extends Composite
 		classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
-		Button addRemoveAnchor = new Button("Add/Remove Classes");
-		addRemoveAnchor.getElement().getStyle().setProperty("marginTop", "10px");
-		addRemoveAnchor.addClickHandler(new ClickHandler()
+		Button addRemove = new Button("Add/Remove Classes");
+		addRemove.getElement().getStyle().setProperty("marginTop", "10px");
+		addRemove.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
@@ -79,10 +75,44 @@ public class Profile extends Composite
 				//TODO: implement class removal screen
 			}
 		});
-		getClasses(classPanel,addRemoveAnchor);
+		Anchor allAnchor = new Anchor("All Classes");
+		allAnchor.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				// TODO: show all stream
+			}
+		});
+		getClasses(classPanel, addRemove, allAnchor);
+
+		final TabPanel tabPanel = new TabPanel();
+		dockPanel.add(tabPanel, DockPanel.CENTER);
+
+		VerticalPanel popularUpdatesPanel = new VerticalPanel();
+		VerticalPanel newUpdatesPanel = new VerticalPanel();
+		tabPanel.add(popularUpdatesPanel, "Popular", false);
+		tabPanel.add(newUpdatesPanel, "New", false);
+		tabPanel.getElement().getStyle().setProperty("marginRight", "10px");
+		tabPanel.addSelectionHandler(new SelectionHandler<Integer>()
+		{
+			@Override
+			public void onSelection(SelectionEvent<Integer> event)
+			{
+				int tabId = event.getSelectedItem();
+				VerticalPanel panel = (VerticalPanel) tabPanel.getWidget(tabId);
+				getPosts(panel,streamLevel);
+			}
+		});
+		popularUpdatesPanel.setSpacing(15);
+		newUpdatesPanel.setSpacing(15);
+
+		tabPanel.selectTab(0);
+		tabPanel.setSize("100%","100%");
+		getPosts(popularUpdatesPanel,streamLevel);
 	}
 
-	private void getPosts(VerticalPanel updatesPanel)
+	private void getPosts(VerticalPanel updatesPanel, String streamLevel)
 	{
 		int numPosts = Random.nextInt(10) + 1;
 		for(int i = 0; i < numPosts; i++)
@@ -91,7 +121,7 @@ public class Profile extends Composite
 		}
 	}
 
-	private void getClasses(final VerticalPanel classPanel, final Button addRemoveAnchor)
+	private void getClasses(final VerticalPanel classPanel, final Button addRemove, final Anchor allAnchor)
 	{
 		AsyncCallback<ArrayList<String>> callback = new AsyncCallback<ArrayList<String>>()
 		{
@@ -104,7 +134,8 @@ public class Profile extends Composite
 			public void onSuccess(ArrayList<String> courses)
 			{
 				classPanel.clear();
-				for(String course : courses)
+				classPanel.add(allAnchor);
+				for(final String course : courses)
 				{
 					Anchor courseAnchor = new Anchor(course);
 					courseAnchor.addClickHandler(new ClickHandler()
@@ -112,12 +143,12 @@ public class Profile extends Composite
 						@Override
 						public void onClick(ClickEvent event)
 						{
-							//TODO: show class specific stream
+							streamLevel = course;
 						}
 					});
 					classPanel.add(courseAnchor);
 				}
-				classPanel.add(addRemoveAnchor);
+				classPanel.add(addRemove);
 			}
 		};
 

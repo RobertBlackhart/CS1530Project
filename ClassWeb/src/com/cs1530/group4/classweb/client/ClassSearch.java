@@ -136,7 +136,7 @@ public class ClassSearch extends Composite
 					if(resultsBox.isItemSelected(i))
 					{
 						String item = resultsBox.getValue(i);
-						String course = item.substring(0, item.indexOf('|'));
+						String course = item.substring(0, item.indexOf(' '));
 						courses.add(course);
 					}
 				}
@@ -153,8 +153,11 @@ public class ClassSearch extends Composite
 						main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
 					}
 				};
-
-				userService.userAddCourse(Cookies.getCookie("loggedIn"), courses, callback);
+				
+				if(courses.size() > 0)
+					userService.userAddCourse(Cookies.getCookie("loggedIn"), courses, callback);
+				else
+					main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
 			}
 		});
 		verticalPanel.add(btnAddSelectedClasses);
