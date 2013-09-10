@@ -67,7 +67,8 @@ public class Profile extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				//TODO: implement class addition/removal screen
+				main.setContent(new ClassSearch(main));
+				//TODO: implement class removal screen
 			}
 		});
 		classPanel.add(addRemoveClassesAnchor);

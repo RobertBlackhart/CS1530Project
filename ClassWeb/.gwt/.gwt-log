@@ -1290,3 +1290,138 @@ Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
       Compiling...
          Compilation completed in 0.00 seconds
       Removing invalidated units
+Public resources found in...
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2729 units from cache.
+Compiling...
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   60% complete (ETR: 4 seconds)
+   70% complete (ETR: 3 seconds)
+   80% complete (ETR: 2 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 13.71 seconds
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0.02 seconds
+      Removing invalidated units
+Public resources found in...
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2730 units from cache.
+Compiling...
+   40% complete (ETR: 9 seconds)
+   40% complete (ETR: 9 seconds)
+   40% complete (ETR: 9 seconds)
+   40% complete (ETR: 9 seconds)
+   40% complete (ETR: 9 seconds)
+   50% complete (ETR: 10 seconds)
+   60% complete (ETR: 11 seconds)
+   70% complete (ETR: 8 seconds)
+   80% complete (ETR: 6 seconds)
+   90% complete (ETR: 3 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 35.80 seconds
+Validating units:
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/classweb/client/ClassSearch.java'
+      [ERROR] Line 79: No source code is available for type com.cs1530.group4.classweb.shared.Course; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/classweb/client/UserService.java'
+      [ERROR] Line 46: No source code is available for type com.cs1530.group4.classweb.shared.Course; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/classweb/client/UserServiceAsync.java'
+      [ERROR] Line 26: No source code is available for type com.cs1530.group4.classweb.shared.Course; did you forget to inherit a required module?
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0.02 seconds
+      Removing invalidated units
+Public resources found in...
+Translatable source found in...
+Found 2728 cached/archived units.  Used 2728 / 2730 units from cache.
+Compiling...
+   Compilation completed in 0.08 seconds
+Validating units:
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/classweb/client/ClassSearch.java'
+      [ERROR] Line 80: No source code is available for type com.cs1530.group4.classweb.shared.Course; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/classweb/client/UserService.java'
+      [ERROR] Line 46: No source code is available for type com.cs1530.group4.classweb.shared.Course; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/classweb/client/UserServiceAsync.java'
+      [ERROR] Line 26: No source code is available for type com.cs1530.group4.classweb.shared.Course; did you forget to inherit a required module?
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0.00 seconds
+      Removing invalidated units

@@ -14,6 +14,9 @@
  *******************************************************************************/
 package com.cs1530.group4.classweb.client;
 
+import java.util.ArrayList;
+
+import com.cs1530.group4.classweb.shared.Course;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -40,4 +43,6 @@ public interface UserService extends RemoteService
 	
 	Boolean doLogin(String username, String password);
 	Boolean createUser(String username, String password, String firstName, String lastName);
+	ArrayList<Course> courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
+	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 }
