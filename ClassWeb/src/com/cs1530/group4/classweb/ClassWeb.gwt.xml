@@ -1,0 +1,5 @@
+<module rename-to="classweb">
+	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
+	<entry-point class="com.cs1530.group4.classweb.client.MainView"/>
+</module>

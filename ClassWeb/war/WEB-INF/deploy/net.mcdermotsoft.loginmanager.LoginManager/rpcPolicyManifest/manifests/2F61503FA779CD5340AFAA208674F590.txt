@@ -1,0 +1,2 @@
+serviceClass: net.mcdermotsoft.loginmanager.client.NewUserService
+path: 33693C3EF0953B2E94DD3D03EAA69040.gwt.rpc

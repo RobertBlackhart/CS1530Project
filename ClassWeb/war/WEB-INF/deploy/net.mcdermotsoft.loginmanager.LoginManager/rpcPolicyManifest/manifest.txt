@@ -1,0 +1,2 @@
+# Module net.mcdermotsoft.loginmanager.LoginManager
+# RPC service class, partial path of RPC policy file
