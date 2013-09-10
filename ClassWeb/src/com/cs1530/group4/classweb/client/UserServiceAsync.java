@@ -25,4 +25,6 @@ public interface UserServiceAsync
 	void createUser(String username, String password, String firstName, String lastName, AsyncCallback<Boolean> callback);
 	void courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<ArrayList<Course>> callback);
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
+	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
+	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
 }

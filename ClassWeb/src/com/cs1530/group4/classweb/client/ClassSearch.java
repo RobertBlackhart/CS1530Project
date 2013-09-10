@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.cs1530.group4.classweb.shared.Course;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -24,6 +25,7 @@ public class ClassSearch extends Composite
 	private TextBox nameTextBox;
 	private TextBox descriptionTextBox;
 	private ListBox resultsBox;
+	UserServiceAsync userService = UserService.Util.getInstance();
 
 	public ClassSearch(final MainView main)
 	{
@@ -89,7 +91,7 @@ public class ClassSearch extends Composite
 					name = "";
 				if(desc == null)
 					desc = "";
-				UserServiceAsync loginService = UserService.Util.getInstance();
+
 				// Set up the callback object.
 				AsyncCallback<ArrayList<Course>> callback = new AsyncCallback<ArrayList<Course>>()
 				{
@@ -108,22 +110,53 @@ public class ClassSearch extends Composite
 						}
 						for(Course course : courses)
 						{
-							resultsBox.addItem(course.getSubjectCode()+course.getCourseNumber()+" || "+course.getCourseName()+" || "+course.getCourseDescription());
+							resultsBox.addItem(course.getSubjectCode() + course.getCourseNumber() + " || " + course.getCourseName() + " || " + course.getCourseDescription());
 						}
 					}
 				};
 
-				loginService.courseSearch(code, num, name, desc, callback);
+				userService.courseSearch(code, num, name, desc, callback);
 			}
 		});
 		verticalPanel.add(btnSearch);
-		
+
 		resultsBox = new ListBox(true);
 		verticalPanel.add(resultsBox);
 		resultsBox.setVisibleItemCount(5);
 		resultsBox.setWidth("500px");
-		
+
 		Button btnAddSelectedClasses = new Button("Add Selected Classes");
+		btnAddSelectedClasses.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				ArrayList<String> courses = new ArrayList<String>();
+				for(int i = 0; i < resultsBox.getItemCount(); i++)
+				{
+					if(resultsBox.isItemSelected(i))
+					{
+						String item = resultsBox.getValue(i);
+						String course = item.substring(0, item.indexOf('|'));
+						courses.add(course);
+					}
+				}
+				AsyncCallback<Void> callback = new AsyncCallback<Void>()
+				{
+					@Override
+					public void onFailure(Throwable caught)
+					{
+					}
+
+					@Override
+					public void onSuccess(Void v)
+					{
+						main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
+					}
+				};
+
+				userService.userAddCourse(Cookies.getCookie("loggedIn"), courses, callback);
+			}
+		});
 		verticalPanel.add(btnAddSelectedClasses);
 	}
 }

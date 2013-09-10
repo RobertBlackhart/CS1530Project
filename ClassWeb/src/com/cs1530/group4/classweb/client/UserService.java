@@ -45,4 +45,6 @@ public interface UserService extends RemoteService
 	Boolean createUser(String username, String password, String firstName, String lastName);
 	ArrayList<Course> courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
+	void userAddCourse(String username, ArrayList<String> courseIds);
+	ArrayList<String> getUserCourses(String username);
 }

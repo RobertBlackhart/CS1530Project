@@ -242,4 +242,51 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put("course_"+subjectCode+catalogueNumber, courseEntity);
 		datastore.put(courseEntity);
 	}
+
+	@Override
+	public void userAddCourse(String username, ArrayList<String> courseIds)
+	{
+		Entity user = null;
+		try
+		{
+			user = datastore.get(KeyFactory.createKey("User", username));
+		}
+		catch(EntityNotFoundException ex)
+		{
+			ex.printStackTrace();
+			return; //shouldn't happen, but if it does then just do nothing anyway
+		}
+		
+		ArrayList<String> courseList = new ArrayList<String>();
+		if(user.hasProperty("courseList"))
+			courseList = (ArrayList<String>)user.getProperty("courseList");
+		for(String courseId : courseIds)
+		{
+			if(!courseList.contains(courseId))
+				courseList.add(courseId);
+		}
+		user.setProperty("courseList",courseList);
+		datastore.put(user);
+	}
+
+	@Override
+	public ArrayList<String> getUserCourses(String username)
+	{
+		Entity user = null;
+		try
+		{
+			user = datastore.get(KeyFactory.createKey("User", username));
+		}
+		catch(EntityNotFoundException ex)
+		{
+			ex.printStackTrace();
+			return null; //shouldn't happen, but if it does then just do nothing anyway
+		}
+		
+		ArrayList<String> courseList = new ArrayList<String>();
+		if(user.hasProperty("courseList"))
+			courseList = (ArrayList<String>)user.getProperty("courseList");
+		
+		return courseList;
+	}
 }
