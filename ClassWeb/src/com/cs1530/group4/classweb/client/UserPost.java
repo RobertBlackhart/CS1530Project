@@ -1,57 +1,73 @@
 package com.cs1530.group4.classweb.client;
 
+import com.cs1530.group4.classweb.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class UserPost extends Composite
 {
+	UserServiceAsync userService = UserService.Util.getInstance();
 	boolean votedUp = false, votedDown = false;
-	int score;
-	
-	public UserPost()
+	int upDownVotes;
+
+	public UserPost(final Post post)
 	{
-		score = Random.nextInt(1000);
-		
-		HorizontalPanel hPanel = new HorizontalPanel();
-		hPanel.setBorderWidth(1);
-		initWidget(hPanel);
-		
-		VerticalPanel verticalPanel_1 = new VerticalPanel();
-		hPanel.add(verticalPanel_1);
-		
+		upDownVotes = post.getUpvotes() - post.getDownvotes();
+		HorizontalPanel border = new HorizontalPanel();
+		border.setBorderWidth(1);
+		border.setWidth("100%");
+		initWidget(border);
+
+		VerticalPanel scorePanel = new VerticalPanel();
+		scorePanel.getElement().getStyle().setProperty("marginLeft", "5px");
+		scorePanel.getElement().getStyle().setProperty("marginRight", "5px");
+		border.add(scorePanel);
+		border.setCellWidth(scorePanel, "34px");
+
 		final Image upArrow = new Image("images/default_up.png");
 		final Image downArrow = new Image("images/default_down.png");
-		final Label scoreLabel = new Label(String.valueOf(score));
+		final Label scoreLabel = new Label(String.valueOf(upDownVotes));
 		upArrow.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
 				if(votedDown)
-					score++;
+					upDownVotes++;
 				votedDown = false;
 				downArrow.setUrl("images/default_down.png");
 				if(votedUp)
 				{
-					scoreLabel.setText(String.valueOf(--score));
+					scoreLabel.setText(String.valueOf(--upDownVotes));
 					votedUp = false;
 					upArrow.setUrl("images/default_up.png");
 				}
 				else
 				{
-					scoreLabel.setText(String.valueOf(++score));
+					scoreLabel.setText(String.valueOf(++upDownVotes));
 					votedUp = true;
 					upArrow.setUrl("images/voted_up.png");
 				}
+
+				AsyncCallback<Void> callback = new AsyncCallback<Void>()
+				{
+					@Override
+					public void onFailure(Throwable caught){}
+					@Override
+					public void onSuccess(Void v){}
+				};
+				userService.upvotePost(post.getPostKey(), callback);
 			}
 		});
 		downArrow.addClickHandler(new ClickHandler()
@@ -60,85 +76,93 @@ public class UserPost extends Composite
 			public void onClick(ClickEvent event)
 			{
 				if(votedUp)
-					score--;
+					upDownVotes--;
 				votedUp = false;
 				upArrow.setUrl("images/default_up.png");
 				if(votedDown)
 				{
-					scoreLabel.setText(String.valueOf(++score));
+					scoreLabel.setText(String.valueOf(++upDownVotes));
 					votedDown = false;
 					downArrow.setUrl("images/default_down.png");
 				}
 				else
 				{
-					scoreLabel.setText(String.valueOf(--score));
+					scoreLabel.setText(String.valueOf(--upDownVotes));
 					votedDown = true;
 					downArrow.setUrl("images/voted_down.png");
 				}
+				
+				AsyncCallback<Void> callback = new AsyncCallback<Void>()
+				{
+					@Override
+					public void onFailure(Throwable caught){}
+					@Override
+					public void onSuccess(Void v){}
+				};
+				userService.downvotePost(post.getPostKey(), callback);
 			}
 		});
-		verticalPanel_1.add(upArrow);
+		scorePanel.add(upArrow);
 		upArrow.setSize("24px", "24px");
-		
+
 		scoreLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		verticalPanel_1.add(scoreLabel);
-		
-		verticalPanel_1.add(downArrow);
+		scorePanel.add(scoreLabel);
+
+		scorePanel.add(downArrow);
 		downArrow.setSize("24px", "24px");
-		
-		VerticalPanel vPanel = new VerticalPanel();
-		hPanel.add(vPanel);
-		
-		FlexTable flexTable = new FlexTable();
-		vPanel.add(flexTable);
-		
+
+		VerticalPanel postPanel = new VerticalPanel();
+		postPanel.setWidth("100%");
+		border.add(postPanel);
+
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		flexTable.setWidget(0, 0, horizontalPanel);
-		
+		postPanel.add(horizontalPanel);
+
 		Image image = new Image("contact_picture.png");
-		image.getElement().getStyle().setProperty("marginRight","10px");
+		image.getElement().getStyle().setProperty("marginRight", "10px");
 		horizontalPanel.add(image);
 		image.setSize("46px", "46px");
-		
+
 		VerticalPanel verticalPanel = new VerticalPanel();
 		horizontalPanel.add(verticalPanel);
-		
-		Label lblUsername = new Label("username");
+
+		Label lblUsername = new Label(post.getUsername());
 		lblUsername.setStyleName("gwt-Label-bold");
 		verticalPanel.add(lblUsername);
-		
-		String hour = Random.nextInt(2) + "" + Random.nextInt(3);
-		String minute = Random.nextInt(6) + "" + Random.nextInt(10);
-		String ampm = "AM";
-		if(Random.nextInt(2) == 1)
-			ampm = "PM";
-		if(Integer.parseInt(hour) == 0)
-		{
-			hour = "12";
-			ampm = "AM";
-		}
-		Label lblPosttime = new Label(hour+":"+minute+" "+ampm);
+
+		DateTimeFormat dtf = new DateTimeFormat("h:mm a", new DefaultDateTimeFormatInfo()){};
+		Label lblPosttime = new Label(dtf.format(post.getPostTime()));
 		lblPosttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblPosttime);
-		
-		Label lblNewLabel = new Label("post content post content post content post contentpost content post content post content post contentpost content post content post content post contentpost content post content post content post contentpost content post content post content post contentpost content post content post content post contentpost content post content post content post contentpost content post content post content post content");
-		flexTable.setWidget(1, 0, lblNewLabel);
-		flexTable.getFlexCellFormatter().setColSpan(1, 0, 1);
-		
-		HTML panel = new HTML("<hr  style=\"width:100%;\" />");
-		flexTable.setWidget(2, 0, panel);
-		
+
+		HTML postContent = new HTML(post.getPostContent());
+		postPanel.add(postContent);
+
+		HTML separator = new HTML("<hr  style=\"width:100%;\" />");
+		postPanel.add(separator);
+
 		VerticalPanel commentPanel = new VerticalPanel();
 		commentPanel.setSpacing(5);
-		flexTable.setWidget(3, 0, commentPanel);
-		
+		postPanel.add(commentPanel);
+
 		getComments(commentPanel);
+		
+		PromptedTextBox addAComment = new PromptedTextBox("Add a comment...","promptText");
+		addAComment.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				
+			}
+		});
+		commentPanel.add(addAComment);
 	}
-	
+
 	private void getComments(VerticalPanel commentPanel)
 	{
-		int numComments = Random.nextInt(10)+1;
-		for(int i=0; i<numComments; i++)
+		int numComments = Random.nextInt(3) + 1;
+		for(int i = 0; i < numComments; i++)
 			commentPanel.add(new PostComment());
 	}
 

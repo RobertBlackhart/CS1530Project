@@ -3,6 +3,7 @@ package com.cs1530.group4.classweb.client;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -45,8 +46,8 @@ public class PostComment extends Composite
 		
 		horizontalPanel.add(verticalPanel);
 		
-		Label lblCommentContent = new Label("comment content comment content comment content comment content comment content comment content comment content comment content comment content comment content comment content ");
-		flexTable.setWidget(1, 0, lblCommentContent);
+		HTML comment = new HTML("<b>This</b> <strike>is</strike> rich <font color=\"#ff00ff\">comment</font> <font face=\"Arial\">content</font>.");
+		flexTable.setWidget(1, 0, comment);
 	}
 
 }

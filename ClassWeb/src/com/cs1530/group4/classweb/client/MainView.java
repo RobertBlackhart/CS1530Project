@@ -38,6 +38,7 @@ public class MainView implements EntryPoint
 		
 		rootPanel.add(topPanel);
 		rootPanel.add(contentPanel);
+		contentPanel.setSize("", "");
 		
 		Label welcomeLabel = new Label("Welcome to ClassWeb");
 		welcomeLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);

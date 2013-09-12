@@ -179,8 +179,10 @@ public class Login extends Composite
 			expires.setTime(expires.getTime()+(1000*60*60*24*14)); //14 days from now
 			Cookies.setCookie("loggedIn", usernameTextBox.getText(),expires);
 		}
-		Profile profile = new Profile(main, usernameTextBox.getText());
-		main.setContent(profile);
+		else
+			Cookies.setCookie("loggedIn", usernameTextBox.getText());
+
+		main.setContent(new Profile(main, usernameTextBox.getText()));
 	}
 
 	private void rejectLogin()

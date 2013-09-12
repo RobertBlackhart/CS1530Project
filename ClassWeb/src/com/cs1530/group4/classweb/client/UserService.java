@@ -17,6 +17,7 @@ package com.cs1530.group4.classweb.client;
 import java.util.ArrayList;
 
 import com.cs1530.group4.classweb.shared.Course;
+import com.cs1530.group4.classweb.shared.Post;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -47,4 +48,8 @@ public interface UserService extends RemoteService
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	void userAddCourse(String username, ArrayList<String> courseIds);
 	ArrayList<String> getUserCourses(String username);
+	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels);
+	Boolean uploadPost(String username, String postContent, String streamLevel);
+	void upvotePost(String postKey);
+	void downvotePost(String postKey);
 }

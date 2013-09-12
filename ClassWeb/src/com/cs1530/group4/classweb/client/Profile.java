@@ -1,18 +1,19 @@
 package com.cs1530.group4.classweb.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import com.cs1530.group4.classweb.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -22,20 +23,35 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class Profile extends Composite
 {
 	MainView main;
-	String username, streamLevel = "all";
+	String username, streamLevel = "all", sortMethod = "Popular";
 	UserServiceAsync userService = UserService.Util.getInstance();
+	VerticalPanel vPanel, currentTab;
+	int startIndex = 0;
+	Anchor nextPage;
+	ArrayList<String> userCourses;
 
 	public Profile(MainView m, String u)
 	{
 		main = m;
 		username = u;
-		DockPanel dockPanel = new DockPanel();
-		initWidget(dockPanel);
+		if(username == null)
+		{
+			main.setContent(new Login(main));
+		}
+		vPanel = new VerticalPanel();
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
+
+		initWidget(vPanel);
+
+		HorizontalPanel hPanel = new HorizontalPanel();
+		vPanel.add(hPanel);
 
 		VerticalPanel userPanel = new VerticalPanel();
+		userPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		userPanel.getElement().getStyle().setProperty("marginLeft", "10px");
 		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
-		dockPanel.add(userPanel, DockPanel.WEST);
+		hPanel.add(userPanel);
 
 		Image image = new Image("contact_picture.png");
 		userPanel.add(image);
@@ -81,16 +97,22 @@ public class Profile extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				// TODO: show all stream
+				streamLevel = "all";
+				ArrayList<String> streamLevels = new ArrayList<String>();
+				streamLevels.add(streamLevel);
+				streamLevels.addAll(userCourses);
+				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
 		getClasses(classPanel, addRemove, allAnchor);
 
 		final TabPanel tabPanel = new TabPanel();
-		dockPanel.add(tabPanel, DockPanel.CENTER);
+		hPanel.add(tabPanel);
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();
+		popularUpdatesPanel.setWidth("600px");
 		VerticalPanel newUpdatesPanel = new VerticalPanel();
+		newUpdatesPanel.setWidth("600px");
 		tabPanel.add(popularUpdatesPanel, "Popular", false);
 		tabPanel.add(newUpdatesPanel, "New", false);
 		tabPanel.getElement().getStyle().setProperty("marginRight", "10px");
@@ -99,26 +121,80 @@ public class Profile extends Composite
 			@Override
 			public void onSelection(SelectionEvent<Integer> event)
 			{
-				int tabId = event.getSelectedItem();
-				VerticalPanel panel = (VerticalPanel) tabPanel.getWidget(tabId);
-				getPosts(panel,streamLevel);
+				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
+				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
+				if(userCourses != null)
+				{
+					ArrayList<String> streamLevels = new ArrayList<String>();
+					streamLevels.add(streamLevel);
+					if(streamLevel.equals("all"))
+						streamLevels.addAll(userCourses);
+					getPosts(currentTab, streamLevels, sortMethod);
+				}
 			}
 		});
 		popularUpdatesPanel.setSpacing(15);
 		newUpdatesPanel.setSpacing(15);
 
 		tabPanel.selectTab(0);
-		tabPanel.setSize("100%","100%");
-		getPosts(popularUpdatesPanel,streamLevel);
+
+		Button btnCreateANew = new Button("Create a new post");
+		btnCreateANew.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				NewPost editor = new NewPost(main, userCourses);
+				editor.show();
+			}
+		});
+		hPanel.add(btnCreateANew);
+
+		nextPage = new Anchor("Next 10 Posts");
+		nextPage.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				startIndex += 10;
+				ArrayList<String> streamLevels = new ArrayList<String>();
+				streamLevels.add(streamLevel);
+				if(streamLevel.equals("all"))
+					streamLevels.addAll(userCourses);
+				getPosts(currentTab, streamLevels, sortMethod);
+			}
+		});
 	}
 
-	private void getPosts(VerticalPanel updatesPanel, String streamLevel)
+	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
-		int numPosts = Random.nextInt(10) + 1;
-		for(int i = 0; i < numPosts; i++)
+		updatesPanel.clear();
+		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
 		{
-			updatesPanel.add(new UserPost());
-		}
+			@Override
+			public void onFailure(Throwable caught)
+			{
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Post> posts)
+			{
+				if(sortMethod.equals("Popular"))
+					Collections.sort(posts, Post.PostScoreComparator);
+				if(sortMethod.equals("New"))
+					Collections.sort(posts, Post.PostTimeComparator);
+
+				for(Post post : posts)
+				{
+					updatesPanel.add(new UserPost(post));
+				}
+				if(posts.size() == 10)
+				{
+					nextPage.setVisible(true);
+					vPanel.add(nextPage);
+				}
+			}
+		};
+		userService.getPosts(startIndex, streamLevels, callback);
 	}
 
 	private void getClasses(final VerticalPanel classPanel, final Button addRemove, final Anchor allAnchor)
@@ -133,6 +209,7 @@ public class Profile extends Composite
 			@Override
 			public void onSuccess(ArrayList<String> courses)
 			{
+				userCourses = courses;
 				classPanel.clear();
 				classPanel.add(allAnchor);
 				for(final String course : courses)
@@ -143,12 +220,21 @@ public class Profile extends Composite
 						@Override
 						public void onClick(ClickEvent event)
 						{
-							streamLevel = course;
+							streamLevel = course.trim();
+							ArrayList<String> streamLevels = new ArrayList<String>();
+							streamLevels.add(streamLevel);
+							getPosts(currentTab, streamLevels, sortMethod);
 						}
 					});
 					classPanel.add(courseAnchor);
 				}
 				classPanel.add(addRemove);
+				
+				ArrayList<String> streamLevels = new ArrayList<String>();
+				streamLevels.add(streamLevel);
+				if(streamLevel.equals("all"))
+					streamLevels.addAll(userCourses);
+				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		};
 

@@ -333,3 +333,6 @@ a:visited {
 .gwt-Label-bold {
 	font-weight: bold;
 }
+.promptText {
+    color: #999;
+}

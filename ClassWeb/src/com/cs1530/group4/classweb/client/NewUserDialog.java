@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -147,7 +148,10 @@ public class NewUserDialog extends Composite
 			public void onSuccess(Boolean result)
 			{
 				if(result)
+				{
+					Cookies.setCookie("loggedIn", usernameTextBox.getText());
 					main.setContent(new Profile(main, username));
+				}
 				else
 					errorLabel.setVisible(true);
 			}

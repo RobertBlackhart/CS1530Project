@@ -15,16 +15,25 @@
 package com.cs1530.group4.classweb.server;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 import com.cs1530.group4.classweb.client.UserService;
+import com.cs1530.group4.classweb.shared.Comment;
 import com.cs1530.group4.classweb.shared.Course;
+import com.cs1530.group4.classweb.shared.Post;
+import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.memcache.MemcacheService;
@@ -243,6 +252,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		datastore.put(courseEntity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void userAddCourse(String username, ArrayList<String> courseIds)
 	{
@@ -263,12 +273,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for(String courseId : courseIds)
 		{
 			if(!courseList.contains(courseId))
-				courseList.add(courseId);
+				courseList.add(courseId.trim());
 		}
 		user.setProperty("courseList",courseList);
 		datastore.put(user);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<String> getUserCourses(String username)
 	{
@@ -288,5 +299,138 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			courseList = (ArrayList<String>)user.getProperty("courseList");
 		
 		return courseList;
+	}
+
+	@Override
+	public Boolean uploadPost(String username, String postContent, String streamLevel)
+	{
+		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
+		double score = secondsSinceRedditEpoch / 45000;
+		
+		Date now = new Date();
+		Entity post = new Entity("Post");
+		post.setProperty("username", username);
+		post.setProperty("postContent", postContent);
+		post.setProperty("streamLevel",streamLevel);
+		post.setProperty("score", score);
+		post.setProperty("time", now);
+		post.setProperty("upvotes", 0);
+		post.setProperty("downvotes", 0);
+		post.setProperty("comments", new ArrayList<Comment>());
+		try
+		{
+			datastore.put(post);
+		}
+		catch(DatastoreFailureException ex)
+		{
+			return false;
+		}
+		memcache.put(post.getKey(),post); //when looking up posts, do a key only query and check if they are in memcache first
+		return true;
+	}
+
+	@Override
+	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels)
+	{
+		ArrayList<Post> posts = new ArrayList<Post>();
+		ArrayList<Key> datastoreGet = new ArrayList<Key>();
+				
+		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(10);
+		Filter filter = null;
+		if(streamLevels.size()>1)
+		{
+			ArrayList<Filter> filters = new ArrayList<Filter>();
+			for(String streamLevel : streamLevels)
+			{
+				filters.add(new FilterPredicate("streamLevel", FilterOperator.EQUAL, streamLevel));
+			}
+			filter = CompositeFilterOperator.or(filters);
+		}
+		else
+			filter = new FilterPredicate("streamLevel", FilterOperator.EQUAL, streamLevels.get(0));
+		Query q = new Query("Post").setKeysOnly();
+		q.setFilter(filter);
+		
+		for(Entity entity : datastore.prepare(q).asList(options))
+		{
+			if(memcache.contains(entity.getKey()))
+				posts.add(postFromEntity((Entity)memcache.get(entity.getKey())));
+			else
+				datastoreGet.add(entity.getKey());
+		}
+		Map<Key,Entity> results = datastore.get(datastoreGet);
+		for(Entity entity : results.values())
+		{
+			posts.add(postFromEntity(entity));
+			memcache.put(entity.getKey(), entity);
+		}
+		
+		return posts;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Post postFromEntity(Entity entity)
+	{
+		Post post = new Post();
+		post.setPostContent((String)entity.getProperty("postContent"));
+		post.setStreamLevel((String)entity.getProperty("streamLevel"));
+		post.setPostTime((Date)entity.getProperty("time"));
+		post.setUsername((String)entity.getProperty("username"));
+		post.setUpvotes(Integer.valueOf(entity.getProperty("upvotes").toString()));
+		post.setDownvotes(Integer.valueOf(entity.getProperty("downvotes").toString()));
+		post.setScore(Double.valueOf(entity.getProperty("score").toString()));
+		post.setPostKey(String.valueOf(entity.getKey().getId()));
+		post.setComments((ArrayList<Comment>)entity.getProperty("comments"));
+		
+		return post;
+	}
+
+	@Override
+	public void upvotePost(String postKey)
+	{
+		try
+		{
+			Entity post = datastore.get(KeyFactory.createKey("Post", Long.valueOf(postKey).longValue()));
+			post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString())+1);
+			updateScore(post);
+			memcache.put(post.getKey(),post);
+			datastore.put(post);
+		}
+		catch(EntityNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void downvotePost(String postKey)
+	{
+		try
+		{
+			Entity post = datastore.get(KeyFactory.createKey("Post", Long.valueOf(postKey).longValue()));
+			post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString())+1);
+			updateScore(post);
+			memcache.put(post.getKey(),post);
+			datastore.put(post);
+		}
+		catch(EntityNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	private void updateScore(Entity entity)
+	{
+		Post post = postFromEntity(entity);
+		int s = post.getUpvotes()-post.getDownvotes();
+		double order = Math.log10(Math.max(Math.abs(s), 1));
+		int sign = 1;
+		if(s == 0)
+			sign = 0;
+		if(s < 0)
+			sign = -1;   
+		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
+		double score = order + sign * secondsSinceRedditEpoch / 45000;
+		entity.setProperty("score", score);
 	}
 }
