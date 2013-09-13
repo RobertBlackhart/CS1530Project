@@ -1,0 +1,2 @@
+serviceClass: com.cs1530.group4.classweb.client.UserService
+path: C0700D4161D08D681A47F800CC5E80C9.gwt.rpc

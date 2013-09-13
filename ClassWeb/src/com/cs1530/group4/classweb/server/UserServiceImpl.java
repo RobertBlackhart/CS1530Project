@@ -15,6 +15,7 @@
 package com.cs1530.group4.classweb.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import com.cs1530.group4.classweb.client.UserService;
 import com.cs1530.group4.classweb.shared.Comment;
 import com.cs1530.group4.classweb.shared.Course;
 import com.cs1530.group4.classweb.shared.Post;
-import com.google.appengine.api.datastore.DatastoreFailureException;
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -302,7 +303,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public Boolean uploadPost(String username, String postContent, String streamLevel)
+	public void uploadPost(String username, String postContent, String streamLevel)
 	{
 		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
 		double score = secondsSinceRedditEpoch / 45000;
@@ -316,17 +317,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setProperty("time", now);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
-		post.setProperty("comments", new ArrayList<Comment>());
-		try
-		{
-			datastore.put(post);
-		}
-		catch(DatastoreFailureException ex)
-		{
-			return false;
-		}
+		post.setProperty("comments", new Blob(new byte[0]));
+		datastore.put(post);
 		memcache.put(post.getKey(),post); //when looking up posts, do a key only query and check if they are in memcache first
-		return true;
 	}
 
 	@Override
@@ -368,7 +361,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return posts;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Post postFromEntity(Entity entity)
 	{
 		Post post = new Post();
@@ -380,9 +372,44 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setDownvotes(Integer.valueOf(entity.getProperty("downvotes").toString()));
 		post.setScore(Double.valueOf(entity.getProperty("score").toString()));
 		post.setPostKey(String.valueOf(entity.getKey().getId()));
-		post.setComments((ArrayList<Comment>)entity.getProperty("comments"));
+		post.setComments(getComments(post.getPostKey()));
 		
 		return post;
+	}
+	
+	private ArrayList<Comment> getComments(String postKey)
+	{
+		ArrayList<Comment> comments = new ArrayList<Comment>();
+		ArrayList<Key> datastoreGet = new ArrayList<Key>();
+		Query q = new Query("Comment").setKeysOnly();
+		q.setFilter(new FilterPredicate("postKey", FilterOperator.EQUAL, postKey));
+		
+		for(Entity entity : datastore.prepare(q).asIterable())
+		{
+			if(memcache.contains(entity.getKey()))
+				comments.add(commentFromEntity((Entity)memcache.get(entity.getKey())));
+			else
+				datastoreGet.add(entity.getKey());
+		}
+		Map<Key,Entity> results = datastore.get(datastoreGet);
+		for(Entity entity : results.values())
+		{
+			comments.add(commentFromEntity(entity));
+			memcache.put(entity.getKey(), entity);
+		}
+		
+		Collections.sort(comments);
+		return comments;
+	}
+	
+	private Comment commentFromEntity(Entity entity)
+	{
+		Comment comment = new Comment();
+		comment.setCommentTime((Date)entity.getProperty("time"));
+		comment.setUsername((String)entity.getProperty("username"));
+		comment.setContent((String)entity.getProperty("content"));
+		
+		return comment;
 	}
 
 	@Override
@@ -432,5 +459,19 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
 		double score = order + sign * secondsSinceRedditEpoch / 45000;
 		entity.setProperty("score", score);
+		memcache.put(entity.getKey(),entity);
+		datastore.put(entity);
+	}
+
+	@Override
+	public void uploadComment(String postKey, Comment comment)
+	{
+		Entity commentEntity = new Entity("Comment");
+		commentEntity.setProperty("postKey", postKey);
+		commentEntity.setProperty("time", comment.getCommentTime());
+		commentEntity.setProperty("username", comment.getUsername());
+		commentEntity.setProperty("content", comment.getContent());
+		datastore.put(commentEntity);
+		memcache.put(commentEntity.getKey(),commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
 	}
 }

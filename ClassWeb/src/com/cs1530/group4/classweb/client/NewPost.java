@@ -44,13 +44,13 @@ public class NewPost extends DialogBox
 			public void onClick(ClickEvent event)
 			{
 				UserServiceAsync userService = UserService.Util.getInstance();
-				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
+				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
 					@Override
 					public void onFailure(Throwable caught){}
 					
 					@Override
-					public void onSuccess(Boolean result)
+					public void onSuccess(Void v)
 					{
 						main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
 						postBox.hide();

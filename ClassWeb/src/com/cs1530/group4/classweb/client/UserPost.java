@@ -1,11 +1,13 @@
 package com.cs1530.group4.classweb.client;
 
+import java.sql.Date;
+
+import com.cs1530.group4.classweb.shared.Comment;
 import com.cs1530.group4.classweb.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -20,7 +22,8 @@ public class UserPost extends Composite
 	UserServiceAsync userService = UserService.Util.getInstance();
 	boolean votedUp = false, votedDown = false;
 	int upDownVotes;
-
+	VerticalPanel commentPanel;
+	
 	public UserPost(final Post post)
 	{
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
@@ -63,9 +66,14 @@ public class UserPost extends Composite
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
 					@Override
-					public void onFailure(Throwable caught){}
+					public void onFailure(Throwable caught)
+					{
+					}
+
 					@Override
-					public void onSuccess(Void v){}
+					public void onSuccess(Void v)
+					{
+					}
 				};
 				userService.upvotePost(post.getPostKey(), callback);
 			}
@@ -91,13 +99,18 @@ public class UserPost extends Composite
 					votedDown = true;
 					downArrow.setUrl("images/voted_down.png");
 				}
-				
+
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
 					@Override
-					public void onFailure(Throwable caught){}
+					public void onFailure(Throwable caught)
+					{
+					}
+
 					@Override
-					public void onSuccess(Void v){}
+					public void onSuccess(Void v)
+					{
+					}
 				};
 				userService.downvotePost(post.getPostKey(), callback);
 			}
@@ -130,7 +143,13 @@ public class UserPost extends Composite
 		lblUsername.setStyleName("gwt-Label-bold");
 		verticalPanel.add(lblUsername);
 
-		DateTimeFormat dtf = new DateTimeFormat("h:mm a", new DefaultDateTimeFormatInfo()){};
+		String formatString = "h:mm a";
+		Date now = new Date(System.currentTimeMillis());
+		if(post.getPostTime().getDate() != now.getDate())
+			formatString = "MMM d, yyyy";
+		DateTimeFormat dtf = new DateTimeFormat(formatString, new DefaultDateTimeFormatInfo())
+		{
+		};
 		Label lblPosttime = new Label(dtf.format(post.getPostTime()));
 		lblPosttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblPosttime);
@@ -141,29 +160,43 @@ public class UserPost extends Composite
 		HTML separator = new HTML("<hr  style=\"width:100%;\" />");
 		postPanel.add(separator);
 
-		VerticalPanel commentPanel = new VerticalPanel();
+		commentPanel = new VerticalPanel();
 		commentPanel.setSpacing(5);
+		commentPanel.setWidth("100%");
+		if(post.getComments().size()>0)
+			commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 		postPanel.add(commentPanel);
-
-		getComments(commentPanel);
+		if(post.getComments() != null)
+		{
+			for(Comment comment : post.getComments())
+				commentPanel.add(new PostComment(comment));
+		}
 		
-		PromptedTextBox addAComment = new PromptedTextBox("Add a comment...","promptText");
+		VerticalPanel addCommentPanel = new VerticalPanel();
+		postPanel.add(addCommentPanel);
+
+		final PromptedTextBox addAComment = new PromptedTextBox("Add a comment...", "promptText");
+		addAComment.getElement().getStyle().setProperty("margin", "10px");
+		final CommentBox commentBox = new CommentBox(addAComment,post,this);
+		commentBox.setVisible(false);
+		addCommentPanel.add(commentBox);
 		addAComment.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				
+				addAComment.setVisible(false);
+				commentBox.setVisible(true);
+				commentBox.textArea.setFocus(true);
+				commentBox.textArea.setText("");
 			}
 		});
-		commentPanel.add(addAComment);
+		addCommentPanel.add(addAComment);
 	}
-
-	private void getComments(VerticalPanel commentPanel)
+	
+	public void addSubmittedComment(Comment comment)
 	{
-		int numComments = Random.nextInt(3) + 1;
-		for(int i = 0; i < numComments; i++)
-			commentPanel.add(new PostComment());
+		commentPanel.add(new PostComment(comment));
+		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 	}
-
 }

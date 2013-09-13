@@ -336,3 +336,6 @@ a:visited {
 .promptText {
     color: #999;
 }
+.gwt-DecoratorPanel-newComment {
+	background-color: lavender;
+}

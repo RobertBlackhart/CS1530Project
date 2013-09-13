@@ -16,6 +16,7 @@ package com.cs1530.group4.classweb.client;
 
 import java.util.ArrayList;
 
+import com.cs1530.group4.classweb.shared.Comment;
 import com.cs1530.group4.classweb.shared.Course;
 import com.cs1530.group4.classweb.shared.Post;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -29,7 +30,8 @@ public interface UserServiceAsync
 	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
 	void getPosts(int startIndex, ArrayList<String> streamLevels, AsyncCallback<ArrayList<Post>> callback);
-	void uploadPost(String username, String postContent, String streamLevel, AsyncCallback<Boolean> callback);
+	void uploadPost(String username, String postContent, String streamLevel, AsyncCallback<Void> callback);
+	void uploadComment(String postKey, Comment comment, AsyncCallback<Void> callback);
 	void upvotePost(String postKey, AsyncCallback<Void> callback);
 	void downvotePost(String postKey, AsyncCallback<Void> callback);
 }

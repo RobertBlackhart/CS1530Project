@@ -3,11 +3,19 @@ package com.cs1530.group4.classweb.shared;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Comment implements Serializable
+public class Comment implements Serializable, Comparable<Comment>
 {
 	private static final long serialVersionUID = 6157099786142218688L;
 	private String username, content;
+	private Date commentTime;
 	
+	public Comment(){}
+	public Comment(String username, String content)
+	{
+		this.username = username;
+		this.content = content;
+		commentTime = new Date();
+	}
 	public String getUsername()
 	{
 		return username;
@@ -32,5 +40,10 @@ public class Comment implements Serializable
 	{
 		this.commentTime = commentTime;
 	}
-	private Date commentTime;
+	
+	@Override
+	public int compareTo(Comment other)
+	{
+		return commentTime.compareTo(other.commentTime);
+	}
 }

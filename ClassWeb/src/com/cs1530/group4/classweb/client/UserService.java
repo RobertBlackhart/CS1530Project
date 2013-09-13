@@ -16,6 +16,7 @@ package com.cs1530.group4.classweb.client;
 
 import java.util.ArrayList;
 
+import com.cs1530.group4.classweb.shared.Comment;
 import com.cs1530.group4.classweb.shared.Course;
 import com.cs1530.group4.classweb.shared.Post;
 import com.google.gwt.core.client.GWT;
@@ -49,7 +50,8 @@ public interface UserService extends RemoteService
 	void userAddCourse(String username, ArrayList<String> courseIds);
 	ArrayList<String> getUserCourses(String username);
 	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels);
-	Boolean uploadPost(String username, String postContent, String streamLevel);
+	void uploadPost(String username, String postContent, String streamLevel);
+	void uploadComment(String postKey, Comment comment);
 	void upvotePost(String postKey);
 	void downvotePost(String postKey);
 }

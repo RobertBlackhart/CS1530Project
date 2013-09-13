@@ -1,6 +1,10 @@
 package com.cs1530.group4.classweb.client;
 
-import com.google.gwt.user.client.Random;
+import java.sql.Date;
+
+import com.cs1530.group4.classweb.shared.Comment;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -11,7 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PostComment extends Composite
 {	
-	public PostComment()
+	public PostComment(Comment comment)
 	{
 		FlexTable flexTable = new FlexTable();
 		initWidget(flexTable);
@@ -26,28 +30,23 @@ public class PostComment extends Composite
 		
 		VerticalPanel verticalPanel = new VerticalPanel();
 		
-		Label lblUsername = new Label("username");
+		Label lblUsername = new Label(comment.getUsername());
 		lblUsername.setStyleName("gwt-Label-bold");
 		verticalPanel.add(lblUsername);
 		
-		String hour = Random.nextInt(2) + "" + Random.nextInt(3);
-		String minute = Random.nextInt(6) + "" + Random.nextInt(10);
-		String ampm = "AM";
-		if(Random.nextInt(2) == 1)
-			ampm = "PM";
-		if(Integer.parseInt(hour) == 0)
-		{
-			hour = "12";
-			ampm = "AM";
-		}
-		Label lblCommenttime = new Label(hour+":"+minute+" "+ampm);
+		String formatString = "h:mm a";
+		Date now = new Date(System.currentTimeMillis());
+		if(comment.getCommentTime().getDate() != now.getDate())
+			formatString = "MMM d, yyyy";
+		DateTimeFormat dtf = new DateTimeFormat(formatString, new DefaultDateTimeFormatInfo()){};
+		Label lblCommenttime = new Label(dtf.format(comment.getCommentTime()));
 		lblCommenttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblCommenttime);
 		
 		horizontalPanel.add(verticalPanel);
 		
-		HTML comment = new HTML("<b>This</b> <strike>is</strike> rich <font color=\"#ff00ff\">comment</font> <font face=\"Arial\">content</font>.");
-		flexTable.setWidget(1, 0, comment);
+		HTML content = new HTML(comment.getContent());
+		flexTable.setWidget(1, 0, content);
 	}
 
 }
