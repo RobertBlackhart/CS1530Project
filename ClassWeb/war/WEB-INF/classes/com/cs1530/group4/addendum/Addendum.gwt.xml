@@ -1,0 +1,8 @@
+<module rename-to="addendum">
+	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
+	<entry-point class="com.cs1530.group4.addendum.client.MainView"/>
+	<source path="client"/>
+	<source path="server"/>
+	<source path="shared"/>
+</module>

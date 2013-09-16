@@ -1,2 +1,3 @@
 # Module classweb
 # RPC service class, partial path of RPC policy file
+com.cs1530.group4.classweb.client.UserService, 76A6CD2A608DA1B0BC88583856758C4B.gwt.rpc
