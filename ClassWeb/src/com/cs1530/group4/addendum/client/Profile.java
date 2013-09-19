@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
@@ -59,11 +60,14 @@ public class Profile extends Composite
 		hPanel.add(userPanel);
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
+		absolutePanel.setStyleName("gwt-border");
 		absolutePanel.setSize("128px", "128px");
 		userPanel.add(absolutePanel);
 
 		Image image = new Image("/addendum/getImage?username="+username);
 		final Label changeImageLabel = new Label("Change Image");
+		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
+		changeImageLabel.setSize("128px","28px");
 		image.addMouseOverHandler(new MouseOverHandler()
 		{
 			@Override
@@ -80,7 +84,7 @@ public class Profile extends Composite
 				changeImageLabel.setVisible(false);
 			}
 		});
-		image.addClickHandler(new ClickHandler()
+		ClickHandler changePictureHandler = new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
@@ -88,12 +92,16 @@ public class Profile extends Composite
 				ProfilePictureUpload profilePic = new ProfilePictureUpload(username);
 				profilePic.show();
 			}	
-		});
+		};
+		image.addClickHandler(changePictureHandler);
+		changeImageLabel.addClickHandler(changePictureHandler);
 		absolutePanel.add(image);
 		image.setSize("128px", "128px");
 		
+		//TODO: fix label flickering when hovering over label
+		
 		changeImageLabel.setVisible(false);
-		absolutePanel.add(changeImageLabel,20,110);
+		absolutePanel.add(changeImageLabel,-5,100);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		userPanel.add(horizontalPanel);

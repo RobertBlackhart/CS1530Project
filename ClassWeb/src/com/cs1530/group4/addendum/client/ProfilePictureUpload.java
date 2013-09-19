@@ -7,20 +7,44 @@ import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ProfilePictureUpload extends DialogBox
 {
 	private FlowPanel panelImages = new FlowPanel();
+	DialogBox dialog = this;
 
 	public ProfilePictureUpload(String username)
 	{
+		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.setSpacing(5);
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		HorizontalPanel buttonPanel = new HorizontalPanel();
+		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		Button okButton = new Button("OK");
+		okButton.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				dialog.hide();
+			}
+		});
 		MultiUploader uploader = new MultiUploader();
 		uploader.setServletPath(uploader.getServletPath() + "?username="+username);
-		add(uploader);
+		vPanel.add(uploader);
+		vPanel.add(panelImages);
+		buttonPanel.add(okButton);
+		vPanel.add(buttonPanel);
 		uploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		
+		add(vPanel);
 		setGlassEnabled(true);
 		center();
 	}

@@ -339,3 +339,10 @@ a:visited {
 .gwt-DecoratorPanel-newComment {
 	background-color: lavender;
 }
+.gwt-DecoratorPanel-white {
+	color: black;
+	margin: 5px;
+	font-size: small;
+	font-family: Arial, sans-serif;
+	background-color: white;
+}
