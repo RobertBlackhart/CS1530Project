@@ -23,7 +23,8 @@ import com.cs1530.group4.addendum.client.UserService;
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
-import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -53,24 +54,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
+	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
 	@Override
 	public Boolean doLogin(String username, String password)
 	{
-		Entity user = null;
-		if(memcache.contains("user_" + username))
-			user = ((Entity) memcache.get("user_" + username));
-		else
-		{
-			try
-			{
-				user = datastore.get(KeyFactory.createKey("User", username));
-			}
-			catch(EntityNotFoundException e1)
-			{
-				return false;
-			}
-		}
+		Entity user = getUserEntity(username);
 
 		if(user != null)
 		{
@@ -91,20 +80,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public Boolean createUser(String username, String password, String firstName, String lastName)
 	{
-		Entity user = null;
-		if(memcache.contains("user_" + username))
-			user = ((Entity) memcache.get("user_" + username));
-		else
-		{
-			try
-			{
-				user = datastore.get(KeyFactory.createKey("User", username));
-			}
-			catch(EntityNotFoundException e1)
-			{
-				user = null;
-			}
-		}
+		Entity user = getUserEntity(username);
 
 		if(user != null)
 			return false;
@@ -260,21 +236,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void userAddCourse(String username, ArrayList<String> courseIds)
 	{
-		Entity user = null;
-		if(memcache.contains("user_" + username))
-			user = ((Entity) memcache.get("user_" + username));
-		else
-		{
-			try
-			{
-				user = datastore.get(KeyFactory.createKey("User", username));
-			}
-			catch(EntityNotFoundException ex)
-			{
-				ex.printStackTrace();
-				return; //shouldn't happen, but if it does then just do nothing anyway
-			}
-		}
+		Entity user = getUserEntity(username);
 		
 		ArrayList<String> courseList = new ArrayList<String>();
 		if(user != null && user.hasProperty("courseList"))
@@ -293,6 +255,17 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public ArrayList<String> getUserCourses(String username)
 	{
+		Entity user = getUserEntity(username);
+		
+		ArrayList<String> courseList = new ArrayList<String>();
+		if(user != null && user.hasProperty("courseList"))
+			courseList = (ArrayList<String>)user.getProperty("courseList");
+		
+		return courseList;
+	}
+	
+	private Entity getUserEntity(String username)
+	{
 		Entity user = null;
 		if(memcache.contains("user_" + username))
 			user = ((Entity) memcache.get("user_" + username));
@@ -307,12 +280,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				ex.printStackTrace();
 			}
 		}
-		
-		ArrayList<String> courseList = new ArrayList<String>();
-		if(user != null && user.hasProperty("courseList"))
-			courseList = (ArrayList<String>)user.getProperty("courseList");
-		
-		return courseList;
+		return user;
 	}
 
 	@Override
@@ -330,7 +298,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setProperty("time", now);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
-		post.setProperty("comments", new Blob(new byte[0]));
 		datastore.put(post);
 		memcache.put(post.getKey(),post); //when looking up posts, do a key only query and check if they are in memcache first
 		

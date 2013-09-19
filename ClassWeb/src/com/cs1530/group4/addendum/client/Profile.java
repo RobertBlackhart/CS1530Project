@@ -6,10 +6,15 @@ import java.util.Collections;
 import com.cs1530.group4.addendum.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -52,9 +57,43 @@ public class Profile extends Composite
 		userPanel.getElement().getStyle().setProperty("marginLeft", "10px");
 		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
 		hPanel.add(userPanel);
+		
+		AbsolutePanel absolutePanel = new AbsolutePanel();
+		absolutePanel.setSize("128px", "128px");
+		userPanel.add(absolutePanel);
 
-		Image image = new Image("contact_picture.png");
-		userPanel.add(image);
+		Image image = new Image("/addendum/getImage?username="+username);
+		final Label changeImageLabel = new Label("Change Image");
+		image.addMouseOverHandler(new MouseOverHandler()
+		{
+			@Override
+			public void onMouseOver(MouseOverEvent event)
+			{
+				changeImageLabel.setVisible(true);
+			}	
+		});
+		image.addMouseOutHandler(new MouseOutHandler()
+		{
+			@Override
+			public void onMouseOut(MouseOutEvent event)
+			{
+				changeImageLabel.setVisible(false);
+			}
+		});
+		image.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				ProfilePictureUpload profilePic = new ProfilePictureUpload(username);
+				profilePic.show();
+			}	
+		});
+		absolutePanel.add(image);
+		image.setSize("128px", "128px");
+		
+		changeImageLabel.setVisible(false);
+		absolutePanel.add(changeImageLabel,20,110);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		userPanel.add(horizontalPanel);

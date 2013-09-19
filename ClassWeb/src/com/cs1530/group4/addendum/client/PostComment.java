@@ -23,7 +23,7 @@ public class PostComment extends Composite
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		flexTable.setWidget(0, 0, horizontalPanel);
 		
-		Image image = new Image("contact_picture.png");
+		Image image = new Image("/addendum/getImage?username="+comment.getUsername());
 		image.getElement().getStyle().setProperty("marginRight","10px");
 		horizontalPanel.add(image);
 		image.setSize("28px", "28px");

@@ -131,7 +131,7 @@ public class UserPost extends Composite
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		postPanel.add(horizontalPanel);
 
-		Image image = new Image("contact_picture.png");
+		Image image = new Image("/addendum/getImage?username="+post.getUsername());
 		image.getElement().getStyle().setProperty("marginRight", "10px");
 		horizontalPanel.add(image);
 		image.setSize("46px", "46px");
