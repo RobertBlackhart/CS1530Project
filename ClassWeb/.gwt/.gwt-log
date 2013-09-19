@@ -5566,3 +5566,181 @@ Compiling...
    Compilation completed in 0.00 seconds
 Removing invalidated units
 Finding entry point classes
+Public resources found in...
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2738 units from cache.
+Compiling...
+   30% complete (ETR: 10 seconds)
+   30% complete (ETR: 10 seconds)
+   30% complete (ETR: 10 seconds)
+   30% complete (ETR: 10 seconds)
+   40% complete (ETR: 8 seconds)
+   50% complete (ETR: 7 seconds)
+   60% complete (ETR: 5 seconds)
+   70% complete (ETR: 4 seconds)
+   80% complete (ETR: 3 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 17.13 seconds
+Validating units:
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/addendum/server/UserServiceImpl.java'
+      [ERROR] Line 26: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 27: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 28: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 29: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 30: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 31: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 32: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 33: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 34: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 35: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 36: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 37: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 38: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 39: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 42: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 43: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 44: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 45: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 46: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 47: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 48: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 54: DatastoreService cannot be resolved to a type
+      [ERROR] Line 54: DatastoreServiceFactory cannot be resolved
+      [ERROR] Line 60: Entity cannot be resolved to a type
+      [ERROR] Line 62: Entity cannot be resolved to a type
+      [ERROR] Line 67: DatastoreService cannot be resolved to a type
+      [ERROR] Line 67: KeyFactory cannot be resolved
+      [ERROR] Line 69: EntityNotFoundException cannot be resolved to a type
+      [ERROR] Line 94: Entity cannot be resolved to a type
+      [ERROR] Line 96: Entity cannot be resolved to a type
+      [ERROR] Line 101: DatastoreService cannot be resolved to a type
+      [ERROR] Line 101: KeyFactory cannot be resolved
+      [ERROR] Line 103: EntityNotFoundException cannot be resolved to a type
+      [ERROR] Line 113: Entity cannot be resolved to a type
+      [ERROR] Line 119: DatastoreService cannot be resolved to a type
+      [ERROR] Line 128: Entity cannot be resolved to a type
+      [ERROR] Line 130: Entity cannot be resolved to a type
+      [ERROR] Line 132: The method getEntityFromDatastore(String, int) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 145: Query cannot be resolved to a type
+      [ERROR] Line 145: Query cannot be resolved to a type
+      [ERROR] Line 145: FilterPredicate cannot be resolved to a type
+      [ERROR] Line 145: FilterOperator cannot be resolved
+      [ERROR] Line 146: PreparedQuery cannot be resolved to a type
+      [ERROR] Line 146: DatastoreService cannot be resolved to a type
+      [ERROR] Line 147: Entity cannot be resolved to a type
+      [ERROR] Line 159: Query cannot be resolved to a type
+      [ERROR] Line 159: Query cannot be resolved to a type
+      [ERROR] Line 159: FilterPredicate cannot be resolved to a type
+      [ERROR] Line 159: FilterOperator cannot be resolved
+      [ERROR] Line 160: PreparedQuery cannot be resolved to a type
+      [ERROR] Line 160: DatastoreService cannot be resolved to a type
+      [ERROR] Line 161: Entity cannot be resolved to a type
+      [ERROR] Line 169: IndexSpec cannot be resolved to a type
+      [ERROR] Line 169: IndexSpec cannot be resolved
+      [ERROR] Line 170: Index cannot be resolved to a type
+      [ERROR] Line 170: SearchServiceFactory cannot be resolved
+      [ERROR] Line 175: Results cannot be resolved to a type
+      [ERROR] Line 175: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 176: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 180: Entity cannot be resolved to a type
+      [ERROR] Line 180: The method getEntityFromDatastore(String, int) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 193: Results cannot be resolved to a type
+      [ERROR] Line 193: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 194: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 198: Entity cannot be resolved to a type
+      [ERROR] Line 198: The method getEntityFromDatastore(String, int) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 212: Entity cannot be resolved to a type
+      [ERROR] Line 214: Entity cannot be resolved to a type
+      [ERROR] Line 217: DatastoreService cannot be resolved to a type
+      [ERROR] Line 217: KeyFactory cannot be resolved
+      [ERROR] Line 219: EntityNotFoundException cannot be resolved to a type
+      [ERROR] Line 227: Entity cannot be resolved to a type
+      [ERROR] Line 239: IndexSpec cannot be resolved to a type
+      [ERROR] Line 239: IndexSpec cannot be resolved
+      [ERROR] Line 240: Index cannot be resolved to a type
+      [ERROR] Line 240: SearchServiceFactory cannot be resolved
+      [ERROR] Line 241: Document cannot be resolved to a type
+      [ERROR] Line 241: Document cannot be resolved
+      [ERROR] Line 243: Field cannot be resolved
+      [ERROR] Line 244: Field cannot be resolved
+      [ERROR] Line 245: Field cannot be resolved
+      [ERROR] Line 246: Field cannot be resolved
+      [ERROR] Line 250: Entity cannot be resolved to a type
+      [ERROR] Line 250: Entity cannot be resolved to a type
+      [ERROR] Line 256: DatastoreService cannot be resolved to a type
+      [ERROR] Line 263: Entity cannot be resolved to a type
+      [ERROR] Line 266: DatastoreService cannot be resolved to a type
+      [ERROR] Line 266: KeyFactory cannot be resolved
+      [ERROR] Line 268: EntityNotFoundException cannot be resolved to a type
+      [ERROR] Line 283: DatastoreService cannot be resolved to a type
+      [ERROR] Line 290: Entity cannot be resolved to a type
+      [ERROR] Line 315: Entity cannot be resolved to a type
+      [ERROR] Line 343: Key cannot be resolved to a type
+      [ERROR] Line 378: Entity cannot be resolved to a type
+      [ERROR] Line 397: Key cannot be resolved to a type
+      [ERROR] Line 419: Entity cannot be resolved to a type
+      [ERROR] Line 434: Entity cannot be resolved to a type
+      [ERROR] Line 451: Entity cannot be resolved to a type
+      [ERROR] Line 463: Entity cannot be resolved to a type
+      [ERROR] Line 483: Entity cannot be resolved to a type
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0.07 seconds
+      Removing invalidated units
+Public resources found in...
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2719 units from cache.
+Compiling...
+   10% complete (ETR: 28 seconds)
+   10% complete (ETR: 28 seconds)
+   20% complete (ETR: 23 seconds)
+   30% complete (ETR: 19 seconds)
+   40% complete (ETR: 14 seconds)
+   50% complete (ETR: 10 seconds)
+   60% complete (ETR: 7 seconds)
+   70% complete (ETR: 5 seconds)
+   80% complete (ETR: 3 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 31.70 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes

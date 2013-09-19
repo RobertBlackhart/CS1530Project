@@ -261,18 +261,23 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public void userAddCourse(String username, ArrayList<String> courseIds)
 	{
 		Entity user = null;
-		try
+		if(memcache.contains("user_" + username))
+			user = ((Entity) memcache.get("user_" + username));
+		else
 		{
-			user = datastore.get(KeyFactory.createKey("User", username));
-		}
-		catch(EntityNotFoundException ex)
-		{
-			ex.printStackTrace();
-			return; //shouldn't happen, but if it does then just do nothing anyway
+			try
+			{
+				user = datastore.get(KeyFactory.createKey("User", username));
+			}
+			catch(EntityNotFoundException ex)
+			{
+				ex.printStackTrace();
+				return; //shouldn't happen, but if it does then just do nothing anyway
+			}
 		}
 		
 		ArrayList<String> courseList = new ArrayList<String>();
-		if(user.hasProperty("courseList"))
+		if(user != null && user.hasProperty("courseList"))
 			courseList = (ArrayList<String>)user.getProperty("courseList");
 		for(String courseId : courseIds)
 		{
@@ -281,6 +286,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 		user.setProperty("courseList",courseList);
 		datastore.put(user);
+		memcache.put("user_"+username, user);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -288,18 +294,22 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public ArrayList<String> getUserCourses(String username)
 	{
 		Entity user = null;
-		try
+		if(memcache.contains("user_" + username))
+			user = ((Entity) memcache.get("user_" + username));
+		else
 		{
-			user = datastore.get(KeyFactory.createKey("User", username));
-		}
-		catch(EntityNotFoundException ex)
-		{
-			ex.printStackTrace();
-			return null; //shouldn't happen, but if it does then just do nothing anyway
+			try
+			{
+				user = datastore.get(KeyFactory.createKey("User", username));
+			}
+			catch(EntityNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
 		}
 		
 		ArrayList<String> courseList = new ArrayList<String>();
-		if(user.hasProperty("courseList"))
+		if(user != null && user.hasProperty("courseList"))
 			courseList = (ArrayList<String>)user.getProperty("courseList");
 		
 		return courseList;
@@ -429,34 +439,54 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void upvotePost(String postKey)
 	{
-		try
+		Entity post = null;
+		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
+		if(memcache.contains(key))
+			post = (Entity)memcache.get(key);
+		else
 		{
-			Entity post = datastore.get(KeyFactory.createKey("Post", Long.valueOf(postKey).longValue()));
+			try
+			{
+				post = datastore.get(key);
+			}
+			catch(EntityNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if(post != null)
+		{
 			post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString())+1);
 			updateScore(post);
 			memcache.put(post.getKey(),post);
 			datastore.put(post);
-		}
-		catch(EntityNotFoundException ex)
-		{
-			ex.printStackTrace();
 		}
 	}
 
 	@Override
 	public void downvotePost(String postKey)
 	{
-		try
+		Entity post = null;
+		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
+		if(memcache.contains(key))
+			post = (Entity)memcache.get(key);
+		else
 		{
-			Entity post = datastore.get(KeyFactory.createKey("Post", Long.valueOf(postKey).longValue()));
+			try
+			{
+				post = datastore.get(key);
+			}
+			catch(EntityNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if(post != null)
+		{
 			post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString())+1);
 			updateScore(post);
 			memcache.put(post.getKey(),post);
 			datastore.put(post);
-		}
-		catch(EntityNotFoundException ex)
-		{
-			ex.printStackTrace();
 		}
 	}
 	
