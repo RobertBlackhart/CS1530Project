@@ -104,7 +104,7 @@ public class NewUserDialog extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new Login(main));
+				main.setContent(new Login(main),"login");
 			}
 		});
 		horizontalPanel.add(btnCancel);
@@ -150,7 +150,7 @@ public class NewUserDialog extends Composite
 				if(result)
 				{
 					Cookies.setCookie("loggedIn", usernameTextBox.getText());
-					main.setContent(new Profile(main, username));
+					main.setContent(new Profile(main, username),"profile-"+username);
 				}
 				else
 					errorLabel.setVisible(true);

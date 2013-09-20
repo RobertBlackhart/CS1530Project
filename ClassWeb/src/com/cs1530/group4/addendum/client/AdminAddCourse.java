@@ -89,7 +89,7 @@ public class AdminAddCourse extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new ClassSearch(main));
+				main.setContent(new ClassSearch(main),"classSearch");
 			}
 		});
 		verticalPanel.add(btnBackToSearch);

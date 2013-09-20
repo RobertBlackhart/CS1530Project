@@ -23,6 +23,7 @@ public class ProfilePictureUpload extends DialogBox
 
 	public ProfilePictureUpload(String username)
 	{
+		//TODO: make dialog not look sucky
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -59,10 +60,6 @@ public class ProfilePictureUpload extends DialogBox
 
 				// The server sends useful information to the client by default
 				UploadedInfo info = uploader.getServerInfo();
-				System.out.println("File name " + info.name);
-				System.out.println("File content-type " + info.ctype);
-				System.out.println("File size " + info.size);
-
 				// You can send any customized message and parse it 
 				System.out.println("Server message " + info.message);
 			}

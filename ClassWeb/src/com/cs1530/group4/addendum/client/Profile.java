@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
@@ -40,15 +39,16 @@ public class Profile extends Composite
 	{
 		main = m;
 		username = u;
-		if(username == null)
-		{
-			main.setContent(new Login(main));
-		}
 		vPanel = new VerticalPanel();
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
 		initWidget(vPanel);
+		
+		if(username == null)
+		{
+			main.setContent(new Login(main),"login");
+		}
 
 		HorizontalPanel hPanel = new HorizontalPanel();
 		vPanel.add(hPanel);
@@ -68,22 +68,22 @@ public class Profile extends Composite
 		final Label changeImageLabel = new Label("Change Image");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
 		changeImageLabel.setSize("128px","28px");
-		image.addMouseOverHandler(new MouseOverHandler()
+		MouseOverHandler mouseOver = new MouseOverHandler()
 		{
 			@Override
 			public void onMouseOver(MouseOverEvent event)
 			{
 				changeImageLabel.setVisible(true);
 			}	
-		});
-		image.addMouseOutHandler(new MouseOutHandler()
+		};
+		MouseOutHandler mouseOut = new MouseOutHandler()
 		{
 			@Override
 			public void onMouseOut(MouseOutEvent event)
 			{
 				changeImageLabel.setVisible(false);
 			}
-		});
+		};
 		ClickHandler changePictureHandler = new ClickHandler()
 		{
 			@Override
@@ -93,13 +93,16 @@ public class Profile extends Composite
 				profilePic.show();
 			}	
 		};
+		image.addMouseOverHandler(mouseOver);
+		changeImageLabel.addMouseOverHandler(mouseOver);
+		image.addMouseOutHandler(mouseOut);
+		changeImageLabel.addMouseOutHandler(mouseOut);
 		image.addClickHandler(changePictureHandler);
 		changeImageLabel.addClickHandler(changePictureHandler);
+		
 		absolutePanel.add(image);
 		image.setSize("128px", "128px");
-		
-		//TODO: fix label flickering when hovering over label
-		
+				
 		changeImageLabel.setVisible(false);
 		absolutePanel.add(changeImageLabel,-5,100);
 
@@ -118,7 +121,7 @@ public class Profile extends Composite
 			public void onClick(ClickEvent event)
 			{
 				Cookies.removeCookie("loggedIn");
-				main.setContent(new Login(main));
+				main.setContent(new Login(main),"login");
 			}
 		});
 		usernameLabel.getElement().getStyle().setProperty("marginBottom", "30px");
@@ -134,7 +137,7 @@ public class Profile extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new ClassSearch(main));
+				main.setContent(new ClassSearch(main),"classSearch");
 				//TODO: implement class removal screen
 			}
 		});

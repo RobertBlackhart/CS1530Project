@@ -52,7 +52,8 @@ public class NewPost extends DialogBox
 					@Override
 					public void onSuccess(Void v)
 					{
-						main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
+						String user = Cookies.getCookie("loggedIn");
+						main.setContent(new Profile(main,user),"profile-"+user);
 						postBox.hide();
 					}
 				};

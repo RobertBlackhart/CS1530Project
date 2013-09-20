@@ -21,24 +21,24 @@ public class ImageServlet extends HttpServlet
 {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
-	
+
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
 		String username = req.getParameter("username");
 		Entity user = getUserEntity(username);
-		
+
 		if(user == null)
 			return;
-		
-		Blob imageBlob = (Blob)user.getProperty("profileImage");
-		
+
+		Blob imageBlob = (Blob) user.getProperty("profileImage");
+
 		resp.setContentType("image/jpeg");
-		resp.addHeader( "Cache-Control", "public, max-age=1440" ); //cache image for 1 day
+		resp.addHeader("Cache-Control", "public, max-age=1440"); //cache image for 1 day
 		OutputStream out = resp.getOutputStream();
 		out.write(imageBlob.getBytes());
 		out.close();
 	}
-	
+
 	private Entity getUserEntity(String username)
 	{
 		Entity user = null;

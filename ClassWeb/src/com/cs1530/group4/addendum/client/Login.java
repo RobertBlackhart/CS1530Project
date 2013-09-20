@@ -36,6 +36,9 @@ public class Login extends Composite
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		initWidget(verticalPanel);
+		
+		if(Cookies.getCookie("loggedIn") != null)
+			m.setContent(new Profile(m,Cookies.getCookie("loggedIn")), "profile-"+Cookies.getCookie("loggedIn"));
 
 		Label lblNewLabel = new Label("Sign into your account");
 		lblNewLabel.setStyleName("gwt-Label-Login");
@@ -130,7 +133,7 @@ public class Login extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new NewUserDialog(main));
+				main.setContent(new NewUserDialog(main), "login");
 			}
 		});
 		verticalPanel_1.add(button);
@@ -176,13 +179,13 @@ public class Login extends Composite
 		if(rememberMeCheckBox.getValue())
 		{
 			Date expires = new Date();
-			expires.setTime(expires.getTime()+(1000*60*60*24*14)); //14 days from now
-			Cookies.setCookie("loggedIn", usernameTextBox.getText(),expires);
+			expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24 * 14)); //14 days from now
+			Cookies.setCookie("loggedIn", usernameTextBox.getText(), expires);
 		}
 		else
 			Cookies.setCookie("loggedIn", usernameTextBox.getText());
 
-		main.setContent(new Profile(main, usernameTextBox.getText()));
+		main.setContent(new Profile(main, usernameTextBox.getText()), "profile-" + usernameTextBox.getText());
 	}
 
 	private void rejectLogin()

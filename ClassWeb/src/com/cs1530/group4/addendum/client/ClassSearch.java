@@ -41,7 +41,7 @@ public class ClassSearch extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new AdminAddCourse(main));
+				main.setContent(new AdminAddCourse(main),"adminAddCourse");
 			}
 		});
 		verticalPanel.add(addNewCourse);
@@ -150,14 +150,18 @@ public class ClassSearch extends Composite
 					@Override
 					public void onSuccess(Void v)
 					{
-						main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
+						String user = Cookies.getCookie("loggedIn");
+						main.setContent(new Profile(main,user),"profile-"+user);
 					}
 				};
 				
 				if(courses.size() > 0)
 					userService.userAddCourse(Cookies.getCookie("loggedIn"), courses, callback);
 				else
-					main.setContent(new Profile(main,Cookies.getCookie("loggedIn")));
+				{
+					String user = Cookies.getCookie("loggedIn");
+					main.setContent(new Profile(main,user),"profile-"+user);
+				}
 			}
 		});
 		verticalPanel.add(btnAddSelectedClasses);
