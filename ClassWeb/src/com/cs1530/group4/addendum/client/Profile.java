@@ -45,11 +45,6 @@ public class Profile extends Composite
 
 		initWidget(vPanel);
 		
-		if(username == null)
-		{
-			main.setContent(new Login(main),"login");
-		}
-
 		HorizontalPanel hPanel = new HorizontalPanel();
 		vPanel.add(hPanel);
 

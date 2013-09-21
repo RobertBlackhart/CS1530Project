@@ -79,7 +79,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		if(contentPanel == null)
 			initialize();
 
-		Widget content = new Profile(main, Cookies.getCookie("loggedIn"));
+		Widget content = null;
 
 		String[] historyToken = event.getValue().split("-");
 
@@ -93,7 +93,21 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		else if(historyToken[0].equals("profile"))
 		{
 			String user = historyToken[1];
-			content = new Profile(main, user);
+			String loggedUser = Cookies.getCookie("loggedIn");
+			if(loggedUser == null)
+				content = new Login(main);
+			else if(user.equals(loggedUser))
+				content = new Profile(main, user);
+			else
+				content = new Profile(main, loggedUser);
+		}
+		else
+		{
+			String user = Cookies.getCookie("loggedIn");
+			if(user == null)
+				content = new Login(main);
+			else
+				content = new Profile(main, user);
 		}
 		
 		contentPanel.clear();
