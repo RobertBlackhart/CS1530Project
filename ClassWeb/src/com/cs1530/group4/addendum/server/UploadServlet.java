@@ -41,7 +41,7 @@ public class UploadServlet extends AppEngineUploadAction
             Blob imageBlob = new Blob(IOUtils.toByteArray(imgStream));
 			user.setProperty("profileImage", imageBlob);
 			datastore.put(user);
-			memcache.put(user.getKey(), user);
+			memcache.put("user_"+username, user);
 		}
 		catch(IOException e)
 		{

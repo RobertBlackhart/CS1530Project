@@ -107,8 +107,8 @@ public class RichTextToolbar extends Composite
 	private static final String GUI_HOVERTEXT_HLINE = "Insert Horizontal Line";
 	private static final String GUI_HOVERTEXT_BREAKLINK = "Break Link";
 	private static final String GUI_HOVERTEXT_LINK = "Generate Link";
-	private static final String GUI_HOVERTEXT_IDENTLEFT = "Ident Left";
-	private static final String GUI_HOVERTEXT_IDENTRIGHT = "Ident Right";
+	private static final String GUI_HOVERTEXT_IDENTLEFT = "Indent Left";
+	private static final String GUI_HOVERTEXT_IDENTRIGHT = "Indent Right";
 	private static final String GUI_HOVERTEXT_UNORDERLIST = "Unordered List";
 	private static final String GUI_HOVERTEXT_ORDERLIST = "Ordered List";
 	private static final String GUI_HOVERTEXT_ALIGNRIGHT = "Align Right";

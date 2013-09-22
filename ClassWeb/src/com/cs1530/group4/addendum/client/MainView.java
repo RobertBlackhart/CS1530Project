@@ -19,8 +19,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,13 +53,6 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 
 		rootPanel.add(topPanel);
 		rootPanel.add(contentPanel);
-		contentPanel.setSize("", "");
-
-		Label welcomeLabel = new Label("Welcome to Addendum");
-		welcomeLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		welcomeLabel.getElement().getStyle().setProperty("marginBottom", "20px");
-		welcomeLabel.setStyleName("gwt-Label-Login");
-		topPanel.add(welcomeLabel);
 
 		if(Cookies.getCookie("loggedIn") != null)
 		{

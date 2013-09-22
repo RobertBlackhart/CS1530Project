@@ -40,10 +40,21 @@ public class Profile extends Composite
 		main = m;
 		username = u;
 		vPanel = new VerticalPanel();
-		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
 		initWidget(vPanel);
+		
+		Button createPost = new Button("Create a new post");
+		vPanel.add(createPost);
+		createPost.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				NewPost editor = new NewPost(main,userCourses);
+				editor.show();
+			}
+		});
 		
 		HorizontalPanel hPanel = new HorizontalPanel();
 		vPanel.add(hPanel);
@@ -152,6 +163,7 @@ public class Profile extends Composite
 		getClasses(classPanel, addRemove, allAnchor);
 
 		final TabPanel tabPanel = new TabPanel();
+		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();
@@ -182,17 +194,6 @@ public class Profile extends Composite
 		newUpdatesPanel.setSpacing(15);
 
 		tabPanel.selectTab(0);
-
-		Button btnCreateANew = new Button("Create a new post");
-		btnCreateANew.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				NewPost editor = new NewPost(main, userCourses);
-				editor.show();
-			}
-		});
-		hPanel.add(btnCreateANew);
 
 		nextPage = new Anchor("Next 10 Posts");
 		nextPage.addClickHandler(new ClickHandler()

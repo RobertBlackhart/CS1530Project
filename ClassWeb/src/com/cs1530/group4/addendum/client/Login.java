@@ -37,6 +37,12 @@ public class Login extends Composite
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		initWidget(verticalPanel);
 		
+		Label welcomeLabel = new Label("Welcome to Addendum");
+		welcomeLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		welcomeLabel.getElement().getStyle().setProperty("marginBottom", "20px");
+		welcomeLabel.setStyleName("gwt-Label-Login");
+		verticalPanel.add(welcomeLabel);
+		
 		if(Cookies.getCookie("loggedIn") != null)
 			m.setContent(new Profile(m,Cookies.getCookie("loggedIn")), "profile-"+Cookies.getCookie("loggedIn"));
 
