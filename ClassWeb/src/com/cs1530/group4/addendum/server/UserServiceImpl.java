@@ -314,7 +314,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels)
+	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser)
 	{
 		ArrayList<Post> posts = new ArrayList<Post>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
@@ -338,21 +338,22 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for(Entity entity : datastore.prepare(q).asList(options))
 		{
 			if(memcache.contains(entity.getKey()))
-				posts.add(postFromEntity((Entity)memcache.get(entity.getKey())));
+				posts.add(postFromEntity((Entity)memcache.get(entity.getKey()),requestingUser));
 			else
 				datastoreGet.add(entity.getKey());
 		}
 		Map<Key,Entity> results = datastore.get(datastoreGet);
 		for(Entity entity : results.values())
 		{
-			posts.add(postFromEntity(entity));
+			posts.add(postFromEntity(entity,requestingUser));
 			memcache.put(entity.getKey(), entity);
 		}
 		
 		return posts;
 	}
 
-	private Post postFromEntity(Entity entity)
+	@SuppressWarnings("unchecked")
+	private Post postFromEntity(Entity entity, String requestingUser)
 	{
 		Post post = new Post();
 		post.setPostContent((String)entity.getProperty("postContent"));
@@ -364,6 +365,16 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setScore(Double.valueOf(entity.getProperty("score").toString()));
 		post.setPostKey(String.valueOf(entity.getKey().getId()));
 		post.setComments(getComments(post.getPostKey()));
+		if(entity.hasProperty("usersVotedUp"))
+		{
+			ArrayList<String> usersVotedUp = (ArrayList<String>)entity.getProperty("usersVotedUp");
+			post.setUpvoted(usersVotedUp.contains(requestingUser));
+		}
+		if(entity.hasProperty("usersVotedDown"))
+		{
+			ArrayList<String> usersVotedDown = (ArrayList<String>)entity.getProperty("usersVotedDown");
+			post.setDownvoted(usersVotedDown.contains(requestingUser));
+		}
 		
 		return post;
 	}
@@ -404,62 +415,76 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public void upvotePost(String postKey)
+	public Boolean upvotePost(String postKey, String user)
 	{
-		Entity post = null;
-		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
-		if(memcache.contains(key))
-			post = (Entity)memcache.get(key);
-		else
-		{
-			try
-			{
-				post = datastore.get(key);
-			}
-			catch(EntityNotFoundException ex)
-			{
-				ex.printStackTrace();
-			}
-		}
-		if(post != null)
-		{
-			post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString())+1);
-			updateScore(post);
-			memcache.put(post.getKey(),post);
-			datastore.put(post);
-		}
-	}
-
-	@Override
-	public void downvotePost(String postKey)
-	{
-		Entity post = null;
-		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
-		if(memcache.contains(key))
-			post = (Entity)memcache.get(key);
-		else
-		{
-			try
-			{
-				post = datastore.get(key);
-			}
-			catch(EntityNotFoundException ex)
-			{
-				ex.printStackTrace();
-			}
-		}
-		if(post != null)
-		{
-			post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString())+1);
-			updateScore(post);
-			memcache.put(post.getKey(),post);
-			datastore.put(post);
-		}
+		return changeScore(postKey,"upvotes",user);
 	}
 	
-	private void updateScore(Entity entity)
+	@Override
+	public Boolean downvotePost(String postKey, String user)
 	{
-		Post post = postFromEntity(entity);
+		return changeScore(postKey,"downvotes",user);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Boolean changeScore(String postKey, String property, String user)
+	{
+		Entity post = null;
+		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
+		if(memcache.contains(key))
+			post = (Entity)memcache.get(key);
+		else
+		{
+			try
+			{
+				post = datastore.get(key);
+			}
+			catch(EntityNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if(post != null)
+		{
+			ArrayList<String> upUsers = new ArrayList<String>();
+			ArrayList<String> downUsers = new ArrayList<String>();
+			if(post.hasProperty("usersVotedUp"))
+				upUsers = (ArrayList<String>)post.getProperty("usersVotedUp");
+			if(post.hasProperty("usersVotedDown"))
+				downUsers = (ArrayList<String>)post.getProperty("usersVotedDown");
+			if(property.equals("upvotes") && upUsers.contains(user))
+				return false;
+			if(property.equals("downvotes") && downUsers.contains(user))
+				return false;
+			post.setProperty(property, Integer.valueOf(post.getProperty(property).toString())+1);
+			
+			if(property.equals("upvotes"))
+			{
+				upUsers.add(user);
+				if(downUsers.remove(user))
+					post.setProperty(property, Integer.valueOf(post.getProperty(property).toString())+1);
+				post.setProperty("usersVotedUp", upUsers);
+				post.setProperty("usersVotedDown", downUsers);
+			}
+			if(property.equals("downvotes"))
+			{
+				downUsers.add(user);
+				if(upUsers.remove(user))
+					post.setProperty(property, Integer.valueOf(post.getProperty(property).toString())+1);
+				post.setProperty("usersVotedUp", upUsers);
+				post.setProperty("usersVotedDown", downUsers);
+			}
+			updateScore(post,user);
+			memcache.put(post.getKey(),post);
+			datastore.put(post);
+		}
+		
+		return true;
+	}
+	
+	private void updateScore(Entity entity, String user)
+	{
+		Post post = postFromEntity(entity,user);
 		int s = post.getUpvotes()-post.getDownvotes();
 		double order = Math.log10(Math.max(Math.abs(s), 1));
 		int sign = 1;

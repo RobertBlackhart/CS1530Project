@@ -49,9 +49,9 @@ public interface UserService extends RemoteService
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	void userAddCourse(String username, ArrayList<String> courseIds);
 	ArrayList<String> getUserCourses(String username);
-	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels);
+	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers);
 	void uploadPost(String username, String postContent, String streamLevel);
 	void uploadComment(String postKey, Comment comment);
-	void upvotePost(String postKey);
-	void downvotePost(String postKey);
+	Boolean upvotePost(String postKey, String user);
+	Boolean downvotePost(String postKey, String user);
 }

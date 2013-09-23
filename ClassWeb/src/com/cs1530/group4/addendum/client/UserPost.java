@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -20,7 +21,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class UserPost extends Composite
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
-	boolean votedUp = false, votedDown = false;
 	int upDownVotes;
 	VerticalPanel commentPanel;
 	
@@ -40,30 +40,17 @@ public class UserPost extends Composite
 
 		final Image upArrow = new Image("images/default_up.png");
 		final Image downArrow = new Image("images/default_down.png");
+		if(post.isUpvoted())
+			upArrow.setUrl("images/voted_up.png");
+		if(post.isDownvoted())
+			downArrow.setUrl("images/voted_down.png");
 		final Label scoreLabel = new Label(String.valueOf(upDownVotes));
 		upArrow.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				if(votedDown)
-					upDownVotes++;
-				votedDown = false;
-				downArrow.setUrl("images/default_down.png");
-				if(votedUp)
-				{
-					scoreLabel.setText(String.valueOf(--upDownVotes));
-					votedUp = false;
-					upArrow.setUrl("images/default_up.png");
-				}
-				else
-				{
-					scoreLabel.setText(String.valueOf(++upDownVotes));
-					votedUp = true;
-					upArrow.setUrl("images/voted_up.png");
-				}
-
-				AsyncCallback<Void> callback = new AsyncCallback<Void>()
+				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
 				{
 					@Override
 					public void onFailure(Throwable caught)
@@ -71,11 +58,30 @@ public class UserPost extends Composite
 					}
 
 					@Override
-					public void onSuccess(Void v)
+					public void onSuccess(Boolean success)
 					{
+						if(success)
+						{
+							if(post.isDownvoted())
+								upDownVotes++;
+							post.setDownvoted(false);
+							downArrow.setUrl("images/default_down.png");
+							if(post.isUpvoted())
+							{
+								scoreLabel.setText(String.valueOf(--upDownVotes));
+								post.setUpvoted(false);
+								upArrow.setUrl("images/default_up.png");
+							}
+							else
+							{
+								scoreLabel.setText(String.valueOf(++upDownVotes));
+								post.setUpvoted(true);
+								upArrow.setUrl("images/voted_up.png");
+							}
+						}
 					}
 				};
-				userService.upvotePost(post.getPostKey(), callback);
+				userService.upvotePost(post.getPostKey(), Cookies.getCookie("loggedIn"), callback);
 			}
 		});
 		downArrow.addClickHandler(new ClickHandler()
@@ -83,24 +89,7 @@ public class UserPost extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				if(votedUp)
-					upDownVotes--;
-				votedUp = false;
-				upArrow.setUrl("images/default_up.png");
-				if(votedDown)
-				{
-					scoreLabel.setText(String.valueOf(++upDownVotes));
-					votedDown = false;
-					downArrow.setUrl("images/default_down.png");
-				}
-				else
-				{
-					scoreLabel.setText(String.valueOf(--upDownVotes));
-					votedDown = true;
-					downArrow.setUrl("images/voted_down.png");
-				}
-
-				AsyncCallback<Void> callback = new AsyncCallback<Void>()
+				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
 				{
 					@Override
 					public void onFailure(Throwable caught)
@@ -108,11 +97,30 @@ public class UserPost extends Composite
 					}
 
 					@Override
-					public void onSuccess(Void v)
+					public void onSuccess(Boolean success)
 					{
+						if(success)
+						{
+							if(post.isUpvoted())
+								upDownVotes--;
+							post.setUpvoted(false);
+							upArrow.setUrl("images/default_up.png");
+							if(post.isDownvoted())
+							{
+								scoreLabel.setText(String.valueOf(++upDownVotes));
+								post.setDownvoted(false);
+								downArrow.setUrl("images/default_down.png");
+							}
+							else
+							{
+								scoreLabel.setText(String.valueOf(--upDownVotes));
+								post.setDownvoted(true);
+								downArrow.setUrl("images/voted_down.png");
+							}
+						}
 					}
 				};
-				userService.downvotePost(post.getPostKey(), callback);
+				userService.downvotePost(post.getPostKey(), Cookies.getCookie("loggedIn"), callback);
 			}
 		});
 		scorePanel.add(upArrow);

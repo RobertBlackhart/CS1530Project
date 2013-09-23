@@ -240,7 +240,7 @@ public class Profile extends Composite
 				}
 			}
 		};
-		userService.getPosts(startIndex, streamLevels, callback);
+		userService.getPosts(startIndex, streamLevels, username, callback);
 	}
 
 	private void getClasses(final VerticalPanel classPanel, final Button addRemove, final Anchor allAnchor)

@@ -13,6 +13,27 @@ public class Post implements Serializable
 	private int upvotes, downvotes;
 	private double score;
 	private ArrayList<Comment> comments;
+	private boolean upvoted, downvoted;
+
+	public boolean isUpvoted()
+	{
+		return upvoted;
+	}
+
+	public void setUpvoted(boolean upvoted)
+	{
+		this.upvoted = upvoted;
+	}
+
+	public boolean isDownvoted()
+	{
+		return downvoted;
+	}
+
+	public void setDownvoted(boolean downvoted)
+	{
+		this.downvoted = downvoted;
+	}
 
 	public static Comparator<Post> PostTimeComparator = new Comparator<Post>()
 	{

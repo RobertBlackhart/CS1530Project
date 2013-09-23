@@ -29,9 +29,9 @@ public interface UserServiceAsync
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
-	void getPosts(int startIndex, ArrayList<String> streamLevels, AsyncCallback<ArrayList<Post>> callback);
+	void getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, AsyncCallback<ArrayList<Post>> callback);
 	void uploadPost(String username, String postContent, String streamLevel, AsyncCallback<Void> callback);
 	void uploadComment(String postKey, Comment comment, AsyncCallback<Void> callback);
-	void upvotePost(String postKey, AsyncCallback<Void> callback);
-	void downvotePost(String postKey, AsyncCallback<Void> callback);
+	void upvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
+	void downvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 }
