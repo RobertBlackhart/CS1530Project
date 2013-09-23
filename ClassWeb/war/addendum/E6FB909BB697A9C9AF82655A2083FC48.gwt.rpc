@@ -1,7 +1,7 @@
 com.cs1530.group4.addendum.client.UserService, false, false, false, false, _, 460615870
-com.cs1530.group4.addendum.shared.Comment, true, true, true, true, com.cs1530.group4.addendum.shared.Comment/1843126610, 1843126610
+com.cs1530.group4.addendum.shared.Comment, true, true, true, true, com.cs1530.group4.addendum.shared.Comment/3042980503, 3042980503
 com.cs1530.group4.addendum.shared.Course, true, true, false, false, com.cs1530.group4.addendum.shared.Course/154338004, 154338004
-com.cs1530.group4.addendum.shared.Post, true, true, false, false, com.cs1530.group4.addendum.shared.Post/2233464881, 2233464881
+com.cs1530.group4.addendum.shared.Post, true, true, false, false, com.cs1530.group4.addendum.shared.Post/4038780014, 4038780014
 com.google.gwt.i18n.shared.impl.DateRecord, true, true, true, true, com.google.gwt.i18n.shared.impl.DateRecord/3375188634, 3375188634
 com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true, true, true, true, com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException/3936916533, 3936916533
 com.google.gwt.user.client.rpc.RpcTokenException, true, true, false, false, com.google.gwt.user.client.rpc.RpcTokenException/2345075298, 2345075298

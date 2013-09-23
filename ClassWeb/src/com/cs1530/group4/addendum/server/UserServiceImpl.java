@@ -298,6 +298,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setProperty("time", now);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
+		post.setProperty("usersVotedUp", new ArrayList<String>());
+		post.setProperty("usersVotedDown", new ArrayList<String>());
 		datastore.put(post);
 		memcache.put(post.getKey(),post); //when looking up posts, do a key only query and check if they are in memcache first
 		
@@ -311,6 +313,19 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			    .addField(Field.newBuilder().setName("time").setDate(now))
 			    .build();
 		index.put(doc);
+	}
+	
+	@Override
+	public void editPost(String postKey, String postContent)
+	{
+		Entity post = getPost(postKey);
+		if(post != null)
+		{
+			post.setProperty("postContent", postContent);
+			post.setProperty("edited", new Date());
+			memcache.put(post.getKey(), post);
+			datastore.put(post);
+		}
 	}
 
 	@Override
@@ -365,12 +380,14 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setScore(Double.valueOf(entity.getProperty("score").toString()));
 		post.setPostKey(String.valueOf(entity.getKey().getId()));
 		post.setComments(getComments(post.getPostKey()));
-		if(entity.hasProperty("usersVotedUp"))
+		if(entity.hasProperty("edited"))
+			post.setLastEdit((Date)entity.getProperty("edited"));
+		if(entity.hasProperty("usersVotedUp") && entity.getProperty("usersVotedUp") != null)
 		{
 			ArrayList<String> usersVotedUp = (ArrayList<String>)entity.getProperty("usersVotedUp");
 			post.setUpvoted(usersVotedUp.contains(requestingUser));
 		}
-		if(entity.hasProperty("usersVotedDown"))
+		if(entity.hasProperty("usersVotedDown") && entity.getProperty("usersVotedDown") != null)
 		{
 			ArrayList<String> usersVotedDown = (ArrayList<String>)entity.getProperty("usersVotedDown");
 			post.setDownvoted(usersVotedDown.contains(requestingUser));
@@ -410,6 +427,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		comment.setCommentTime((Date)entity.getProperty("time"));
 		comment.setUsername((String)entity.getProperty("username"));
 		comment.setContent((String)entity.getProperty("content"));
+		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
+		if(entity.hasProperty("edited"))
+			comment.setLastEdit((Date)entity.getProperty("edited"));
 		
 		return comment;
 	}
@@ -429,28 +449,14 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@SuppressWarnings("unchecked")
 	private Boolean changeScore(String postKey, String property, String user)
 	{
-		Entity post = null;
-		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
-		if(memcache.contains(key))
-			post = (Entity)memcache.get(key);
-		else
-		{
-			try
-			{
-				post = datastore.get(key);
-			}
-			catch(EntityNotFoundException ex)
-			{
-				ex.printStackTrace();
-			}
-		}
+		Entity post = getPost(postKey);
 		if(post != null)
 		{
 			ArrayList<String> upUsers = new ArrayList<String>();
 			ArrayList<String> downUsers = new ArrayList<String>();
-			if(post.hasProperty("usersVotedUp"))
+			if(post.hasProperty("usersVotedUp") && post.getProperty("usersVotedUp") != null)
 				upUsers = (ArrayList<String>)post.getProperty("usersVotedUp");
-			if(post.hasProperty("usersVotedDown"))
+			if(post.hasProperty("usersVotedDown") && post.getProperty("usersVotedDown") != null)
 				downUsers = (ArrayList<String>)post.getProperty("usersVotedDown");
 			if(property.equals("upvotes") && upUsers.contains(user))
 				return false;
@@ -482,6 +488,27 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return true;
 	}
 	
+	private Entity getPost(String postKey)
+	{
+		Entity post = null;
+		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
+		if(memcache.contains(key))
+			post = (Entity)memcache.get(key);
+		else
+		{
+			try
+			{
+				post = datastore.get(key);
+			}
+			catch(EntityNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		
+		return post;
+	}
+
 	private void updateScore(Entity entity, String user)
 	{
 		Post post = postFromEntity(entity,user);
@@ -509,5 +536,32 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		commentEntity.setProperty("content", comment.getContent());
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(),commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
+	}
+
+	@Override
+	public void editComment(String commentKey, String commentText)
+	{
+		Entity comment = null;
+		Key key = KeyFactory.createKey("Comment", Long.valueOf(commentKey).longValue());
+		if(memcache.contains(key))
+			comment = (Entity)memcache.get(key);
+		else
+		{
+			try
+			{
+				comment = datastore.get(key);
+			}
+			catch(EntityNotFoundException ex)
+			{
+				System.out.println(commentKey + " is an invalid commentKey");
+			}
+		}
+		if(comment != null)
+		{
+			comment.setProperty("content", commentText);
+			comment.setProperty("edited", new Date());
+			memcache.put(comment.getKey(), comment);
+			datastore.put(comment);
+		}
 	}
 }

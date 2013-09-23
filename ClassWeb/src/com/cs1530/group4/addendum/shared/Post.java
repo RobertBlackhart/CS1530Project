@@ -9,7 +9,7 @@ public class Post implements Serializable
 {
 	private static final long serialVersionUID = -6112430428377944014L;
 	private String postContent, username, streamLevel, postKey;
-	private Date postTime;
+	private Date postTime, lastEdit;
 	private int upvotes, downvotes;
 	private double score;
 	private ArrayList<Comment> comments;
@@ -140,5 +140,15 @@ public class Post implements Serializable
 	public void setPostKey(String postKey)
 	{
 		this.postKey = postKey;
+	}
+
+	public Date getLastEdit()
+	{
+		return lastEdit;
+	}
+
+	public void setLastEdit(Date lastEdit)
+	{
+		this.lastEdit = lastEdit;
 	}
 }

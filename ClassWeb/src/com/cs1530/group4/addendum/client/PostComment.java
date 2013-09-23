@@ -34,12 +34,19 @@ public class PostComment extends Composite
 		lblUsername.setStyleName("gwt-Label-bold");
 		verticalPanel.add(lblUsername);
 		
-		String formatString = "h:mm a";
+		String timeFormatString = "h:mm a";
+		String editFormatString = "h:mm a";
 		Date now = new Date(System.currentTimeMillis());
 		if(comment.getCommentTime().getDate() != now.getDate())
-			formatString = "MMM d, yyyy";
-		DateTimeFormat dtf = new DateTimeFormat(formatString, new DefaultDateTimeFormatInfo()){};
-		Label lblCommenttime = new Label(dtf.format(comment.getCommentTime()));
+			timeFormatString = "MMM d, yyyy";
+		if(comment.getLastEdit() != null && comment.getLastEdit().getDate() != now.getDate())
+			editFormatString = "MMM d, yyyy";
+		DateTimeFormat dtf = new DateTimeFormat(timeFormatString, new DefaultDateTimeFormatInfo()){};
+		DateTimeFormat editDtf = new DateTimeFormat(editFormatString, new DefaultDateTimeFormatInfo()){};
+		String timeLabel = dtf.format(comment.getCommentTime());
+		if(comment.getLastEdit() != null)
+			timeLabel += editDtf.format(comment.getLastEdit());
+		Label lblCommenttime = new Label(timeLabel);
 		lblCommenttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblCommenttime);
 		

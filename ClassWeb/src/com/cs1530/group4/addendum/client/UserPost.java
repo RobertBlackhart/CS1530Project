@@ -6,6 +6,11 @@ import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Cookies;
@@ -16,14 +21,16 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class UserPost extends Composite
+public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
 	int upDownVotes;
 	VerticalPanel commentPanel;
-	
+	Image menu;
+
 	public UserPost(final Post post)
 	{
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
@@ -138,29 +145,60 @@ public class UserPost extends Composite
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		postPanel.add(horizontalPanel);
+		horizontalPanel.setWidth("100%");
 
-		Image image = new Image("/addendum/getImage?username="+post.getUsername());
+		HorizontalPanel horizontalPanel_2 = new HorizontalPanel();
+		horizontalPanel.add(horizontalPanel_2);
+
+		Image image = new Image("/addendum/getImage?username=" + post.getUsername());
+		horizontalPanel_2.add(image);
 		image.getElement().getStyle().setProperty("marginRight", "10px");
-		horizontalPanel.add(image);
 		image.setSize("46px", "46px");
 
 		VerticalPanel verticalPanel = new VerticalPanel();
-		horizontalPanel.add(verticalPanel);
+		horizontalPanel_2.add(verticalPanel);
 
 		Label lblUsername = new Label(post.getUsername());
 		lblUsername.setStyleName("gwt-Label-bold");
 		verticalPanel.add(lblUsername);
 
-		String formatString = "h:mm a";
+		String timeFormatString = "h:mm a";
+		String editFormatString = "h:mm a";
 		Date now = new Date(System.currentTimeMillis());
 		if(post.getPostTime().getDate() != now.getDate())
-			formatString = "MMM d, yyyy";
-		DateTimeFormat dtf = new DateTimeFormat(formatString, new DefaultDateTimeFormatInfo())
+			timeFormatString = "MMM d, yyyy";
+		if(post.getLastEdit() != null && post.getLastEdit().getDate() != now.getDate())
+			editFormatString = "MMM d, yyyy";
+		DateTimeFormat dtf = new DateTimeFormat(timeFormatString, new DefaultDateTimeFormatInfo())
 		{
 		};
-		Label lblPosttime = new Label(dtf.format(post.getPostTime()));
+		DateTimeFormat editDtf = new DateTimeFormat(editFormatString, new DefaultDateTimeFormatInfo())
+		{
+		};
+		String timeLabel = dtf.format(post.getPostTime());
+		if(post.getLastEdit() != null)
+			timeLabel += editDtf.format(post.getLastEdit());
+		Label lblPosttime = new Label(timeLabel);
 		lblPosttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblPosttime);
+
+		HorizontalPanel menuPanel = new HorizontalPanel();
+		menuPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		horizontalPanel.add(menuPanel);
+		menuPanel.setWidth("100%");
+
+		menu = new Image("images/menu.png");
+		menu.setSize("24px", "24px");
+		menu.setVisible(false);
+		menu.getElement().getStyle().setProperty("marginRight", "5px");
+		menu.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				PopupPanel popup = new MenuPopup(menu);
+			}
+		});
+		menuPanel.add(menu);
 
 		HTML postContent = new HTML(post.getPostContent());
 		postPanel.add(postContent);
@@ -171,7 +209,7 @@ public class UserPost extends Composite
 		commentPanel = new VerticalPanel();
 		commentPanel.setSpacing(5);
 		commentPanel.setWidth("100%");
-		if(post.getComments().size()>0)
+		if(post.getComments().size() > 0)
 			commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 		postPanel.add(commentPanel);
 		if(post.getComments() != null)
@@ -179,13 +217,13 @@ public class UserPost extends Composite
 			for(Comment comment : post.getComments())
 				commentPanel.add(new PostComment(comment));
 		}
-		
+
 		VerticalPanel addCommentPanel = new VerticalPanel();
 		postPanel.add(addCommentPanel);
 
 		final PromptedTextBox addAComment = new PromptedTextBox("Add a comment...", "promptText");
 		addAComment.getElement().getStyle().setProperty("margin", "10px");
-		final CommentBox commentBox = new CommentBox(addAComment,post,this);
+		final CommentBox commentBox = new CommentBox(addAComment, post, this);
 		commentBox.setVisible(false);
 		addCommentPanel.add(commentBox);
 		addAComment.addClickHandler(new ClickHandler()
@@ -200,11 +238,35 @@ public class UserPost extends Composite
 			}
 		});
 		addCommentPanel.add(addAComment);
+		addMouseOverHandler(this);
+		addMouseOutHandler(this);
 	}
-	
+
 	public void addSubmittedComment(Comment comment)
 	{
 		commentPanel.add(new PostComment(comment));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
+	}
+
+	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler)
+	{
+		return addDomHandler(handler, MouseOverEvent.getType());
+	}
+
+	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler)
+	{
+		return addDomHandler(handler, MouseOutEvent.getType());
+	}
+
+	@Override
+	public void onMouseOut(MouseOutEvent event)
+	{
+		menu.setVisible(false);
+	}
+
+	@Override
+	public void onMouseOver(MouseOverEvent event)
+	{
+		menu.setVisible(true);
 	}
 }

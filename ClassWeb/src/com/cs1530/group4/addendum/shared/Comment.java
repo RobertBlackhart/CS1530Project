@@ -7,7 +7,8 @@ public class Comment implements Serializable, Comparable<Comment>
 {
 	private static final long serialVersionUID = 6157099786142218688L;
 	private String username, content;
-	private Date commentTime;
+	private Date commentTime, lastEdit;
+	private String commentKey;
 	
 	public Comment(){}
 	public Comment(String username, String content)
@@ -45,5 +46,21 @@ public class Comment implements Serializable, Comparable<Comment>
 	public int compareTo(Comment other)
 	{
 		return commentTime.compareTo(other.commentTime);
+	}
+	public String getCommentKey()
+	{
+		return commentKey;
+	}
+	public void setCommentKey(String commentKey)
+	{
+		this.commentKey = commentKey;
+	}
+	public Date getLastEdit()
+	{
+		return lastEdit;
+	}
+	public void setLastEdit(Date lastEdit)
+	{
+		this.lastEdit = lastEdit;
 	}
 }

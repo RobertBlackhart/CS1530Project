@@ -54,4 +54,6 @@ public interface UserService extends RemoteService
 	void uploadComment(String postKey, Comment comment);
 	Boolean upvotePost(String postKey, String user);
 	Boolean downvotePost(String postKey, String user);
+	void editPost(String postKey, String postContent);
+	void editComment(String commentKey, String commentText);
 }
