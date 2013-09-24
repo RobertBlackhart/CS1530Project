@@ -67,9 +67,9 @@ public class NewPost extends DialogBox
 				else
 					stream = stream.substring(11);
 				if(post == null)
-					userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), stream, callback);
+					userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), editor.getText(),stream, callback);
 				else
-					userService.editPost(post.getPostKey(), editor.getHTML(), callback);
+					userService.editPost(post.getPostKey(), editor.getHTML(), editor.getText(), callback);
 			}
 		});
 		Button discardButton = new Button("Discard");

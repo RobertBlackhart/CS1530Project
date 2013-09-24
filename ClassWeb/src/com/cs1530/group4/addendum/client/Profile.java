@@ -6,6 +6,9 @@ import java.util.Collections;
 import com.cs1530.group4.addendum.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -34,6 +37,8 @@ public class Profile extends Composite
 	int startIndex = 0;
 	Anchor nextPage;
 	ArrayList<String> userCourses;
+	TabPanel tabPanel;
+	VerticalPanel searchPanel;
 
 	public Profile(MainView m, String u)
 	{
@@ -44,18 +49,67 @@ public class Profile extends Composite
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
 		initWidget(vPanel);
-		
+
+		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
+		searchBox.addKeyPressHandler(new KeyPressHandler()
+		{
+			@Override
+			public void onKeyPress(KeyPressEvent event)
+			{
+				if(event.getCharCode() == KeyCodes.KEY_ENTER)
+				{
+					AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
+					{				
+						@Override
+						public void onFailure(Throwable caught){}
+						@Override
+						public void onSuccess(ArrayList<Post> posts)
+						{							
+							if(searchPanel == null)
+							{
+								searchPanel = new VerticalPanel();
+								searchPanel.setWidth("600px");
+								searchPanel.setSpacing(15);
+								tabPanel.add(searchPanel, "Search Results");
+							}
+							if(posts.size() == 0)
+							{
+								searchPanel.clear();
+								searchPanel.add(new Label("No results found for '"+searchBox.getText()+"'"));
+								return;
+							}
+							tabPanel.selectTab(2);
+							searchPanel.clear();
+							
+							Collections.sort(posts, Post.PostScoreComparator);
+							for(Post post : posts)
+							{
+								searchPanel.add(new UserPost(main, post));
+							}
+							if(posts.size() == 10)
+							{
+								nextPage.setVisible(true);
+								vPanel.add(nextPage);
+							}
+						}
+					};
+					userService.postSearch(searchBox.getText(), username, callback);
+				}
+			}
+		});
+		vPanel.add(searchBox);
+
 		Button createPost = new Button("Create a new post");
 		vPanel.add(createPost);
 		createPost.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
 			{
-				NewPost editor = new NewPost(main,userCourses,null);
+				NewPost editor = new NewPost(main, userCourses, null);
 				editor.show();
 			}
 		});
-		
+
 		HorizontalPanel hPanel = new HorizontalPanel();
 		vPanel.add(hPanel);
 
@@ -64,23 +118,23 @@ public class Profile extends Composite
 		userPanel.getElement().getStyle().setProperty("marginLeft", "10px");
 		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
 		hPanel.add(userPanel);
-		
+
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-border");
 		absolutePanel.setSize("128px", "128px");
 		userPanel.add(absolutePanel);
 
-		Image image = new Image("/addendum/getImage?username="+username);
+		Image image = new Image("/addendum/getImage?username=" + username);
 		final Label changeImageLabel = new Label("Change Image");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
-		changeImageLabel.setSize("128px","28px");
+		changeImageLabel.setSize("128px", "28px");
 		MouseOverHandler mouseOver = new MouseOverHandler()
 		{
 			@Override
 			public void onMouseOver(MouseOverEvent event)
 			{
 				changeImageLabel.setVisible(true);
-			}	
+			}
 		};
 		MouseOutHandler mouseOut = new MouseOutHandler()
 		{
@@ -97,7 +151,7 @@ public class Profile extends Composite
 			{
 				ProfilePictureUpload profilePic = new ProfilePictureUpload(username);
 				profilePic.show();
-			}	
+			}
 		};
 		image.addMouseOverHandler(mouseOver);
 		changeImageLabel.addMouseOverHandler(mouseOver);
@@ -105,12 +159,12 @@ public class Profile extends Composite
 		changeImageLabel.addMouseOutHandler(mouseOut);
 		image.addClickHandler(changePictureHandler);
 		changeImageLabel.addClickHandler(changePictureHandler);
-		
+
 		absolutePanel.add(image);
 		image.setSize("128px", "128px");
-				
+
 		changeImageLabel.setVisible(false);
-		absolutePanel.add(changeImageLabel,-5,100);
+		absolutePanel.add(changeImageLabel, -5, 100);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		userPanel.add(horizontalPanel);
@@ -127,7 +181,7 @@ public class Profile extends Composite
 			public void onClick(ClickEvent event)
 			{
 				Cookies.removeCookie("loggedIn");
-				main.setContent(new Login(main),"login");
+				main.setContent(new Login(main), "login");
 			}
 		});
 		usernameLabel.getElement().getStyle().setProperty("marginBottom", "30px");
@@ -143,7 +197,7 @@ public class Profile extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new ClassSearch(main),"classSearch");
+				main.setContent(new ClassSearch(main), "classSearch");
 				//TODO: implement class removal screen
 			}
 		});
@@ -162,7 +216,7 @@ public class Profile extends Composite
 		});
 		getClasses(classPanel, addRemove, allAnchor);
 
-		final TabPanel tabPanel = new TabPanel();
+		tabPanel = new TabPanel();
 		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
 
@@ -178,6 +232,9 @@ public class Profile extends Composite
 			@Override
 			public void onSelection(SelectionEvent<Integer> event)
 			{
+				if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Search Results"))
+					return;
+				
 				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
 				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
 				if(userCourses != null)
@@ -231,7 +288,7 @@ public class Profile extends Composite
 
 				for(Post post : posts)
 				{
-					updatesPanel.add(new UserPost(main,post));
+					updatesPanel.add(new UserPost(main, post));
 				}
 				if(posts.size() == 10)
 				{
@@ -275,7 +332,7 @@ public class Profile extends Composite
 					classPanel.add(courseAnchor);
 				}
 				classPanel.add(addRemove);
-				
+
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
 				if(streamLevel.equals("all"))

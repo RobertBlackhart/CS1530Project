@@ -55,6 +55,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
 	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+	IndexSpec postIndexSpec = IndexSpec.newBuilder().setName("postsIndex").build();
+	Index postIndex = SearchServiceFactory.getSearchService().getIndex(postIndexSpec);
+	IndexSpec courseIndexSpec = IndexSpec.newBuilder().setName("coursesIndex").build();
+	Index courseIndex = SearchServiceFactory.getSearchService().getIndex(courseIndexSpec);
 
 	@Override
 	public Boolean doLogin(String username, String password)
@@ -212,8 +216,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription)
 	{
-		IndexSpec indexSpec = IndexSpec.newBuilder().setName("coursesIndex").build();
-		Index index = SearchServiceFactory.getSearchService().getIndex(indexSpec);
 		Document doc = Document.newBuilder()
 			    .setId(subjectCode+catalogueNumber)
 			    .addField(Field.newBuilder().setName("subjectCode").setText(subjectCode))
@@ -221,7 +223,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			    .addField(Field.newBuilder().setName("courseName").setText(courseName))
 			    .addField(Field.newBuilder().setName("courseDescription").setText(courseDescription))
 			    .build();
-		index.put(doc);
+		courseIndex.put(doc);
 		
 		Entity courseEntity = new Entity("Course",subjectCode+catalogueNumber);
 		courseEntity.setProperty("subjectCode", subjectCode.toUpperCase()); //always upper case for search purposes
@@ -284,7 +286,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public void uploadPost(String username, String postContent, String streamLevel)
+	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel)
 	{
 		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
 		double score = secondsSinceRedditEpoch / 45000;
@@ -292,7 +294,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		Date now = new Date();
 		Entity post = new Entity("Post");
 		post.setProperty("username", username);
-		post.setProperty("postContent", postContent);
+		post.setProperty("postContent", postHtml);
 		post.setProperty("streamLevel",streamLevel);
 		post.setProperty("score", score);
 		post.setProperty("time", now);
@@ -304,25 +306,59 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put(post.getKey(),post); //when looking up posts, do a key only query and check if they are in memcache first
 		
 		//for text search within posts
-		IndexSpec indexSpec = IndexSpec.newBuilder().setName("postsIndex").build();
-		Index index = SearchServiceFactory.getSearchService().getIndex(indexSpec);
 		Document doc = Document.newBuilder()
 			    .setId(String.valueOf(post.getKey().getId()))
 			    .addField(Field.newBuilder().setName("username").setText(username))
-			    .addField(Field.newBuilder().setName("content").setText(postContent))
+			    .addField(Field.newBuilder().setName("content").setText(postPlain))
 			    .addField(Field.newBuilder().setName("time").setDate(now))
 			    .build();
-		index.put(doc);
+		postIndex.put(doc);
 	}
 	
 	@Override
-	public void editPost(String postKey, String postContent)
+	public ArrayList<Post> postSearch(String searchText, String requestingUser)
+	{
+		ArrayList<Post> results = new ArrayList<Post>();
+		ArrayList<Key> datastoreGet = new ArrayList<Key>();
+		try
+		{
+			Results<ScoredDocument> docs = postIndex.search(searchText);
+			for(ScoredDocument document : docs)
+			{
+				Key entityKey = KeyFactory.createKey("Post",Long.valueOf(document.getId()));
+				if(memcache.contains(entityKey))
+					results.add(postFromEntity((Entity)memcache.get(entityKey),requestingUser));
+				else
+					datastoreGet.add(entityKey);
+			}
+			
+			Map<Key,Entity> gets = datastore.get(datastoreGet);
+			for(Entity entity : gets.values())
+			{
+				results.add(postFromEntity(entity,requestingUser));
+				memcache.put(entity.getKey(), entity);
+			}
+		}
+		catch(Exception ex){}
+		
+		return results;
+	}
+	
+	@Override
+	public void editPost(String postKey, String postHtml, String postPlain)
 	{
 		Entity post = getPost(postKey);
 		if(post != null)
 		{
-			post.setProperty("postContent", postContent);
+			post.setProperty("postContent", postHtml);
 			post.setProperty("edited", new Date());
+			Document doc = Document.newBuilder() //you can't update a document once its in the index, but you can replace it with a new one
+				    .setId(String.valueOf(post.getKey().getId()))
+				    .addField(Field.newBuilder().setName("username").setText((String)post.getProperty("username")))
+				    .addField(Field.newBuilder().setName("content").setText(postPlain))
+				    .addField(Field.newBuilder().setName("time").setDate((Date)post.getProperty("time")))
+				    .build();
+			postIndex.put(doc);
 			memcache.put(post.getKey(), post);
 			datastore.put(post);
 		}
@@ -580,6 +616,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		{
 			memcache.delete(post.getKey());
 			datastore.delete(post.getKey());
+			postIndex.delete(String.valueOf(post.getKey().getId()));
 		}
 		
 		Query q = new Query("Comment");
