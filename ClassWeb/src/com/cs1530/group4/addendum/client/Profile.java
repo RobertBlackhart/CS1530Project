@@ -51,7 +51,7 @@ public class Profile extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				NewPost editor = new NewPost(main,userCourses);
+				NewPost editor = new NewPost(main,userCourses,null);
 				editor.show();
 			}
 		});
@@ -231,7 +231,7 @@ public class Profile extends Composite
 
 				for(Post post : posts)
 				{
-					updatesPanel.add(new UserPost(post));
+					updatesPanel.add(new UserPost(main,post));
 				}
 				if(posts.size() == 10)
 				{

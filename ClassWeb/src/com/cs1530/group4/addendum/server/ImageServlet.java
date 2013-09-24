@@ -30,7 +30,14 @@ public class ImageServlet extends HttpServlet
 		if(user == null)
 			user = getUserEntity("default");
 		
-		Blob imageBlob = (Blob) user.getProperty("profileImage");
+		Blob imageBlob = null;
+		if(user.hasProperty("profileImage"))
+			imageBlob = (Blob) user.getProperty("profileImage");
+		else
+		{
+			user = getUserEntity("default");
+			imageBlob = (Blob) user.getProperty("profileImage");
+		}
 
 		resp.setContentType("image/jpeg");
 		resp.addHeader("Cache-Control", "public, must-revalidate, max-age=1440"); //cache image for 1 day

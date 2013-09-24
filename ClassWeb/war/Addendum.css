@@ -346,3 +346,9 @@ a:visited {
 	font-family: Arial, sans-serif;
 	background-color: white;
 }
+.menuitem {
+	background-color: white;
+}
+.menuitem:HOVER {
+	background-color: mediumaquamarine;
+}

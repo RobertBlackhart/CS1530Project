@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Cookies;
@@ -21,7 +20,6 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
@@ -30,8 +28,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	int upDownVotes;
 	VerticalPanel commentPanel;
 	Image menu;
+	MenuPopup popup = null;
+	String loggedInUser = Cookies.getCookie("loggedIn");
 
-	public UserPost(final Post post)
+	public UserPost(final MainView main, final Post post)
 	{
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
@@ -177,7 +177,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		};
 		String timeLabel = dtf.format(post.getPostTime());
 		if(post.getLastEdit() != null)
-			timeLabel += editDtf.format(post.getLastEdit());
+			timeLabel += " (last edit - " + editDtf.format(post.getLastEdit()) + ")";
 		Label lblPosttime = new Label(timeLabel);
 		lblPosttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblPosttime);
@@ -187,18 +187,34 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		horizontalPanel.add(menuPanel);
 		menuPanel.setWidth("100%");
 
-		menu = new Image("images/menu.png");
-		menu.setSize("24px", "24px");
-		menu.setVisible(false);
-		menu.getElement().getStyle().setProperty("marginRight", "5px");
-		menu.addClickHandler(new ClickHandler()
+		if(post.getUsername().equals(loggedInUser))
 		{
-			public void onClick(ClickEvent event)
+			menu = new Image("images/menu.png");
+			menu.setSize("24px", "24px");
+			menu.setVisible(false);
+			menu.getElement().getStyle().setProperty("marginRight", "5px");
+			popup = new MenuPopup(main,menu,post);
+			menu.addClickHandler(new ClickHandler()
 			{
-				PopupPanel popup = new MenuPopup(menu);
-			}
-		});
-		menuPanel.add(menu);
+				public void onClick(ClickEvent event)
+				{
+					if(popup.isOpen())
+					{
+						popup.hide();
+						popup.setOpen(false);
+					}
+					else
+					{
+						popup.showRelativeTo(menu);
+						popup.setOpen(true);
+					}
+				}
+			});
+			menuPanel.add(menu);
+			
+			addDomHandler(this, MouseOverEvent.getType());
+			addDomHandler(this, MouseOutEvent.getType());
+		}
 
 		HTML postContent = new HTML(post.getPostContent());
 		postPanel.add(postContent);
@@ -238,24 +254,12 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 		});
 		addCommentPanel.add(addAComment);
-		addMouseOverHandler(this);
-		addMouseOutHandler(this);
 	}
 
 	public void addSubmittedComment(Comment comment)
 	{
 		commentPanel.add(new PostComment(comment));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
-	}
-
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler)
-	{
-		return addDomHandler(handler, MouseOverEvent.getType());
-	}
-
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler)
-	{
-		return addDomHandler(handler, MouseOutEvent.getType());
 	}
 
 	@Override

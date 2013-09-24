@@ -36,4 +36,6 @@ public interface UserServiceAsync
 	void downvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	void editPost(String postKey, String postContent, AsyncCallback<Void> callback);
 	void editComment(String commentKey, String commentText, AsyncCallback<Void> callback);
+	void deletePost(String postKey, AsyncCallback<Void> callback);
+	void deleteComment(String commentKey, AsyncCallback<Void> callback);
 }

@@ -541,6 +541,18 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void editComment(String commentKey, String commentText)
 	{
+		Entity comment = getComment(commentKey);
+		if(comment != null)
+		{
+			comment.setProperty("content", commentText);
+			comment.setProperty("edited", new Date());
+			memcache.put(comment.getKey(), comment);
+			datastore.put(comment);
+		}
+	}
+	
+	private Entity getComment(String commentKey)
+	{
 		Entity comment = null;
 		Key key = KeyFactory.createKey("Comment", Long.valueOf(commentKey).longValue());
 		if(memcache.contains(key))
@@ -556,12 +568,37 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				System.out.println(commentKey + " is an invalid commentKey");
 			}
 		}
+		
+		return comment;
+	}
+
+	@Override
+	public void deletePost(String postKey)
+	{
+		Entity post = getPost(postKey);
+		if(post != null)
+		{
+			memcache.delete(post.getKey());
+			datastore.delete(post.getKey());
+		}
+		
+		Query q = new Query("Comment");
+		q.setFilter(new FilterPredicate("postKey", FilterOperator.EQUAL, postKey));
+		for(Entity result : datastore.prepare(q).asIterable())
+		{
+			memcache.delete(result.getKey());
+			datastore.delete(result.getKey());
+		}
+	}
+
+	@Override
+	public void deleteComment(String commentKey)
+	{
+		Entity comment = getComment(commentKey);
 		if(comment != null)
 		{
-			comment.setProperty("content", commentText);
-			comment.setProperty("edited", new Date());
-			memcache.put(comment.getKey(), comment);
-			datastore.put(comment);
+			memcache.delete(comment.getKey());
+			datastore.delete(comment.getKey());
 		}
 	}
 }

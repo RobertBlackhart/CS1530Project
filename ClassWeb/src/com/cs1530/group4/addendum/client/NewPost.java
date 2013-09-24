@@ -2,6 +2,7 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 
+import com.cs1530.group4.addendum.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
@@ -23,7 +24,7 @@ public class NewPost extends DialogBox
 	ListBox streamLevelBox;
 	MainView main;
 
-	public NewPost(MainView m, ArrayList<String> streams)
+	public NewPost(MainView m, ArrayList<String> streams, final Post post)
 	{
 		main = m;
 		setHTML("New Post");
@@ -31,6 +32,8 @@ public class NewPost extends DialogBox
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		editor = new RichTextArea();
+		if(post != null)
+			editor.setHTML(post.getPostContent());
 		editor.setSize("600px", "400px");
 		RichTextToolbar toolbar = new RichTextToolbar(editor);
 
@@ -63,7 +66,10 @@ public class NewPost extends DialogBox
 					stream = "all";
 				else
 					stream = stream.substring(11);
-				userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), stream, callback);
+				if(post == null)
+					userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), stream, callback);
+				else
+					userService.editPost(post.getPostKey(), editor.getHTML(), callback);
 			}
 		});
 		Button discardButton = new Button("Discard");
@@ -91,9 +97,15 @@ public class NewPost extends DialogBox
 		streamPanel.add(lblMakeThisPost);
 		
 		streamLevelBox = new ListBox();
-		streamLevelBox.addItem("Everyone");
+		if(post == null)
+			streamLevelBox.addItem("Everyone");
 		for(String stream: streams)
-			streamLevelBox.addItem("Members of " + stream);
+		{
+			if(stream.equals("all"))
+				streamLevelBox.addItem("Everyone");
+			else
+				streamLevelBox.addItem("Members of " + stream);
+		}
 		streamPanel.add(streamLevelBox);
 		vPanel.add(buttonPanel);
 		add(vPanel);

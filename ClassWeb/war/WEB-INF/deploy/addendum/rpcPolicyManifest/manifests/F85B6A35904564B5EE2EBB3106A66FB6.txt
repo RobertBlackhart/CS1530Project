@@ -1,2 +1,0 @@
-serviceClass: com.cs1530.group4.addendum.client.UserService
-path: 1133E453F7E541EEABE2FDC4BA8A6F8D.gwt.rpc
