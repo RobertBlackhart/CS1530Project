@@ -10275,3 +10275,192 @@ Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
       Compiling...
          Compilation completed in 0.02 seconds
       Removing invalidated units
+Public resources found in...
+Translatable source found in...
+Found 2789 cached/archived units.  Used 2789 / 2795 units from cache.
+Compiling...
+   Compilation completed in 0.17 seconds
+Invalid Unit: com.cs1530.group4.addendum.client.CommentBox
+Invalid Unit: com.cs1530.group4.addendum.client.Login
+Invalid Unit: com.cs1530.group4.addendum.client.AdminAddCourse
+Invalid Unit: com.cs1530.group4.addendum.client.UserPost
+Invalid Unit: com.cs1530.group4.addendum.client.NewUserDialog
+Invalid Unit: com.cs1530.group4.addendum.client.MainView
+Invalid Unit: com.cs1530.group4.addendum.client.ClassSearch
+Invalid Unit: com.cs1530.group4.addendum.client.MenuPopup
+Invalid units found: 8
+Compiling...
+   Compilation completed in 0.12 seconds
+Validating units:
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/addendum/server/ImageServlet.java'
+      [ERROR] Line 10: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 11: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 12: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 13: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 14: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 15: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 22: DatastoreService cannot be resolved to a type
+      [ERROR] Line 22: DatastoreServiceFactory cannot be resolved
+      [ERROR] Line 28: Entity cannot be resolved to a type
+      [ERROR] Line 28: The method getUserEntity(String) from the type ImageServlet refers to the missing type Entity
+      [ERROR] Line 31: The method getUserEntity(String) from the type ImageServlet refers to the missing type Entity
+      [ERROR] Line 33: Blob cannot be resolved to a type
+      [ERROR] Line 35: Blob cannot be resolved to a type
+      [ERROR] Line 38: The method getUserEntity(String) from the type ImageServlet refers to the missing type Entity
+      [ERROR] Line 39: Blob cannot be resolved to a type
+      [ERROR] Line 46: The method close() is undefined for the type OutputStream
+      [ERROR] Line 49: Entity cannot be resolved to a type
+      [ERROR] Line 51: Entity cannot be resolved to a type
+      [ERROR] Line 53: Entity cannot be resolved to a type
+      [ERROR] Line 58: DatastoreService cannot be resolved to a type
+      [ERROR] Line 58: KeyFactory cannot be resolved
+      [ERROR] Line 60: EntityNotFoundException cannot be resolved to a type
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/addendum/server/UploadServlet.java'
+      [ERROR] Line 15: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 16: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 17: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 18: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 19: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 20: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 27: DatastoreService cannot be resolved to a type
+      [ERROR] Line 27: DatastoreServiceFactory cannot be resolved
+      [ERROR] Line 34: Entity cannot be resolved to a type
+      [ERROR] Line 34: The method getUserEntity(String) from the type UploadServlet refers to the missing type Entity
+      [ERROR] Line 41: Blob cannot be resolved to a type
+      [ERROR] Line 41: Blob cannot be resolved to a type
+      [ERROR] Line 43: DatastoreService cannot be resolved to a type
+      [ERROR] Line 54: Entity cannot be resolved to a type
+      [ERROR] Line 56: Entity cannot be resolved to a type
+      [ERROR] Line 58: Entity cannot be resolved to a type
+      [ERROR] Line 63: DatastoreService cannot be resolved to a type
+      [ERROR] Line 63: KeyFactory cannot be resolved
+      [ERROR] Line 65: EntityNotFoundException cannot be resolved to a type
+   [ERROR] Errors in 'file:/home/master/git/CS1530Project/ClassWeb/src/com/cs1530/group4/addendum/server/UserServiceImpl.java'
+      [ERROR] Line 26: The import com.google.appengine.api.blobstore cannot be resolved
+      [ERROR] Line 27: The import com.google.appengine.api.blobstore cannot be resolved
+      [ERROR] Line 28: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 29: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 30: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 31: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 32: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 33: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 34: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 35: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 36: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 37: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 38: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 39: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 40: The import com.google.appengine.api.datastore cannot be resolved
+      [ERROR] Line 43: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 44: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 45: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 46: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 47: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 48: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 49: The import com.google.appengine.api.search cannot be resolved
+      [ERROR] Line 55: DatastoreService cannot be resolved to a type
+      [ERROR] Line 55: DatastoreServiceFactory cannot be resolved
+      [ERROR] Line 57: BlobstoreService cannot be resolved to a type
+      [ERROR] Line 57: BlobstoreServiceFactory cannot be resolved
+      [ERROR] Line 58: IndexSpec cannot be resolved to a type
+      [ERROR] Line 58: IndexSpec cannot be resolved
+      [ERROR] Line 59: Index cannot be resolved to a type
+      [ERROR] Line 59: SearchServiceFactory cannot be resolved
+      [ERROR] Line 59: IndexSpec cannot be resolved to a type
+      [ERROR] Line 60: IndexSpec cannot be resolved to a type
+      [ERROR] Line 60: IndexSpec cannot be resolved
+      [ERROR] Line 61: Index cannot be resolved to a type
+      [ERROR] Line 61: SearchServiceFactory cannot be resolved
+      [ERROR] Line 61: IndexSpec cannot be resolved to a type
+      [ERROR] Line 66: Entity cannot be resolved to a type
+      [ERROR] Line 66: The method getUserEntity(String) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 87: Entity cannot be resolved to a type
+      [ERROR] Line 87: The method getUserEntity(String) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 93: Entity cannot be resolved to a type
+      [ERROR] Line 99: DatastoreService cannot be resolved to a type
+      [ERROR] Line 108: Entity cannot be resolved to a type
+      [ERROR] Line 110: Entity cannot be resolved to a type
+      [ERROR] Line 112: The method getEntityFromDatastore(String, int) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 125: Query cannot be resolved to a type
+      [ERROR] Line 125: Query cannot be resolved to a type
+      [ERROR] Line 125: FilterPredicate cannot be resolved to a type
+      [ERROR] Line 125: FilterOperator cannot be resolved
+      [ERROR] Line 126: PreparedQuery cannot be resolved to a type
+      [ERROR] Line 126: DatastoreService cannot be resolved to a type
+      [ERROR] Line 127: Entity cannot be resolved to a type
+      [ERROR] Line 139: Query cannot be resolved to a type
+      [ERROR] Line 139: Query cannot be resolved to a type
+      [ERROR] Line 139: FilterPredicate cannot be resolved to a type
+      [ERROR] Line 139: FilterOperator cannot be resolved
+      [ERROR] Line 140: PreparedQuery cannot be resolved to a type
+      [ERROR] Line 140: DatastoreService cannot be resolved to a type
+      [ERROR] Line 141: Entity cannot be resolved to a type
+      [ERROR] Line 149: IndexSpec cannot be resolved to a type
+      [ERROR] Line 149: IndexSpec cannot be resolved
+      [ERROR] Line 150: Index cannot be resolved to a type
+      [ERROR] Line 150: SearchServiceFactory cannot be resolved
+      [ERROR] Line 155: Results cannot be resolved to a type
+      [ERROR] Line 155: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 156: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 160: Entity cannot be resolved to a type
+      [ERROR] Line 160: The method getEntityFromDatastore(String, int) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 173: Results cannot be resolved to a type
+      [ERROR] Line 173: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 174: ScoredDocument cannot be resolved to a type
+      [ERROR] Line 178: Entity cannot be resolved to a type
+      [ERROR] Line 178: The method getEntityFromDatastore(String, int) from the type UserServiceImpl refers to the missing type Entity
+      [ERROR] Line 192: Entity cannot be resolved to a type
+      [ERROR] Line 194: Entity cannot be resolved to a type
+      [ERROR] Line 197: DatastoreService cannot be resolved to a type
+      [ERROR] Line 197: KeyFactory cannot be resolved
+      [ERROR] Line 199: EntityNotFoundException cannot be resolved to a type
+      [ERROR] Line 207: Entity cannot be resolved to a type
+      [ERROR] Line 219: Document cannot be resolved to a type
+      [ERROR] Line 219: Document cannot be resolved
+      [ERROR] Line 221: Field cannot be resolved
+      [ERROR] Line 241: Entity cannot be resolved to a type
+      [ERROR] Line 260: Entity cannot be resolved to a type
+      [ERROR] Line 269: Entity cannot be resolved to a type
+      [ERROR] Line 295: Entity cannot be resolved to a type
+      [ERROR] Line 322: Key cannot be resolved to a type
+      [ERROR] Line 350: Entity cannot be resolved to a type
+      [ERROR] Line 371: Key cannot be resolved to a type
+      [ERROR] Line 407: Entity cannot be resolved to a type
+      [ERROR] Line 438: Key cannot be resolved to a type
+      [ERROR] Line 460: Entity cannot be resolved to a type
+      [ERROR] Line 488: Entity cannot be resolved to a type
+      [ERROR] Line 527: Entity cannot be resolved to a type
+      [ERROR] Line 548: Entity cannot be resolved to a type
+      [ERROR] Line 568: Entity cannot be resolved to a type
+      [ERROR] Line 580: Entity cannot be resolved to a type
+      [ERROR] Line 590: Entity cannot be resolved to a type
+      [ERROR] Line 614: Entity cannot be resolved to a type
+      [ERROR] Line 634: Entity cannot be resolved to a type
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0.00 seconds
+      Removing invalidated units

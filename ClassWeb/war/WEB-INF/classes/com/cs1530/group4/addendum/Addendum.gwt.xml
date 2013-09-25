@@ -1,7 +1,7 @@
 <module rename-to="addendum">
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
-	
+			
 	<!-- Include GWTUpload library -->
 	<inherits name="gwtupload.GWTUpload"/>
 	<!-- Load dinamically predefined styles in the library when the application starts -->

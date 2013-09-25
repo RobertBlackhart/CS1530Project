@@ -48,7 +48,7 @@ public class Post implements Serializable
 		@Override
 		public int compare(Post post1, Post post2)
 		{
-			return (int) (post2.getScore()-post1.getScore());
+			return (int) (post2.getScore()*10000-post1.getScore()*10000);
 		}
 	};
 

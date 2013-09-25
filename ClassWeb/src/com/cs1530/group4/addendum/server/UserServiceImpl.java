@@ -38,6 +38,7 @@ import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.search.Document;
@@ -288,13 +289,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel)
 	{
-		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
+		double secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
 		double score = secondsSinceRedditEpoch / 45000;
 		
 		Date now = new Date();
 		Entity post = new Entity("Post");
 		post.setProperty("username", username);
-		post.setProperty("postContent", postHtml);
+		post.setProperty("postContent", new Text(formatCode(postHtml)));
 		post.setProperty("streamLevel",streamLevel);
 		post.setProperty("score", score);
 		post.setProperty("time", now);
@@ -315,6 +316,20 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		postIndex.put(doc);
 	}
 	
+	private String formatCode(String postHtml)
+	{
+		int begin = postHtml.indexOf("[CODE]");
+		int end = postHtml.indexOf("[/CODE]");
+		
+		System.out.println("begin: " + begin + ", end: " + end);
+		
+		if(begin !=  -1 && end != -1)
+		{
+			postHtml = postHtml.substring(0, begin) + "<div style=\"background-color:#99CCFF;text-indent:10px;\">" + postHtml.substring(begin+6, end) + "</div>";
+		}
+		return postHtml;
+	}
+
 	@Override
 	public ArrayList<Post> postSearch(String searchText, String requestingUser)
 	{
@@ -350,7 +365,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		Entity post = getPost(postKey);
 		if(post != null)
 		{
-			post.setProperty("postContent", postHtml);
+			post.setProperty("postContent", new Text(formatCode(postHtml)));
 			post.setProperty("edited", new Date());
 			Document doc = Document.newBuilder() //you can't update a document once its in the index, but you can replace it with a new one
 				    .setId(String.valueOf(post.getKey().getId()))
@@ -407,7 +422,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	private Post postFromEntity(Entity entity, String requestingUser)
 	{
 		Post post = new Post();
-		post.setPostContent((String)entity.getProperty("postContent"));
+		if(entity.getProperty("postContent") instanceof String)
+			post.setPostContent((String)entity.getProperty("postContent"));
+		else
+			post.setPostContent(((Text)entity.getProperty("postContent")).getValue());
 		post.setStreamLevel((String)entity.getProperty("streamLevel"));
 		post.setPostTime((Date)entity.getProperty("time"));
 		post.setUsername((String)entity.getProperty("username"));
@@ -460,9 +478,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	private Comment commentFromEntity(Entity entity)
 	{
 		Comment comment = new Comment();
+		if(entity.getProperty("content") instanceof String)
+			comment.setContent((String)entity.getProperty("content"));
+		else
+			comment.setContent(((Text)entity.getProperty("postContent")).getValue());
 		comment.setCommentTime((Date)entity.getProperty("time"));
 		comment.setUsername((String)entity.getProperty("username"));
-		comment.setContent((String)entity.getProperty("content"));
 		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
 		if(entity.hasProperty("edited"))
 			comment.setLastEdit((Date)entity.getProperty("edited"));
@@ -555,7 +576,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			sign = 0;
 		if(s < 0)
 			sign = -1;   
-		long secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
+		double secondsSinceRedditEpoch = System.currentTimeMillis()/1000-1134028003;
 		double score = order + sign * secondsSinceRedditEpoch / 45000;
 		entity.setProperty("score", score);
 		memcache.put(entity.getKey(),entity);
@@ -569,7 +590,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		commentEntity.setProperty("postKey", postKey);
 		commentEntity.setProperty("time", comment.getCommentTime());
 		commentEntity.setProperty("username", comment.getUsername());
-		commentEntity.setProperty("content", comment.getContent());
+		commentEntity.setProperty("content", new Text(comment.getContent()));
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(),commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
 	}
@@ -580,7 +601,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		Entity comment = getComment(commentKey);
 		if(comment != null)
 		{
-			comment.setProperty("content", commentText);
+			comment.setProperty("content", new Text(commentText));
 			comment.setProperty("edited", new Date());
 			memcache.put(comment.getKey(), comment);
 			datastore.put(comment);

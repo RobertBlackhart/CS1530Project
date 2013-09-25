@@ -35,7 +35,7 @@ public class Profile extends Composite
 	UserServiceAsync userService = UserService.Util.getInstance();
 	VerticalPanel vPanel, currentTab;
 	int startIndex = 0;
-	Anchor nextPage;
+	Anchor nextPage, prevPage;
 	ArrayList<String> userCourses;
 	TabPanel tabPanel;
 	VerticalPanel searchPanel;
@@ -87,10 +87,7 @@ public class Profile extends Composite
 								searchPanel.add(new UserPost(main, post));
 							}
 							if(posts.size() == 10)
-							{
 								nextPage.setVisible(true);
-								vPanel.add(nextPage);
-							}
 						}
 					};
 					userService.postSearch(searchBox.getText(), username, callback);
@@ -164,7 +161,7 @@ public class Profile extends Composite
 		image.setSize("128px", "128px");
 
 		changeImageLabel.setVisible(false);
-		absolutePanel.add(changeImageLabel, -5, 100);
+		absolutePanel.add(changeImageLabel, -5, 105);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		userPanel.add(horizontalPanel);
@@ -252,12 +249,15 @@ public class Profile extends Composite
 
 		tabPanel.selectTab(0);
 
+		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
+		nextPage.setVisible(false);
 		nextPage.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				prevPage.setVisible(true);
 				startIndex += 10;
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
@@ -266,6 +266,28 @@ public class Profile extends Composite
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
+		prevPage = new Anchor("Prev 10 Posts");
+		prevPage.setVisible(false);
+		prevPage.getElement().getStyle().setProperty("marginRight", "10px");
+		prevPage.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				nextPage.setVisible(true);
+				startIndex -= 10;
+				if(startIndex <10)
+					prevPage.setVisible(false);
+				ArrayList<String> streamLevels = new ArrayList<String>();
+				streamLevels.add(streamLevel);
+				if(streamLevel.equals("all"))
+					streamLevels.addAll(userCourses);
+				getPosts(currentTab, streamLevels, sortMethod);
+			}
+		});
+		nextPrevPanel.add(prevPage);
+		nextPrevPanel.add(nextPage);
+		vPanel.add(nextPrevPanel);
 	}
 
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
@@ -291,10 +313,7 @@ public class Profile extends Composite
 					updatesPanel.add(new UserPost(main, post));
 				}
 				if(posts.size() == 10)
-				{
 					nextPage.setVisible(true);
-					vPanel.add(nextPage);
-				}
 			}
 		};
 		userService.getPosts(startIndex, streamLevels, username, callback);

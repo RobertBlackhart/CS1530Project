@@ -142,6 +142,18 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		VerticalPanel postPanel = new VerticalPanel();
 		postPanel.setWidth("100%");
 		border.add(postPanel);
+		
+		String label = post.getStreamLevel();
+		if(label.equals("all"))
+			label = "Everyone";
+		Label lblNewLabel = new Label(label);
+		lblNewLabel.setStyleName("gwt-Label-grey");
+		lblNewLabel.getElement().getStyle().setProperty("marginLeft", "10px");
+		lblNewLabel.getElement().getStyle().setProperty("marginTop", "5px");
+		postPanel.add(lblNewLabel);
+		
+		HTML html = new HTML("<hr  style=\"width:100%;\" />");
+		postPanel.add(html);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		postPanel.add(horizontalPanel);
