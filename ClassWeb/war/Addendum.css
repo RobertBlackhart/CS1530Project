@@ -352,3 +352,10 @@ a:visited {
 .menuitem:HOVER {
 	background-color: mediumaquamarine;
 }
+wahtever {
+	font-variant: small-caps;
+	font-size: 24px;
+	font-style: normal;
+	font-family: serif;
+	font-weight: normal;
+}
