@@ -481,7 +481,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		if(entity.getProperty("content") instanceof String)
 			comment.setContent((String)entity.getProperty("content"));
 		else
-			comment.setContent(((Text)entity.getProperty("postContent")).getValue());
+			comment.setContent(((Text)entity.getProperty("content")).getValue());
 		comment.setCommentTime((Date)entity.getProperty("time"));
 		comment.setUsername((String)entity.getProperty("username"));
 		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
