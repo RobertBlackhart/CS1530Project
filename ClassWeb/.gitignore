@@ -1,4 +1,5 @@
 /.gwt
+/.settings
 *.class
 
 # Package Files #
