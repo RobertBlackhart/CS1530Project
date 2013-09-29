@@ -399,8 +399,8 @@ a:visited {
 	background-image: url('Background.jpg');
 	background-repeat:no-repeat;
 	background-attachment:fixed;
-	background-position: center, center;
-	background-size: 100%, 100%;
+	background-position: left, center;
+	background-size: 90%, 100%;
 	
 }
 .LoginTitle {
