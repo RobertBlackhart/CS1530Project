@@ -71,9 +71,10 @@ public class AdminAddCourse extends Composite
 				descriptionTextBox.setSize("240px", "50%");
 
 		Button btnNewButton = new Button("Add Course");
+		btnNewButton.setText("ADD COURSE");
 		btnNewButton.setStyleName("ADCButton");
 		flexTable.setWidget(4, 1, btnNewButton);
-		btnNewButton.setSize("200px", "100%");
+		btnNewButton.setSize("200px", "75%");
 		btnNewButton.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -107,9 +108,10 @@ public class AdminAddCourse extends Composite
 		flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_LEFT);
 		
 				Button btnBackToSearch = new Button("Back to Search");
+				btnBackToSearch.setText("BACK TO SEARCH");
 				btnBackToSearch.setStyleName("ADCButton");
 				flexTable.setWidget(4, 3, btnBackToSearch);
-				btnBackToSearch.setSize("215px", "100%");
+				btnBackToSearch.setSize("215px", "75%");
 				flexTable.getCellFormatter().setHorizontalAlignment(4, 3, HasHorizontalAlignment.ALIGN_CENTER);
 		btnBackToSearch.addClickHandler(new ClickHandler()
 		{
