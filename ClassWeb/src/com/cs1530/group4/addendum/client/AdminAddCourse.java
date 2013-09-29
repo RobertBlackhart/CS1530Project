@@ -24,53 +24,56 @@ public class AdminAddCourse extends Composite
 	{
 
 		VerticalPanel verticalPanel = new VerticalPanel();
+		verticalPanel.setStyleName("whatever");
 		initWidget(verticalPanel);
-		verticalPanel.setSize("433px", "100%");
+		verticalPanel.setSize("600px", "430px");
 
 		FlexTable flexTable = new FlexTable();
 		verticalPanel.add(flexTable);
 		verticalPanel.setCellHeight(flexTable, "100%");
-		flexTable.setSize("526px", "244px");
+		flexTable.setSize("100%", "100%");
 
-		Label lblSubjectCode = new Label("Subject Code");
+		Label lblSubjectCode = new Label("SubjectCode");
 		lblSubjectCode.setStyleName("whatever");
 		flexTable.setWidget(0, 1, lblSubjectCode);
-		lblSubjectCode.setWidth("146px");
-
-		subjectTextBox = new TextBox();
-		flexTable.setWidget(0, 3, subjectTextBox);
-		subjectTextBox.setWidth("90%");
+		lblSubjectCode.setSize("150px", "");
+		
+				subjectTextBox = new TextBox();
+				subjectTextBox.setStyleName("ADCTextbox");
+				flexTable.setWidget(0, 3, subjectTextBox);
+				subjectTextBox.setSize("240px", "50%");
 
 		Label lblNumber = new Label("Number");
 		lblNumber.setStyleName("whatever");
 		flexTable.setWidget(1, 1, lblNumber);
-
-		numberIntegerBox = new IntegerBox();
-		flexTable.setWidget(1, 3, numberIntegerBox);
-		numberIntegerBox.setWidth("90%");
+		
+				numberIntegerBox = new IntegerBox();
+				numberIntegerBox.setStyleName("ADCTextbox");
+				flexTable.setWidget(1, 3, numberIntegerBox);
+				numberIntegerBox.setSize("240px", "50%");
 
 		Label lblName = new Label("Name");
 		lblName.setStyleName("whatever");
 		flexTable.setWidget(2, 1, lblName);
-
-		nameTextBox = new TextBox();
-		flexTable.setWidget(2, 3, nameTextBox);
-		nameTextBox.setWidth("90%");
+		
+				nameTextBox = new TextBox();
+				nameTextBox.setStyleName("ADCTextbox");
+				flexTable.setWidget(2, 3, nameTextBox);
+				nameTextBox.setSize("240px", "50%");
 
 		Label lblDescription = new Label("Description");
 		lblDescription.setStyleName("whatever");
 		flexTable.setWidget(3, 1, lblDescription);
-
-		Image image = new Image((String) null);
-		flexTable.setWidget(3, 2, image);
-
-		descriptionTextBox = new TextBox();
-		flexTable.setWidget(3, 3, descriptionTextBox);
-		descriptionTextBox.setWidth("90%");
+		
+				descriptionTextBox = new TextBox();
+				descriptionTextBox.setStyleName("ADCTextbox");
+				flexTable.setWidget(3, 3, descriptionTextBox);
+				descriptionTextBox.setSize("240px", "50%");
 
 		Button btnNewButton = new Button("Add Course");
+		btnNewButton.setStyleName("ADCButton");
 		flexTable.setWidget(4, 1, btnNewButton);
-		btnNewButton.setWidth("90%");
+		btnNewButton.setSize("200px", "100%");
 		btnNewButton.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -101,12 +104,13 @@ public class AdminAddCourse extends Composite
 				loginService.adminAddCourse(code, num, name, desc, callback);
 			}
 		});
-
-		Button btnBackToSearch = new Button("Back to Search");
-		flexTable.setWidget(4, 3, btnBackToSearch);
-		btnBackToSearch.setWidth("95%");
 		flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_LEFT);
-		flexTable.getCellFormatter().setHorizontalAlignment(4, 3, HasHorizontalAlignment.ALIGN_LEFT);
+		
+				Button btnBackToSearch = new Button("Back to Search");
+				btnBackToSearch.setStyleName("ADCButton");
+				flexTable.setWidget(4, 3, btnBackToSearch);
+				btnBackToSearch.setSize("215px", "100%");
+				flexTable.getCellFormatter().setHorizontalAlignment(4, 3, HasHorizontalAlignment.ALIGN_CENTER);
 		btnBackToSearch.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -114,6 +118,7 @@ public class AdminAddCourse extends Composite
 				main.setContent(new ClassSearch(main), "classSearch");
 			}
 		});
+		setStyleName("ADCBasic");
 	}
 
 }

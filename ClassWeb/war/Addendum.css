@@ -353,9 +353,31 @@ a:visited {
 	background-color: mediumaquamarine;
 }
 .whatever {
+	color: White;
 	font-variant: small-caps;
-	font-size: 24px;
+	font-size: 50px;
 	font-style: normal;
-	font-family: serif;
-	font-weight: normal;
+	font-family: Lazy Sunday Shadow;
+	font-weight: 900;
+}
+.ADCBasic {
+	color: White;
+	border: 2px solid;
+	font-size: 36px;
+	font-family: cursive;
+	font-weight: 600;
+	line-height: normal;
+	background-color: #37B6CE;
+	border-radius:25px;
+}
+.ADCTextbox {
+	border: 2px solid;
+	border-color: #ffbf40;
+	border-radius:15px;
+}
+.ADCButton {
+	color: White;
+	font-family: Arial Black;
+	background-color: #ffaa00;
+	border-radius:25px;
 }
