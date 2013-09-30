@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class CommentBox extends Composite
 {
@@ -22,12 +23,15 @@ public class CommentBox extends Composite
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();
-		verticalPanel.setStyleName("gwt-DecoratorPanel-newComment");
+		verticalPanel.setStyleName("CommentBoxBackground");
 		verticalPanel.getElement().getStyle().setProperty("padding", "10px");
 		initWidget(verticalPanel);
+		verticalPanel.setSize("611px", "124px");
 				
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		horizontalPanel.setStyleName("CommentBox");
 		verticalPanel.add(horizontalPanel);
+		horizontalPanel.setSize("null", "null");
 		
 		Image image = new Image("/addendum/getImage?username="+post.getUsername());
 		image.getElement().getStyle().setProperty("marginRight", "10px");
@@ -37,13 +41,15 @@ public class CommentBox extends Composite
 		textArea = new TextArea();
 		textArea.addStyleName("small");
 		horizontalPanel.add(textArea);
-		textArea.setSize("465px", "75px");
+		textArea.setSize("600px", "75px");
 		
 		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
 		horizontalPanel_1.setSpacing(10);
 		verticalPanel.add(horizontalPanel_1);
+		verticalPanel.setCellHorizontalAlignment(horizontalPanel_1, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		Button btnSubmit = new Button("Post Comment");
+		btnSubmit.setStyleName("ADCButton");
 		btnSubmit.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -68,6 +74,7 @@ public class CommentBox extends Composite
 		horizontalPanel_1.add(btnSubmit);
 		
 		Button btnCancel = new Button("Cancel");
+		btnCancel.setStyleName("ADCButton");
 		btnCancel.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -78,5 +85,7 @@ public class CommentBox extends Composite
 			}		
 		});
 		horizontalPanel_1.add(btnCancel);
+		btnCancel.setSize("131px", "29px");
+		setStyleName("CommentBoxBackground");
 	}
 }

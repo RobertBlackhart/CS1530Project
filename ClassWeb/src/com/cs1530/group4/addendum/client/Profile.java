@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
+import com.google.gwt.user.client.ui.TextBoxBase;
 
 public class Profile extends Composite
 {
@@ -51,8 +52,10 @@ public class Profile extends Composite
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
 		initWidget(vPanel);
+		vPanel.setSize("406px", "162px");
 
 		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
+		searchBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		searchBox.setAlignment(TextAlignment.LEFT);
 		searchBox.setStyleName("profileSearchbox");
 		searchBox.addKeyPressHandler(new KeyPressHandler()
@@ -81,7 +84,7 @@ public class Profile extends Composite
 		vPanel.add(searchBox);
 
 		HorizontalPanel hPanel = new HorizontalPanel();
-		hPanel.setStyleName("profilePanel");
+		hPanel.setStyleName("ADCBasic");
 		vPanel.add(hPanel);
 
 		VerticalPanel userPanel = new VerticalPanel();
@@ -263,7 +266,7 @@ public class Profile extends Composite
 		nextPrevPanel.add(prevPage);
 		nextPrevPanel.add(nextPage);
 		vPanel.add(nextPrevPanel);
-		setStyleName("ADCBasic");
+		setStyleName("profilePanel");
 	}
 
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)

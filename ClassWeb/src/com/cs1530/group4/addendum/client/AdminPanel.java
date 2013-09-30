@@ -81,7 +81,7 @@ public class AdminPanel extends Composite
 		{
 			for(final Post post : posts)
 			{
-				HorizontalPanel row = new HorizontalPanel();
+				final HorizontalPanel row = new HorizontalPanel();
 				approve = new Button("Allow Post");
 				delete = new Button("Remove Post");
 				approve.addClickHandler(new ClickHandler()
@@ -93,7 +93,10 @@ public class AdminPanel extends Composite
 							@Override
 							public void onFailure(Throwable caught){}
 							@Override
-							public void onSuccess(Void result){}
+							public void onSuccess(Void result)
+							{
+								postsPanel.remove(row);
+							}
 						};
 						userService.flagPost(post.getPostKey(),"",false, callback);
 					}
@@ -140,7 +143,7 @@ public class AdminPanel extends Composite
 		{
 			for(final Course course : courses)
 			{
-				HorizontalPanel row = new HorizontalPanel();
+				final HorizontalPanel row = new HorizontalPanel();
 				approve = new Button("Add Course");
 				delete = new Button("Delete Request");
 				final TextBox subject = new TextBox();
@@ -164,7 +167,10 @@ public class AdminPanel extends Composite
 							@Override
 							public void onFailure(Throwable caught){}
 							@Override
-							public void onSuccess(Void result){}
+							public void onSuccess(Void result)
+							{
+								requestsPanel.remove(row);
+							}
 						};
 						userService.removeCourseRequest(course, true, callback);
 					}

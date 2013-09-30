@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 public class AddNewCourse extends Composite
 {
@@ -38,6 +40,7 @@ public class AddNewCourse extends Composite
 		lblSubjectCode.setSize("150px", "");
 		
 				subjectTextBox = new TextBox();
+				subjectTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 				subjectTextBox.setStyleName("ADCTextbox");
 				flexTable.setWidget(0, 3, subjectTextBox);
 				subjectTextBox.setSize("240px", "50%");
@@ -47,6 +50,7 @@ public class AddNewCourse extends Composite
 		flexTable.setWidget(1, 1, lblNumber);
 		
 				numberIntegerBox = new IntegerBox();
+				numberIntegerBox.setAlignment(TextAlignment.CENTER);
 				numberIntegerBox.setStyleName("ADCTextbox");
 				flexTable.setWidget(1, 3, numberIntegerBox);
 				numberIntegerBox.setSize("240px", "50%");
@@ -56,6 +60,7 @@ public class AddNewCourse extends Composite
 		flexTable.setWidget(2, 1, lblName);
 		
 				nameTextBox = new TextBox();
+				nameTextBox.setAlignment(TextAlignment.CENTER);
 				nameTextBox.setStyleName("ADCTextbox");
 				flexTable.setWidget(2, 3, nameTextBox);
 				nameTextBox.setSize("240px", "50%");
@@ -65,6 +70,7 @@ public class AddNewCourse extends Composite
 		flexTable.setWidget(3, 1, lblDescription);
 		
 				descriptionTextBox = new TextBox();
+				descriptionTextBox.setAlignment(TextAlignment.CENTER);
 				descriptionTextBox.setStyleName("ADCTextbox");
 				flexTable.setWidget(3, 3, descriptionTextBox);
 				descriptionTextBox.setSize("240px", "50%");

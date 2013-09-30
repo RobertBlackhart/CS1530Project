@@ -223,7 +223,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		courseEntity.setProperty("subjectCode", subjectCode.toUpperCase()); //always upper case for search purposes
 		courseEntity.setProperty("catalogueNumber", catalogueNumber);
 		courseEntity.setProperty("courseName", courseName);
-		courseEntity.setProperty("courseDescription", courseDescription);
+		courseEntity.setProperty("courseDescription", new Text(courseDescription));
 		datastore.put(courseEntity);
 		memcache.put(courseEntity.getKey(), courseEntity);
 	}
@@ -298,7 +298,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		courseEntity.setProperty("subjectCode", subjectCode.toUpperCase()); //always upper case for search purposes
 		courseEntity.setProperty("catalogueNumber", catalogueNumber);
 		courseEntity.setProperty("courseName", courseName);
-		courseEntity.setProperty("courseDescription", courseDescription);
+		courseEntity.setProperty("courseDescription", new Text(courseDescription));
 		memcache.put("course_" + subjectCode + catalogueNumber, courseEntity);
 		datastore.put(courseEntity);
 	}
