@@ -12,8 +12,13 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,57 +29,74 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 	Widget relativeWidget;
 	boolean open = false;
 
-	public MenuPopup(final MainView main, Widget w, final Post post)
+	public MenuPopup(final MainView main, Widget w, final Post post, boolean isUser)
 	{
 		setStyleName("MenuPopUp");
 		relativeWidget = w;
-		Label editPost = new Label("Edit Post");
-		editPost.setStyleName("menuitem");
-		editPost.addClickHandler(new ClickHandler()
+		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.setSpacing(5);
+		if(isUser)
 		{
-			public void onClick(ClickEvent event)
+			Label editPost = new Label("Edit Post");
+			editPost.setStyleName("menuitem");
+			editPost.addClickHandler(new ClickHandler()
 			{
-				popup.hide();
-				ArrayList<String> originalStream = new ArrayList<String>();
-				originalStream.add(post.getStreamLevel());
-				NewPost editor = new NewPost(main, originalStream, post);
-				editor.show();
-			}
-		});
-		Label deletePost = new Label("Delete Post");
-		deletePost.setStyleName("menuitem");
-		deletePost.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				popup.hide();
-				if(Window.confirm("Are you sure you want to delete this post?"))
+				public void onClick(ClickEvent event)
 				{
-					AsyncCallback<Void> callback = new AsyncCallback<Void>()
-					{
-						@Override
-						public void onFailure(Throwable caught)
-						{
-						}
-
-						@Override
-						public void onSuccess(Void v)
-						{
-							String user = Cookies.getCookie("loggedIn");
-							main.setContent(new Profile(main, user), "profile-" + user);
-						}
-					};
-					userService.deletePost(post.getPostKey(), callback);
+					popup.hide();
+					ArrayList<String> originalStream = new ArrayList<String>();
+					originalStream.add(post.getStreamLevel());
+					NewPost editor = new NewPost(main, originalStream, post);
+					editor.show();
 				}
-			}
-		});
+			});
+			Label deletePost = new Label("Delete Post");
+			deletePost.setStyleName("menuitem");
+			deletePost.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					popup.hide();
+					if(Window.confirm("Are you sure you want to delete this post?"))
+					{
+						AsyncCallback<Void> callback = new AsyncCallback<Void>()
+						{
+							@Override
+							public void onFailure(Throwable caught)
+							{
+							}
+
+							@Override
+							public void onSuccess(Void v)
+							{
+								String user = Cookies.getCookie("loggedIn");
+								main.setContent(new Profile(main, user), "profile-" + user);
+							}
+						};
+						userService.deletePost(post.getPostKey(), callback);
+					}
+				}
+			});
+
+			vPanel.add(editPost);
+			vPanel.add(deletePost);
+		}
+		else
+		{
+			Label flagPost = new Label("Report Post");
+			flagPost.setStyleName("menuitem");
+			flagPost.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					popup.hide();
+					new FlagPostForm(post.getPostKey());
+				}
+			});
+		}
 		addDomHandler(this, MouseOutEvent.getType());
 		addDomHandler(this, MouseOverEvent.getType());
 
-		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.setSpacing(5);
-		vPanel.add(editPost);
-		vPanel.add(deletePost);
 		add(vPanel);
 	}
 
@@ -98,5 +120,61 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 	public void onMouseOver(MouseOverEvent event)
 	{
 		relativeWidget.setVisible(true);
+	}
+
+	private class FlagPostForm extends DialogBox
+	{
+		FlagPostForm form = this;
+		String[] options = {"Unwanted commercial content or spam","Pornography or sexually explicit material","Hate speech or graphic violence","Harassment or bullying","This account might be compromised or hacked"};
+		
+		public FlagPostForm(final String postKey)
+		{
+			final ArrayList<RadioButton> radios = new ArrayList<RadioButton>();
+			VerticalPanel vPanel = new VerticalPanel();
+			vPanel.add(new Label("What kind of abuse are you reporting?"));
+			for(String option : options)
+			{
+				RadioButton button = new RadioButton("options", option);
+				radios.add(button);
+				vPanel.add(button);
+			}
+			vPanel.add(new TextBox());
+			HorizontalPanel buttonPanel = new HorizontalPanel();
+			Button cancelButton = new Button("Cancel");
+			buttonPanel.add(cancelButton);
+			cancelButton.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					form.hide();
+				}
+			});
+			Button okButton = new Button("OK");
+			buttonPanel.add(okButton);
+			okButton.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					AsyncCallback<Void> callback = new AsyncCallback<Void>()
+					{
+						@Override
+						public void onFailure(Throwable caught){}
+						@Override
+						public void onSuccess(Void v){}
+					};
+					String reason = "";
+					for(RadioButton button : radios)
+					{
+						if(button.getValue())
+							reason = button.getText();
+					}
+					userService.flagPost(postKey, reason, true, callback);
+				}
+			});
+			vPanel.add(buttonPanel);
+			
+			form.setGlassEnabled(true);
+			form.center();
+		}
 	}
 }

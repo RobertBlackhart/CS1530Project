@@ -78,7 +78,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		if(historyToken[0].equals("login"))
 			content = new Login(main);
 		else if(historyToken[0].equals("adminAddCourse"))
-			content = new AdminAddCourse(main);
+			content = new AddNewCourse(main);
 		else if(historyToken[0].equals("classSearch"))
 			content = new ClassSearch(main);
 		else if(historyToken[0].equals("profile"))
@@ -92,6 +92,8 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			else
 				content = new Profile(main, loggedUser);
 		}
+		else if(historyToken[0].equals("adminPanel"))
+			content = new AdminPanel(main);
 		else
 		{
 			String user = Cookies.getCookie("loggedIn");

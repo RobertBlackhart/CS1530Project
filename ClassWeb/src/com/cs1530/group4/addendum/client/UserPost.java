@@ -14,6 +14,7 @@ import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -31,7 +32,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
 
-	public UserPost(final MainView main, final Post post)
+	public UserPost(final MainView main, final Profile profile, final Post post)
 	{
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
@@ -170,9 +171,19 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		VerticalPanel verticalPanel = new VerticalPanel();
 		horizontalPanel_2.add(verticalPanel);
 
-		Label lblUsername = new Label(post.getUsername());
-		lblUsername.setStyleName("gwt-Label-bold");
-		verticalPanel.add(lblUsername);
+		Anchor usernameLabel = new Anchor(post.getUsername());
+		if(profile != null)
+		{
+			usernameLabel.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					profile.postSearch("username:"+post.getUsername());
+				}
+			});
+		}
+		usernameLabel.setStyleName("gwt-Label-bold");
+		verticalPanel.add(usernameLabel);
 
 		String timeFormatString = "h:mm a";
 		String editFormatString = "h:mm a";
@@ -199,13 +210,13 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		horizontalPanel.add(menuPanel);
 		menuPanel.setWidth("100%");
 
-		if(post.getUsername().equals(loggedInUser))
+		if(main != null)
 		{
 			menu = new Image("images/menu.png");
 			menu.setSize("24px", "24px");
 			menu.setVisible(false);
 			menu.getElement().getStyle().setProperty("marginRight", "5px");
-			popup = new MenuPopup(main,menu,post);
+			popup = new MenuPopup(main,menu,post,post.getUsername().equals(loggedInUser));
 			menu.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)

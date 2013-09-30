@@ -195,7 +195,7 @@ public class ClassSearch extends Composite
 				{
 					public void onClick(ClickEvent event)
 					{
-						main.setContent(new AdminAddCourse(main),"adminAddCourse");
+						main.setContent(new AddNewCourse(main),"adminAddCourse");
 					}
 				});
 	}

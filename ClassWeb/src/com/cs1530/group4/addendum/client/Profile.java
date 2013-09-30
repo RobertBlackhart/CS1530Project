@@ -40,6 +40,7 @@ public class Profile extends Composite
 	ArrayList<String> userCourses;
 	TabPanel tabPanel;
 	VerticalPanel searchPanel;
+	Profile profile = this;
 
 	public Profile(MainView m, String u)
 	{
@@ -50,7 +51,7 @@ public class Profile extends Composite
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
 		initWidget(vPanel);
-
+		
 		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
 		searchBox.setAlignment(TextAlignment.LEFT);
 		searchBox.setStyleName("profileSearchbox");
@@ -61,54 +62,22 @@ public class Profile extends Composite
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
 				{
-					AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
-					{				
-						@Override
-						public void onFailure(Throwable caught){}
-						@Override
-						public void onSuccess(ArrayList<Post> posts)
-						{							
-							if(searchPanel == null)
-							{
-								searchPanel = new VerticalPanel();
-								searchPanel.setWidth("600px");
-								searchPanel.setSpacing(15);
-								tabPanel.add(searchPanel, "Search Results");
-							}
-							if(posts.size() == 0)
-							{
-								searchPanel.clear();
-								searchPanel.add(new Label("No results found for '"+searchBox.getText()+"'"));
-								return;
-							}
-							tabPanel.selectTab(2);
-							searchPanel.clear();
-							
-							Collections.sort(posts, Post.PostScoreComparator);
-							for(Post post : posts)
-							{
-								searchPanel.add(new UserPost(main, post));
-							}
-							if(posts.size() == 10)
-								nextPage.setVisible(true);
-						}
-					};
-					userService.postSearch(searchBox.getText(), username, callback);
+					postSearch(searchBox.getText());
 				}
 			}
 		});
-		
-				Button createPost = new Button("Create a new post");
-				createPost.setStyleName("ADCButton");
-				vPanel.add(createPost);
-				createPost.addClickHandler(new ClickHandler()
-				{
-					public void onClick(ClickEvent event)
-					{
-						NewPost editor = new NewPost(main, userCourses, null);
-						editor.show();
-					}
-				});
+
+		Button createPost = new Button("Create a new post");
+		createPost.setStyleName("ADCButton");
+		vPanel.add(createPost);
+		createPost.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				NewPost editor = new NewPost(main, userCourses, null);
+				editor.show();
+			}
+		});
 		vPanel.add(searchBox);
 
 		HorizontalPanel hPanel = new HorizontalPanel();
@@ -237,7 +206,7 @@ public class Profile extends Composite
 			{
 				if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Search Results"))
 					return;
-				
+
 				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
 				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
 				if(userCourses != null)
@@ -282,7 +251,7 @@ public class Profile extends Composite
 			{
 				nextPage.setVisible(true);
 				startIndex -= 10;
-				if(startIndex <10)
+				if(startIndex < 10)
 					prevPage.setVisible(false);
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
@@ -317,7 +286,7 @@ public class Profile extends Composite
 
 				for(Post post : posts)
 				{
-					updatesPanel.add(new UserPost(main, post));
+					updatesPanel.add(new UserPost(main, profile, post));
 				}
 				if(posts.size() == 10)
 					nextPage.setVisible(true);
@@ -368,5 +337,45 @@ public class Profile extends Composite
 		};
 
 		userService.getUserCourses(username, callback);
+	}
+
+	public void postSearch(final String searchString)
+	{
+		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
+		{
+			@Override
+			public void onFailure(Throwable caught)
+			{
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Post> posts)
+			{
+				if(searchPanel == null)
+				{
+					searchPanel = new VerticalPanel();
+					searchPanel.setWidth("600px");
+					searchPanel.setSpacing(15);
+					tabPanel.add(searchPanel, "Search Results");
+				}
+				if(posts.size() == 0)
+				{
+					searchPanel.clear();
+					searchPanel.add(new Label("No results found for '" + searchString + "'"));
+					return;
+				}
+				tabPanel.selectTab(2);
+				searchPanel.clear();
+
+				Collections.sort(posts, Post.PostScoreComparator);
+				for(Post post : posts)
+				{
+					searchPanel.add(new UserPost(main, profile, post));
+				}
+				if(posts.size() == 10)
+					nextPage.setVisible(true);
+			}
+		};
+		userService.postSearch(searchString, username, callback);
 	}
 }

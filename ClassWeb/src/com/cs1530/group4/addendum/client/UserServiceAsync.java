@@ -26,6 +26,7 @@ public interface UserServiceAsync
 	void doLogin(String username, String password, AsyncCallback<Boolean> callback);
 	void createUser(String username, String password, String firstName, String lastName, AsyncCallback<Boolean> callback);
 	void courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<ArrayList<Course>> callback);
+	void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
@@ -37,6 +38,10 @@ public interface UserServiceAsync
 	void editPost(String postKey, String postHtml, String postPlain, AsyncCallback<Void> callback);
 	void editComment(String commentKey, String commentText, AsyncCallback<Void> callback);
 	void deletePost(String postKey, AsyncCallback<Void> callback);
+	void flagPost(String postKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);
 	void deleteComment(String commentKey, AsyncCallback<Void> callback);
 	void postSearch(String searchText, String requestingUser, AsyncCallback<ArrayList<Post>> callback);
+	void getCourseRequests(AsyncCallback<ArrayList<Course>> callback);
+	void removeCourseRequest(Course course, boolean add, AsyncCallback<Void> callback);
+	void getFlaggedPosts(AsyncCallback<ArrayList<Post>> callback);
 }

@@ -46,6 +46,7 @@ public interface UserService extends RemoteService
 	Boolean doLogin(String username, String password);
 	Boolean createUser(String username, String password, String firstName, String lastName);
 	ArrayList<Course> courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
+	void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	void userAddCourse(String username, ArrayList<String> courseIds);
 	ArrayList<String> getUserCourses(String username);
@@ -57,6 +58,10 @@ public interface UserService extends RemoteService
 	void editPost(String postKey, String postHtml, String postPlain);
 	void editComment(String commentKey, String commentText);
 	void deletePost(String postKey);
+	void flagPost(String postKey, String reason, boolean setFlagged);
 	void deleteComment(String commentKey);
 	ArrayList<Post> postSearch(String searchText, String requestingUser);
+	ArrayList<Course> getCourseRequests();
+	void removeCourseRequest(Course course, boolean add);
+	ArrayList<Post> getFlaggedPosts();
 }

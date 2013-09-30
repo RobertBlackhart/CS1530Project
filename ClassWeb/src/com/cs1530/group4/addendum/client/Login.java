@@ -21,8 +21,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.VerticalSplitPanel;
 
 public class Login extends Composite
 {
@@ -198,7 +196,10 @@ public class Login extends Composite
 		else
 			Cookies.setCookie("loggedIn", usernameTextBox.getText());
 
-		main.setContent(new Profile(main, usernameTextBox.getText()), "profile-" + usernameTextBox.getText());
+		if(usernameTextBox.getText().equals("Administrator"))
+			main.setContent(new AdminPanel(main), "adminPanel");
+		else
+			main.setContent(new Profile(main, usernameTextBox.getText()), "profile-" + usernameTextBox.getText());
 	}
 
 	private void rejectLogin()

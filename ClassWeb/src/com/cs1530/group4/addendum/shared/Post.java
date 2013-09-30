@@ -8,12 +8,12 @@ import java.util.Date;
 public class Post implements Serializable
 {
 	private static final long serialVersionUID = -6112430428377944014L;
-	private String postContent, username, streamLevel, postKey;
+	private String postContent, username, streamLevel, postKey, reportReason;
 	private Date postTime, lastEdit;
 	private int upvotes, downvotes;
 	private double score;
 	private ArrayList<Comment> comments;
-	private boolean upvoted, downvoted;
+	private boolean upvoted, downvoted, reported;
 
 	public boolean isUpvoted()
 	{
@@ -150,5 +150,25 @@ public class Post implements Serializable
 	public void setLastEdit(Date lastEdit)
 	{
 		this.lastEdit = lastEdit;
+	}
+
+	public String getReportReason()
+	{
+		return reportReason;
+	}
+
+	public void setReportReason(String reportReason)
+	{
+		this.reportReason = reportReason;
+	}
+
+	public boolean isReported()
+	{
+		return reported;
+	}
+
+	public void setReported(boolean reported)
+	{
+		this.reported = reported;
 	}
 }

@@ -7,20 +7,19 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class AdminAddCourse extends Composite
+public class AddNewCourse extends Composite
 {
 	private TextBox descriptionTextBox;
 	private TextBox nameTextBox;
 	private TextBox subjectTextBox;
 	private IntegerBox numberIntegerBox;
 
-	public AdminAddCourse(final MainView main)
+	public AddNewCourse(final MainView main)
 	{
 
 		VerticalPanel verticalPanel = new VerticalPanel();
@@ -83,7 +82,7 @@ public class AdminAddCourse extends Composite
 				int num = numberIntegerBox.getValue();
 				String name = nameTextBox.getText();
 				String desc = descriptionTextBox.getText();
-				UserServiceAsync loginService = UserService.Util.getInstance();
+				UserServiceAsync userService = UserService.Util.getInstance();
 				// Set up the callback object.
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
@@ -102,7 +101,7 @@ public class AdminAddCourse extends Composite
 					}
 				};
 
-				loginService.adminAddCourse(code, num, name, desc, callback);
+				userService.newCourseRequest(code, num, name, desc, callback);
 			}
 		});
 		flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_LEFT);

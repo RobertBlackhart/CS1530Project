@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Course implements Serializable
 {
 	private static final long serialVersionUID = -6434443948276427528L;
-	private String subjectCode, courseName, courseDescription;
+	private String subjectCode, courseName, courseDescription, courseRequestKey;
 	private int courseNumber;
 	
 	public Course(){}
@@ -69,5 +69,13 @@ public class Course implements Serializable
 				return false;
 		}
 		return false;
+	}
+	public String getCourseRequestKey()
+	{
+		return courseRequestKey;
+	}
+	public void setCourseRequestKey(String courseRequestKey)
+	{
+		this.courseRequestKey = courseRequestKey;
 	}
 }
