@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.VerticalSplitPanel;
+import com.google.gwt.user.client.ui.TextBoxBase;
 
 public class Login extends Composite
 {
@@ -46,6 +47,8 @@ public class Login extends Composite
 		welcomeLabel.getElement().getStyle().setProperty("marginBottom", "20px");
 		welcomeLabel.setStyleName("LoginTitle");
 		verticalPanel.add(welcomeLabel);
+		verticalPanel.setCellVerticalAlignment(welcomeLabel, HasVerticalAlignment.ALIGN_MIDDLE);
+		verticalPanel.setCellHorizontalAlignment(welcomeLabel, HasHorizontalAlignment.ALIGN_CENTER);
 		welcomeLabel.setSize("100%", "136px");
 		
 		if(Cookies.getCookie("loggedIn") != null)
@@ -81,6 +84,7 @@ public class Login extends Composite
 		flexTable.setWidget(1, 0, lblUsername);
 
 		usernameTextBox = new TextBox();
+		usernameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		usernameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -97,6 +101,7 @@ public class Login extends Composite
 		flexTable.setWidget(2, 0, lblPassword);
 
 		passwordTextBox = new PasswordTextBox();
+		passwordTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)

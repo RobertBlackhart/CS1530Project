@@ -120,7 +120,7 @@ public class NewPost extends DialogBox
 				streamLevelBox.addItem("Members of " + stream);
 		}
 		streamPanel.add(streamLevelBox);
-		streamLevelBox.setWidth("88px");
+		streamLevelBox.setWidth("171px");
 		vPanel.add(buttonPanel);
 		add(vPanel);
 

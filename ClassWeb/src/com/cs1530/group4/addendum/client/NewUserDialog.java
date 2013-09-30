@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextBoxBase;
 
 public class NewUserDialog extends Composite
 {
@@ -32,10 +33,11 @@ public class NewUserDialog extends Composite
 		flexTable.setSize("528px", "432px");
 
 		Label lblFillInYour = new Label("Fill in your details below");
-		lblFillInYour.setStyleName("whatever");
+		lblFillInYour.setStyleName("newUserDialogTitle");
 		flexTable.setWidget(0, 0, lblFillInYour);
 
 		firstNameTextBox = new TextBox();
+		firstNameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		firstNameTextBox.setStyleName("ADCTextbox");
 		firstNameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
@@ -53,6 +55,7 @@ public class NewUserDialog extends Composite
 		firstNameTextBox.setSize("200px", "30px");
 
 		lastNameTextBox = new TextBox();
+		lastNameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		lastNameTextBox.setStyleName("ADCTextbox");
 		lastNameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
@@ -70,6 +73,7 @@ public class NewUserDialog extends Composite
 		lastNameTextBox.setSize("200px", "30px");
 
 		usernameTextBox = new TextBox();
+		usernameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		usernameTextBox.setStyleName("ADCTextbox");
 		usernameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
@@ -87,6 +91,7 @@ public class NewUserDialog extends Composite
 		usernameTextBox.setSize("200px", "30px");
 
 		passwordTextBox = new PasswordTextBox();
+		passwordTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
 		passwordTextBox.setStyleName("ADCTextbox");
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler()
 		{

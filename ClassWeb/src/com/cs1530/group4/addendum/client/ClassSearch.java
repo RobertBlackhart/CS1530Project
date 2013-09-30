@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 public class ClassSearch extends Composite
 {
@@ -47,9 +48,10 @@ public class ClassSearch extends Composite
 		Label lblSubjectCode = new Label("Subject Code");
 		lblSubjectCode.setStyleName("whatever");
 		flexTable.setWidget(0, 0, lblSubjectCode);
-		lblSubjectCode.setSize("200px", "25%");
+		lblSubjectCode.setSize("100%", "25%");
 
 		subjectTextBox = new TextBox();
+		subjectTextBox.setAlignment(TextAlignment.CENTER);
 		subjectTextBox.setStyleName("ADCTextbox");
 		flexTable.setWidget(0, 1, subjectTextBox);
 		subjectTextBox.setSize("220px", "75%");
@@ -60,6 +62,7 @@ public class ClassSearch extends Composite
 		lblCatalogueNumber.setSize("300px", "50%");
 
 		numberTextBox = new IntegerBox();
+		numberTextBox.setAlignment(TextAlignment.CENTER);
 		numberTextBox.setStyleName("ADCTextbox");
 		flexTable.setWidget(1, 1, numberTextBox);
 		numberTextBox.setSize("220px", "75%");
@@ -70,6 +73,7 @@ public class ClassSearch extends Composite
 		lblCourseName.setSize("200px", "50%");
 
 		nameTextBox = new TextBox();
+		nameTextBox.setAlignment(TextAlignment.CENTER);
 		nameTextBox.setStyleName("ADCTextbox");
 		flexTable.setWidget(2, 1, nameTextBox);
 		nameTextBox.setSize("220px", "75%");
@@ -80,6 +84,7 @@ public class ClassSearch extends Composite
 		lblCourseDescription.setSize("200", "50%");
 
 		descriptionTextBox = new TextBox();
+		descriptionTextBox.setAlignment(TextAlignment.CENTER);
 		descriptionTextBox.setStyleName("ADCTextbox");
 		flexTable.setWidget(3, 1, descriptionTextBox);
 		descriptionTextBox.setSize("220px", "75%");
