@@ -6,7 +6,9 @@ import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -20,10 +22,22 @@ public class AdminPanel extends Composite
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
 
-	public AdminPanel(MainView main)
+	public AdminPanel(final MainView main)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
+		
+		Anchor logoutAnchor = new Anchor("Logout");
+		verticalPanel.add(logoutAnchor);
+		logoutAnchor.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				Cookies.removeCookie("loggedIn");
+				main.setContent(new Login(main), "login");
+			}
+		});
 
 		VerticalPanel courseAddRequests = new VerticalPanel();
 		VerticalPanel reportedPosts = new VerticalPanel();

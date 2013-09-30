@@ -83,6 +83,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 		}
 		else
 		{
+			System.out.println("here, loggedInUser="+Cookies.getCookie("loggedIn")+",postUser="+post.getUsername());
 			Label flagPost = new Label("Report Post");
 			flagPost.setStyleName("menuitem");
 			flagPost.addClickHandler(new ClickHandler()
@@ -93,6 +94,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 					new FlagPostForm(post.getPostKey());
 				}
 			});
+			vPanel.add(flagPost);
 		}
 		addDomHandler(this, MouseOutEvent.getType());
 		addDomHandler(this, MouseOverEvent.getType());
@@ -172,7 +174,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 				}
 			});
 			vPanel.add(buttonPanel);
-			
+			add(vPanel);
 			form.setGlassEnabled(true);
 			form.center();
 		}

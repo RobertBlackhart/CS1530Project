@@ -51,7 +51,7 @@ public class Profile extends Composite
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
 		initWidget(vPanel);
-		
+
 		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
 		searchBox.setAlignment(TextAlignment.LEFT);
 		searchBox.setStyleName("profileSearchbox");
@@ -66,7 +66,6 @@ public class Profile extends Composite
 				}
 			}
 		});
-
 		Button createPost = new Button("Create a new post");
 		createPost.setStyleName("ADCButton");
 		vPanel.add(createPost);
@@ -79,7 +78,6 @@ public class Profile extends Composite
 			}
 		});
 		vPanel.add(searchBox);
-
 		HorizontalPanel hPanel = new HorizontalPanel();
 		hPanel.setStyleName("profilePanel");
 		vPanel.add(hPanel);

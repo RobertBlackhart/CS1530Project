@@ -169,7 +169,11 @@ public class NewUserDialog extends Composite
 				if(result)
 				{
 					Cookies.setCookie("loggedIn", usernameTextBox.getText());
-					main.setContent(new Profile(main, username),"profile-"+username);
+					
+					if(usernameTextBox.getText().equals("Administrator"))
+						main.setContent(new AdminPanel(main), "adminPanel");
+					else
+						main.setContent(new Profile(main, username),"profile-"+username);
 				}
 				else
 					errorLabel.setVisible(true);
