@@ -54,6 +54,7 @@ public class PostComment extends Composite
 		
 		HTML content = new HTML(comment.getContent());
 		flexTable.setWidget(1, 0, content);
+		setStyleName("");
 	}
 
 }

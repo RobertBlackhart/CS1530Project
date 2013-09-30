@@ -23,10 +23,10 @@ public class CommentBox extends Composite
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();
-		verticalPanel.setStyleName("gwt-DecoratorPanel-newComment");
+		verticalPanel.setStyleName("CommentBoxBackground");
 		verticalPanel.getElement().getStyle().setProperty("padding", "10px");
 		initWidget(verticalPanel);
-		verticalPanel.setSize("600px", "200px");
+		verticalPanel.setSize("611px", "124px");
 				
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName("CommentBox");

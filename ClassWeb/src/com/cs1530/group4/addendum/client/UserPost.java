@@ -157,6 +157,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		postPanel.add(html);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		horizontalPanel.setStyleName("UserPostBackround");
 		postPanel.add(horizontalPanel);
 		horizontalPanel.setWidth("100%");
 
