@@ -77,7 +77,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		// Parse the history token
 		if(historyToken[0].equals("login"))
 			content = new Login(main);
-		else if(historyToken[0].equals("adminAddCourse"))
+		else if(historyToken[0].equals("addNewCourse"))
 			content = new AddNewCourse(main);
 		else if(historyToken[0].equals("classSearch"))
 			content = new ClassSearch(main);
