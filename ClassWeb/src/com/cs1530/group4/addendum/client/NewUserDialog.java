@@ -29,14 +29,14 @@ public class NewUserDialog extends Composite
 		main = m;
 		FlexTable flexTable = new FlexTable();
 		initWidget(flexTable);
+		flexTable.setSize("528px", "432px");
 
 		Label lblFillInYour = new Label("Fill in your details below");
+		lblFillInYour.setStyleName("whatever");
 		flexTable.setWidget(0, 0, lblFillInYour);
 
-		Label lblFirstName = new Label("First Name:");
-		flexTable.setWidget(1, 0, lblFirstName);
-
 		firstNameTextBox = new TextBox();
+		firstNameTextBox.setStyleName("ADCTextbox");
 		firstNameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -45,12 +45,15 @@ public class NewUserDialog extends Composite
 					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		flexTable.setWidget(1, 2, firstNameTextBox);
-
-		Label lblLastName = new Label("Last Name:");
-		flexTable.setWidget(2, 0, lblLastName);
+		
+				Label lblFirstName = new Label("First Name:");
+				lblFirstName.setStyleName("whatever");
+				flexTable.setWidget(1, 1, lblFirstName);
+		flexTable.setWidget(1, 4, firstNameTextBox);
+		firstNameTextBox.setSize("200px", "30px");
 
 		lastNameTextBox = new TextBox();
+		lastNameTextBox.setStyleName("ADCTextbox");
 		lastNameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -59,12 +62,15 @@ public class NewUserDialog extends Composite
 					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		flexTable.setWidget(2, 2, lastNameTextBox);
-
-		Label lblUsername = new Label("Username:");
-		flexTable.setWidget(3, 0, lblUsername);
+		
+				Label lblLastName = new Label("Last Name:");
+				lblLastName.setStyleName("whatever");
+				flexTable.setWidget(2, 1, lblLastName);
+		flexTable.setWidget(2, 4, lastNameTextBox);
+		lastNameTextBox.setSize("200px", "30px");
 
 		usernameTextBox = new TextBox();
+		usernameTextBox.setStyleName("ADCTextbox");
 		usernameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -73,17 +79,15 @@ public class NewUserDialog extends Composite
 					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		flexTable.setWidget(3, 2, usernameTextBox);
 		
-		errorLabel = new Label("username already in use");
-		errorLabel.setVisible(false);
-		errorLabel.setStyleName("gwt-Label-Error");
-		flexTable.setWidget(4, 0, errorLabel);
-
-		Label lblPassword = new Label("Password:");
-		flexTable.setWidget(5, 0, lblPassword);
+				Label lblUsername = new Label("Username:");
+				lblUsername.setStyleName("whatever");
+				flexTable.setWidget(3, 1, lblUsername);
+		flexTable.setWidget(3, 4, usernameTextBox);
+		usernameTextBox.setSize("200px", "30px");
 
 		passwordTextBox = new PasswordTextBox();
+		passwordTextBox.setStyleName("ADCTextbox");
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -92,7 +96,18 @@ public class NewUserDialog extends Composite
 					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		flexTable.setWidget(5, 2, passwordTextBox);
+		
+				Label lblPassword = new Label("Password:");
+				lblPassword.setStyleName("whatever");
+				flexTable.setWidget(4, 1, lblPassword);
+		flexTable.setWidget(4, 4, passwordTextBox);
+		passwordTextBox.setSize("200px", "30px");
+		
+		errorLabel = new Label("username already in use");
+		errorLabel.setVisible(false);
+		errorLabel.setStyleName("gwt-Label-Error");
+		flexTable.setWidget(5, 0, errorLabel);
+		errorLabel.setWidth("500px");
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName((String) null);
@@ -100,6 +115,7 @@ public class NewUserDialog extends Composite
 		flexTable.setWidget(6, 0, horizontalPanel);
 
 		Button btnCancel = new Button("Cancel");
+		btnCancel.setStyleName("ADCButton");
 		btnCancel.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -108,6 +124,7 @@ public class NewUserDialog extends Composite
 			}
 		});
 		horizontalPanel.add(btnCancel);
+		btnCancel.setSize("70px", "30px");
 
 		Button btnOk = new Button("OK");
 		btnOk.addClickHandler(new ClickHandler()
@@ -117,14 +134,16 @@ public class NewUserDialog extends Composite
 				createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		btnOk.setStyleName("gwt-Button-LeftMargin");
+		btnOk.setStyleName("ADCButton");
 		horizontalPanel.add(btnOk);
-		flexTable.getFlexCellFormatter().setColSpan(0, 0, 3);
+		btnOk.setSize("70px", "30px");
+		flexTable.getFlexCellFormatter().setColSpan(0, 0, 5);
 		flexTable.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable.getFlexCellFormatter().setColSpan(6, 0, 3);
+		flexTable.getFlexCellFormatter().setColSpan(6, 0, 5);
 		flexTable.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable.getFlexCellFormatter().setColSpan(4, 0, 3);
-		flexTable.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getFlexCellFormatter().setColSpan(5, 0, 5);
+		setStyleName("ADCBasic");
 	}
 
 	protected void createUser(String firstName, String lastName, final String username, String password)

@@ -26,6 +26,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 
 	public MenuPopup(final MainView main, Widget w, final Post post)
 	{
+		setStyleName("MenuPopUp");
 		relativeWidget = w;
 		Label editPost = new Label("Edit Post");
 		editPost.setStyleName("menuitem");

@@ -26,8 +26,9 @@ public class NewPost extends DialogBox
 
 	public NewPost(MainView m, ArrayList<String> streams, final Post post)
 	{
+		setGlassStyleName("");
+		setStyleName("NewPostBackground");
 		main = m;
-		setHTML("New Post");
 
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -36,11 +37,14 @@ public class NewPost extends DialogBox
 			editor.setHTML(post.getPostContent());
 		editor.setSize("600px", "400px");
 		RichTextToolbar toolbar = new RichTextToolbar(editor);
+		toolbar.setStyleName("NewPostToolBar");
 
 		HorizontalPanel buttonPanel = new HorizontalPanel();
+		buttonPanel.setStyleName("NewPostBottomLine");
 		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		buttonPanel.setWidth("100%");
 		Button submitButton = new Button("Submit");
+		submitButton.setStyleName("LoginButton");
 		submitButton.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -73,6 +77,7 @@ public class NewPost extends DialogBox
 			}
 		});
 		Button discardButton = new Button("Discard");
+		discardButton.setStyleName("LoginButton");
 		discardButton.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -83,8 +88,14 @@ public class NewPost extends DialogBox
 		});
 		buttonPanel.add(discardButton);
 		buttonPanel.add(submitButton);
+		
+		Label lblNewLabel = new Label("NEW POST");
+		lblNewLabel.setStyleName("NewPostBackLabel");
+		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		vPanel.add(lblNewLabel);
 
 		vPanel.add(toolbar);
+		toolbar.setWidth("100%");
 		vPanel.add(editor);
 		
 		HorizontalPanel streamPanel = new HorizontalPanel();
@@ -93,10 +104,12 @@ public class NewPost extends DialogBox
 		streamPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vPanel.add(streamPanel);
 		
-		Label lblMakeThisPost = new Label("Make this post visible to: ");
+		Label lblMakeThisPost = new Label("MAKE THIS POST VISIBLE TO: ");
+		lblMakeThisPost.setStyleName("NewPostBackLabel");
 		streamPanel.add(lblMakeThisPost);
 		
 		streamLevelBox = new ListBox();
+		streamLevelBox.setStyleName("NewPostBackLabel");
 		if(post == null)
 			streamLevelBox.addItem("Everyone");
 		for(String stream: streams)
@@ -107,6 +120,7 @@ public class NewPost extends DialogBox
 				streamLevelBox.addItem("Members of " + stream);
 		}
 		streamPanel.add(streamLevelBox);
+		streamLevelBox.setWidth("88px");
 		vPanel.add(buttonPanel);
 		add(vPanel);
 

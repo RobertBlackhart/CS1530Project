@@ -378,9 +378,10 @@ a:visited {
 }
 .ADCButton {
 	color: White;
+	font-size: 14px;
+	border-radius:15px;
 	font-family: Arial Black;
 	background-color: #ffaa00;
-	border-radius:15px;
 }
 .CSLabel {
 	color: White;
@@ -399,8 +400,7 @@ a:visited {
 	background-image: url('Background.jpg');
 	background-repeat:no-repeat;
 	background-attachment:fixed;
-	background-position: left, center;
-	background-size: 90%, 100%;
+	background-position: center, center;
 	
 }
 .LoginTitle {
@@ -413,4 +413,59 @@ a:visited {
 }
 .LoginPanel {
 	position: center, center;
+}
+.LoginButton {
+	color: White;
+	font-size: 14px;
+	font-family: Arial Black;
+	background-color: darkgrey;
+}
+.MenuPopUp {
+	border: 2px solid;
+	border-color: #FFAA00;
+	border-radius:5px;
+	font-family: Arial Black;
+}
+.NewPostBackground {
+	border: 2px solid #FFAA00;
+	font-size: 15pt;
+	font-family: Arial Black;
+	background-color: #FFD073;
+}
+.NewPostBottomLine {
+	border-top: 2px ridge;
+	border-top-color: #FFAA00;
+}
+.NewPostToolBar {
+	border: 2px solid;
+	border-color: #FFAA00;
+	border-radius:5px;
+	background-color:#FFAA00;
+}
+.NewPostBackLabel {
+	font-size: 13px;
+	font-family: Arial Black;
+}
+.NewUserDialogTitle {
+	color: White;
+	font-variant: small-caps;
+	font-size: 36px;
+	font-style: normal;
+	font-family: Arial Black;
+	font-weight: 900
+}
+.profileSearchbox {
+	color: Silver;
+	border: 2px solid;
+	border-color: #ffbf40;
+	border-radius:15px;
+}
+.profilePanel {
+	color: White;
+	font-size: 36px;
+	font-family: cursive;
+	font-weight: 600;
+	line-height: normal;
+	background-color: #015666;
+	border-radius:25px;
 }

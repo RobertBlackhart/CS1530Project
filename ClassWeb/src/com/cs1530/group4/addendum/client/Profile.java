@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 public class Profile extends Composite
 {
@@ -51,6 +52,8 @@ public class Profile extends Composite
 		initWidget(vPanel);
 
 		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
+		searchBox.setAlignment(TextAlignment.LEFT);
+		searchBox.setStyleName("profileSearchbox");
 		searchBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			@Override
@@ -94,20 +97,22 @@ public class Profile extends Composite
 				}
 			}
 		});
+		
+				Button createPost = new Button("Create a new post");
+				createPost.setStyleName("ADCButton");
+				vPanel.add(createPost);
+				createPost.addClickHandler(new ClickHandler()
+				{
+					public void onClick(ClickEvent event)
+					{
+						NewPost editor = new NewPost(main, userCourses, null);
+						editor.show();
+					}
+				});
 		vPanel.add(searchBox);
 
-		Button createPost = new Button("Create a new post");
-		vPanel.add(createPost);
-		createPost.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				NewPost editor = new NewPost(main, userCourses, null);
-				editor.show();
-			}
-		});
-
 		HorizontalPanel hPanel = new HorizontalPanel();
+		hPanel.setStyleName("profilePanel");
 		vPanel.add(hPanel);
 
 		VerticalPanel userPanel = new VerticalPanel();
@@ -122,6 +127,7 @@ public class Profile extends Composite
 		userPanel.add(absolutePanel);
 
 		Image image = new Image("/addendum/getImage?username=" + username);
+		image.setStyleName("");
 		final Label changeImageLabel = new Label("Change Image");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
 		changeImageLabel.setSize("128px", "28px");
@@ -288,6 +294,7 @@ public class Profile extends Composite
 		nextPrevPanel.add(prevPage);
 		nextPrevPanel.add(nextPage);
 		vPanel.add(nextPrevPanel);
+		setStyleName("ADCBasic");
 	}
 
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)

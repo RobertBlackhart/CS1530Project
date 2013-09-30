@@ -38,7 +38,7 @@ public class Login extends Composite
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		initWidget(verticalPanel);
-		verticalPanel.setSize("650px", "510px");
+		verticalPanel.setSize("843px", "657px");
 		
 		Label welcomeLabel = new Label("ADDENDUM");
 		welcomeLabel.setDirectionEstimator(false);
@@ -111,6 +111,7 @@ public class Login extends Composite
 		flexTable.setWidget(3, 1, rememberMeCheckBox);
 
 		Button btnNewButton = new Button("Sign In");
+		btnNewButton.setStyleName("LoginButton");
 		btnNewButton.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -137,8 +138,10 @@ public class Login extends Composite
 										lblCreateANew.setStyleName("gwt-Label-User");
 						
 								Button button = new Button("Create Account");
+								button.setText("CREATE ACCOUNT");
+								button.setStyleName("LoginButton");
 								verticalPanel_1.add(button);
-								button.setSize("110px", "25px");
+								button.setSize("167px", "25px");
 				button.addClickHandler(new ClickHandler()
 				{
 					public void onClick(ClickEvent event)
