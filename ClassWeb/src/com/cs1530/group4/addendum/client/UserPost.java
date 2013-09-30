@@ -157,7 +157,6 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		postPanel.add(html);
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		horizontalPanel.setStyleName("UserPostBackround");
 		postPanel.add(horizontalPanel);
 		horizontalPanel.setWidth("100%");
 
@@ -247,6 +246,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		postPanel.add(separator);
 
 		commentPanel = new VerticalPanel();
+		commentPanel.setStyleName("UserPostBackround");
 		commentPanel.setSpacing(5);
 		commentPanel.setWidth("100%");
 		if(post.getComments().size() > 0)

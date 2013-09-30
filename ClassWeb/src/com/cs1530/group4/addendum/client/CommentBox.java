@@ -31,6 +31,7 @@ public class CommentBox extends Composite
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName("CommentBox");
 		verticalPanel.add(horizontalPanel);
+		horizontalPanel.setSize("null", "null");
 		
 		Image image = new Image("/addendum/getImage?username="+post.getUsername());
 		image.getElement().getStyle().setProperty("marginRight", "10px");
