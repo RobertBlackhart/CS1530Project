@@ -66,6 +66,7 @@ public class Profile extends Composite
 				}
 			}
 		});
+<<<<<<< HEAD
 		Button createPost = new Button("Create a new post");
 		createPost.setStyleName("ADCButton");
 		vPanel.add(createPost);
@@ -78,6 +79,22 @@ public class Profile extends Composite
 			}
 		});
 		vPanel.add(searchBox);
+=======
+		
+				Button createPost = new Button("Create a new post");
+				createPost.setStyleName("ADCButton");
+				vPanel.add(createPost);
+				createPost.addClickHandler(new ClickHandler()
+				{
+					public void onClick(ClickEvent event)
+					{
+						NewPost editor = new NewPost(main, userCourses, null);
+						editor.show();
+					}
+				});
+		vPanel.add(searchBox);
+
+>>>>>>> refs/remotes/origin/master
 		HorizontalPanel hPanel = new HorizontalPanel();
 		hPanel.setStyleName("profilePanel");
 		vPanel.add(hPanel);
