@@ -1,9 +1,9 @@
 body { 
-	background-color: white;
 	color: black;
-	font-family: Arial, sans-serif;
-	font-size: small;
 	margin: 5px;
+	font-size: small;
+	font-family: Arial, sans-serif;
+	background-color: white;
 }
 
 a {	
@@ -316,6 +316,7 @@ a:visited {
 	background-color: khaki;
 }
 .gwt-Label-User {
+	font-size: larger;
 	font-weight: bold;
 }
 .gwt-DecoratorPanel-SignUp {
@@ -353,9 +354,118 @@ a:visited {
 	background-color: mediumaquamarine;
 }
 .whatever {
+	color: White;
 	font-variant: small-caps;
-	font-size: 24px;
+	font-size: 36px;
 	font-style: normal;
-	font-family: serif;
-	font-weight: normal;
+	font-family: Lazy Sunday Shadow;
+	font-weight: 900;
+}
+.ADCBasic {
+	color: White;
+	border: 2px solid;
+	font-size: 36px;
+	font-family: cursive;
+	font-weight: 600;
+	line-height: normal;
+	background-color: #37B6CE;
+	border-radius:25px;
+}
+.ADCTextbox {
+	border: 2px solid;
+	border-color: #ffbf40;
+	border-radius:15px;
+}
+.ADCButton {
+	color: White;
+	font-size: 14px;
+	border-radius:15px;
+	font-family: Arial Black;
+	background-color: #ffaa00;
+}
+.CSLabel {
+	color: White;
+	font-family: Arial Black;
+	background-color: #ffaa00;
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+}
+.CSListbox {
+	border: 5px solid;
+	font-family: Arial Black;
+	border-color: #ffbf40;
+	border-radius:5px;
+}
+.Login {
+	background-image: url('Background.jpg');
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-position: center, center;
+	
+}
+.LoginTitle {
+	font-size: 100px;
+	font-family: Vtks Beautiful Dreams;
+	font-weight: 700;
+}
+.LoginBox {
+	
+}
+.LoginPanel {
+	position: center, center;
+}
+.LoginButton {
+	color: White;
+	font-size: 14px;
+	font-family: Arial Black;
+	background-color: darkgrey;
+}
+.MenuPopUp {
+	border: 2px solid;
+	border-color: #FFAA00;
+	border-radius:5px;
+	font-family: Arial Black;
+}
+.NewPostBackground {
+	border: 2px solid #FFAA00;
+	font-size: 15pt;
+	font-family: Arial Black;
+	background-color: #FFD073;
+}
+.NewPostBottomLine {
+	border-top: 2px ridge;
+	border-top-color: #FFAA00;
+}
+.NewPostToolBar {
+	border: 2px solid;
+	border-color: #FFAA00;
+	border-radius:5px;
+	background-color:#FFAA00;
+}
+.NewPostBackLabel {
+	font-size: 13px;
+	font-family: Arial Black;
+}
+.NewUserDialogTitle {
+	color: White;
+	font-variant: small-caps;
+	font-size: 36px;
+	font-style: normal;
+	font-family: Arial Black;
+	font-weight: 900
+}
+.profileSearchbox {
+	color: Silver;
+	border: 2px solid;
+	border-color: #ffbf40;
+	border-radius:15px;
+}
+.profilePanel {
+	color: White;
+	font-size: 36px;
+	font-family: cursive;
+	font-weight: 600;
+	line-height: normal;
+	background-color: #015666;
+	border-radius:25px;
 }

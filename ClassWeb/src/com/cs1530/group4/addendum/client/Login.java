@@ -21,6 +21,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.VerticalSplitPanel;
 
 public class Login extends Composite
 {
@@ -36,19 +38,18 @@ public class Login extends Composite
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		initWidget(verticalPanel);
+		verticalPanel.setSize("843px", "657px");
 		
-		Label welcomeLabel = new Label("Welcome to Addendum");
+		Label welcomeLabel = new Label("ADDENDUM");
+		welcomeLabel.setDirectionEstimator(false);
 		welcomeLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		welcomeLabel.getElement().getStyle().setProperty("marginBottom", "20px");
-		welcomeLabel.setStyleName("gwt-Label-Login");
+		welcomeLabel.setStyleName("LoginTitle");
 		verticalPanel.add(welcomeLabel);
+		welcomeLabel.setSize("100%", "136px");
 		
 		if(Cookies.getCookie("loggedIn") != null)
 			m.setContent(new Profile(m,Cookies.getCookie("loggedIn")), "profile-"+Cookies.getCookie("loggedIn"));
-
-		Label lblNewLabel = new Label("Sign into your account");
-		lblNewLabel.setStyleName("gwt-Label-Login");
-		verticalPanel.add(lblNewLabel);
 
 		errorLabel = new Label("Could not login.  Invalid username or password.");
 		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -58,14 +59,14 @@ public class Login extends Composite
 		errorLabel.setWidth("315px");
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		horizontalPanel.setStyleName("gwt-border");
+		horizontalPanel.setStyleName("LoginBox");
 		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		verticalPanel.add(horizontalPanel);
 		horizontalPanel.setSize("543px", "154px");
 
 		DecoratorPanel decoratorPanel = new DecoratorPanel();
 		horizontalPanel.add(decoratorPanel);
-		decoratorPanel.setStyleName("gwt-DecoratorPanel-Login");
+		decoratorPanel.setStyleName("LoginBox");
 
 		FlexTable flexTable = new FlexTable();
 		decoratorPanel.setWidget(flexTable);
@@ -110,6 +111,7 @@ public class Login extends Composite
 		flexTable.setWidget(3, 1, rememberMeCheckBox);
 
 		Button btnNewButton = new Button("Sign In");
+		btnNewButton.setStyleName("LoginButton");
 		btnNewButton.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -118,10 +120,11 @@ public class Login extends Composite
 			}
 		});
 		flexTable.setWidget(4, 1, btnNewButton);
+		btnNewButton.setSize("110px", "25px");
 		flexTable.getFlexCellFormatter().setColSpan(0, 0, 2);
 
 		DecoratorPanel decoratorPanel_1 = new DecoratorPanel();
-		decoratorPanel_1.setStyleName("gwt-DecoratorPanel-SignUp");
+		decoratorPanel_1.setStyleName("LoginBox");
 		horizontalPanel.add(decoratorPanel_1);
 		decoratorPanel_1.setSize("240px", "104px");
 
@@ -129,20 +132,24 @@ public class Login extends Composite
 		verticalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		decoratorPanel_1.setWidget(verticalPanel_1);
 		verticalPanel_1.setSize("244px", "155px");
-
-		Label lblCreateANew = new Label("Don't Have an Account?");
-		verticalPanel_1.add(lblCreateANew);
-		lblCreateANew.setStyleName("gwt-Label-User");
-
-		Button button = new Button("Create Account");
-		button.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				main.setContent(new NewUserDialog(main), "login");
-			}
-		});
-		verticalPanel_1.add(button);
+								
+										Label lblCreateANew = new Label("Don't Have an Account?");
+										verticalPanel_1.add(lblCreateANew);
+										lblCreateANew.setStyleName("gwt-Label-User");
+						
+								Button button = new Button("Create Account");
+								button.setText("CREATE ACCOUNT");
+								button.setStyleName("LoginButton");
+								verticalPanel_1.add(button);
+								button.setSize("167px", "25px");
+				button.addClickHandler(new ClickHandler()
+				{
+					public void onClick(ClickEvent event)
+					{
+						main.setContent(new NewUserDialog(main), "login");
+					}
+				});
+		setStyleName("Login");
 	}
 
 	protected void login()
