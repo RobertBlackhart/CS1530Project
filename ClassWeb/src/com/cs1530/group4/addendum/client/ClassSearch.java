@@ -19,9 +19,11 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class ClassSearch extends DialogBox
 {
+	ClassSearch dialog = this;
 	private TextBox subjectTextBox;
 	private IntegerBox numberTextBox;
 	private TextBox nameTextBox;
@@ -144,7 +146,22 @@ public class ClassSearch extends DialogBox
 		resultsBox.setVisibleItemCount(5);
 		resultsBox.setWidth("500px");
 
+		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		verticalPanel.add(horizontalPanel);
+
+		Button btnCancel = new Button("Cancel");
+		btnCancel.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				dialog.hide();
+			}
+		});
+		horizontalPanel.add(btnCancel);
+		btnCancel.setStyleName("ADCButton");
+
 		Button btnAddSelectedClasses = new Button("Add Selected Classes");
+		horizontalPanel.add(btnAddSelectedClasses);
 		btnAddSelectedClasses.setStyleName("ADCButton");
 		btnAddSelectedClasses.addClickHandler(new ClickHandler()
 		{
@@ -170,6 +187,7 @@ public class ClassSearch extends DialogBox
 					@Override
 					public void onSuccess(Void v)
 					{
+						dialog.hide();
 						String user = Cookies.getCookie("loggedIn");
 						main.setContent(new Profile(main, user), "profile-" + user);
 					}
@@ -184,7 +202,6 @@ public class ClassSearch extends DialogBox
 				}
 			}
 		});
-		verticalPanel.add(btnAddSelectedClasses);
 
 		FlexTable flexTable_1 = new FlexTable();
 		verticalPanel.add(flexTable_1);
@@ -202,7 +219,8 @@ public class ClassSearch extends DialogBox
 				main.setContent(new AddNewCourse(main), "addNewCourse");
 			}
 		});
-		
+
+		setGlassEnabled(true);
 		center();
 	}
 }
