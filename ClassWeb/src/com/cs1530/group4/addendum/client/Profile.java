@@ -21,14 +21,15 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Profile extends Composite
 {
@@ -53,38 +54,44 @@ public class Profile extends Composite
 
 		initWidget(vPanel);
 		vPanel.setSize("406px", "162px");
-
-		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
-		searchBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
-		searchBox.setAlignment(TextAlignment.LEFT);
-		searchBox.setStyleName("profileSearchbox");
-		searchBox.addKeyPressHandler(new KeyPressHandler()
-		{
-			@Override
-			public void onKeyPress(KeyPressEvent event)
-			{
-				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-				{
-					postSearch(searchBox.getText());
-				}
-			}
-		});
-
-		Button createPost = new Button("Create a new post");
-		createPost.setStyleName("ADCButton");
-		vPanel.add(createPost);
-		createPost.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				NewPost editor = new NewPost(main, userCourses, null);
-				editor.show();
-			}
-		});
-		vPanel.add(searchBox);
+				
+				Grid grid = new Grid(1, 2);
+				vPanel.add(grid);
+				vPanel.setCellHorizontalAlignment(grid, HasHorizontalAlignment.ALIGN_RIGHT);
+						
+								Button createPost = new Button("Create a new post");
+								grid.setWidget(0, 0, createPost);
+								createPost.setHeight("30px");
+								createPost.setStyleName("ADCButton");
+								createPost.addClickHandler(new ClickHandler()
+								{
+									public void onClick(ClickEvent event)
+									{
+										NewPost editor = new NewPost(main, userCourses, null);
+										editor.show();
+									}
+								});
+				
+						final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
+						grid.setWidget(0, 1, searchBox);
+						searchBox.setHeight("25px");
+						searchBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+						searchBox.setAlignment(TextAlignment.CENTER);
+						searchBox.setStyleName("profileSearchbox");
+						searchBox.addKeyPressHandler(new KeyPressHandler()
+						{
+							@Override
+							public void onKeyPress(KeyPressEvent event)
+							{
+								if(event.getCharCode() == KeyCodes.KEY_ENTER)
+								{
+									postSearch(searchBox.getText());
+								}
+							}
+						});
 
 		HorizontalPanel hPanel = new HorizontalPanel();
-		hPanel.setStyleName("ADCBasic");
+		hPanel.setStyleName("profileMainPanel");
 		vPanel.add(hPanel);
 
 		VerticalPanel userPanel = new VerticalPanel();
@@ -94,7 +101,7 @@ public class Profile extends Composite
 		hPanel.add(userPanel);
 
 		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absolutePanel.setStyleName("gwt-border");
+		absolutePanel.setStyleName("profilePic");
 		absolutePanel.setSize("128px", "128px");
 		userPanel.add(absolutePanel);
 
@@ -192,6 +199,7 @@ public class Profile extends Composite
 		getClasses(classPanel, addRemove, allAnchor);
 
 		tabPanel = new TabPanel();
+		tabPanel.setStyleName("profileTablPanel");
 		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
 

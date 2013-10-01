@@ -53,6 +53,7 @@ public class PostComment extends Composite
 		horizontalPanel.add(verticalPanel);
 		
 		HTML content = new HTML(comment.getContent());
+		content.setStyleName("CommentSeperator");
 		flexTable.setWidget(1, 0, content);
 		setStyleName("");
 	}

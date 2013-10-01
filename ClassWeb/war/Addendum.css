@@ -251,7 +251,7 @@ a:visited {
 }
 
 .gwt-HorizontalSplitPanel {
-	border: 8px solid #C3D9FF;
+
 }
 
 .gwt-HorizontalSplitPanel .splitter {
@@ -323,15 +323,17 @@ a:visited {
 	background-color: Aqua;
 }
 .gwt-border {
-	border: 2px solid Black;
+
 }
 .gwt-Button-LeftMargin {
 	margin-left: 20px;
 }
 .gwt-Label-grey {
-	color: Silver;
+	color: Black;
 }
 .gwt-Label-bold {
+	color: #9D5C19;
+	font-variant: small-caps;
 	font-weight: bold;
 }
 .promptText {
@@ -363,17 +365,18 @@ a:visited {
 }
 .ADCBasic {
 	color: White;
-	border: 2px solid;
+	border: 10px solid;
+	border-radius: 25px;
 	font-size: 36px;
 	font-family: cursive;
 	font-weight: 600;
 	line-height: normal;
-	background-color: #37B6CE;
-	border-radius:25px;
+	background-color: #FFA240;
+	border-color:#A65500;
 }
 .ADCTextbox {
 	border: 2px solid;
-	border-color: #ffbf40;
+	border-color: #A65500;
 	border-radius:15px;
 }
 .ADCButton {
@@ -381,7 +384,7 @@ a:visited {
 	font-size: 14px;
 	border-radius:15px;
 	font-family: Arial Black;
-	background-color: #ffaa00;
+	background-color: #BF5B30;
 }
 .CSLabel {
 	color: White;
@@ -399,14 +402,14 @@ a:visited {
 .Login {
 	background-image: url('Background.jpg');
 	background-repeat:no-repeat;
-	background-attachment:fixed;
+	background-attachment:scroll;
 	background-position: center, 60px;
 	
 }
 .LoginTitle {
 	margin-up:300px;
 	font-size: 100px;
-	font-family: fantasy;
+	font-family: sans-serif;
 	font-weight: 700;
 }
 .LoginBox {
@@ -422,13 +425,13 @@ a:visited {
 	background-color: darkgrey;
 }
 .MenuPopUp {
-	border: 2px solid #FFAA00;
+	border: 2px solid #A63100;
 	font-family: Arial Black;
-	background-color: White;
+	background-color: #FF7940;
 	border-radius: 5px;
 }
 .NewPostBackground {
-	border: 2px solid #FFAA00;
+	border: 8px solid #FFAA00;
 	font-size: 15pt;
 	font-family: Arial Black;
 	background-color: #FFD073;
@@ -463,17 +466,17 @@ a:visited {
 	border-radius:15px;
 }
 .profilePanel {
-	color: White;
+	color: white;
+	border: 10px solid #A66D00;
+	border-radius:25px;
 	font-size: 36px;
-	font-family: cursive;
+	font-family: sans-serif;
 	font-weight: 600;
 	line-height: normal;
-	background-color: #015666;
-	border-radius:25px;
+	background-color: #FFCF73;
 }
 .newUserDialogTitle {
 	color: White;
-	font-variant: small-caps;
 	font-size: 36px;
 	font-style: normal;
 	font-family: cursive;
@@ -491,6 +494,48 @@ a:visited {
 	font-family: Arial Black;
 	background-color: #FF6140;
 }
-. {
+.profileMainPanel {
+	color: White;
+	border-top: 10px ridge;
+	font-size: 36px;
+	font-family: cursive;
+	font-weight: 600;
+	line-height: normal;
+	background-color: #FDDC9F;
+	border-top-color:#A65500;
 }
+.profilePic {
+	border-right: 10px ridge;
+	border-bottom: 10px ridge;
+	border-right-color: #A65500;
+	border-bottom-color:#A65500;
+}
+.profileTablPanel {
+padding: 0px 0px 6px 6px;
+}
+.Mainview {
+	border : 2px ridge;
+	border-color: #FFAA00;
+	border-radius: 5px;
+}
+.postSpaceTitle {
+	color: #F17D4C;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 18px;
+	font-style: normal;
+	font-family: Arial Black;
+	font-weight: bold;
+}
+.CommentSeperator {
+	border-bottom: 2px ridge;
+	border-bottom-color: #FFAA00;
+	font-family:Arial;
+	font-size: 12px;
+	color: Black;
+}
+.PostComment {
+	font-family:Arial;
+	font-size: 14px;
+	color: Black;
 }

@@ -37,13 +37,14 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
 		border.setBorderWidth(1);
-		border.setWidth("100%");
+		border.setWidth("600px");
 		initWidget(border);
 
 		VerticalPanel scorePanel = new VerticalPanel();
 		scorePanel.getElement().getStyle().setProperty("marginLeft", "5px");
 		scorePanel.getElement().getStyle().setProperty("marginRight", "5px");
 		border.add(scorePanel);
+		border.setCellHorizontalAlignment(scorePanel, HasHorizontalAlignment.ALIGN_CENTER);
 		border.setCellWidth(scorePanel, "34px");
 
 		final Image upArrow = new Image("images/default_up.png");
@@ -148,7 +149,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		if(label.equals("all"))
 			label = "Everyone";
 		Label lblNewLabel = new Label(label);
-		lblNewLabel.setStyleName("gwt-Label-grey");
+		lblNewLabel.setStyleName("postSpaceTitle");
 		lblNewLabel.getElement().getStyle().setProperty("marginLeft", "10px");
 		lblNewLabel.getElement().getStyle().setProperty("marginTop", "5px");
 		postPanel.add(lblNewLabel);
@@ -161,6 +162,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		horizontalPanel.setWidth("100%");
 
 		HorizontalPanel horizontalPanel_2 = new HorizontalPanel();
+		horizontalPanel_2.setStyleName("PostComment");
 		horizontalPanel.add(horizontalPanel_2);
 
 		Image image = new Image("/addendum/getImage?username=" + post.getUsername());
@@ -240,13 +242,13 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		}
 
 		HTML postContent = new HTML(post.getPostContent());
+		postContent.setStyleName("");
 		postPanel.add(postContent);
 
 		HTML separator = new HTML("<hr  style=\"width:100%;\" />");
 		postPanel.add(separator);
 
 		commentPanel = new VerticalPanel();
-		commentPanel.setStyleName("UserPostBackround");
 		commentPanel.setSpacing(5);
 		commentPanel.setWidth("100%");
 		if(post.getComments().size() > 0)
@@ -264,6 +266,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		final PromptedTextBox addAComment = new PromptedTextBox("Add a comment...", "promptText");
 		addAComment.getElement().getStyle().setProperty("margin", "10px");
 		final CommentBox commentBox = new CommentBox(addAComment, post, this);
+		commentBox.setStyleName("CommentSeperator");
 		commentBox.setVisible(false);
 		addCommentPanel.add(commentBox);
 		addAComment.addClickHandler(new ClickHandler()

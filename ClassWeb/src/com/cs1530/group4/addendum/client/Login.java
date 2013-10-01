@@ -16,14 +16,13 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.VerticalSplitPanel;
 import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Login extends Composite
 {
@@ -40,7 +39,7 @@ public class Login extends Composite
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		initWidget(verticalPanel);
 		verticalPanel.setSize("843px", "657px");
-		
+
 		Label welcomeLabel = new Label("ADDENDUM");
 		welcomeLabel.setDirectionEstimator(false);
 		welcomeLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -50,9 +49,9 @@ public class Login extends Composite
 		verticalPanel.setCellVerticalAlignment(welcomeLabel, HasVerticalAlignment.ALIGN_MIDDLE);
 		verticalPanel.setCellHorizontalAlignment(welcomeLabel, HasHorizontalAlignment.ALIGN_CENTER);
 		welcomeLabel.setSize("100%", "136px");
-		
+
 		if(Cookies.getCookie("loggedIn") != null)
-			m.setContent(new Profile(m,Cookies.getCookie("loggedIn")), "profile-"+Cookies.getCookie("loggedIn"));
+			m.setContent(new Profile(m, Cookies.getCookie("loggedIn")), "profile-" + Cookies.getCookie("loggedIn"));
 
 		errorLabel = new Label("Could not login.  Invalid username or password.");
 		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -137,23 +136,23 @@ public class Login extends Composite
 		verticalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		decoratorPanel_1.setWidget(verticalPanel_1);
 		verticalPanel_1.setSize("244px", "155px");
-								
-										Label lblCreateANew = new Label("Don't Have an Account?");
-										verticalPanel_1.add(lblCreateANew);
-										lblCreateANew.setStyleName("gwt-Label-User");
-						
-								Button button = new Button("Create Account");
-								button.setText("CREATE ACCOUNT");
-								button.setStyleName("LoginButton");
-								verticalPanel_1.add(button);
-								button.setSize("167px", "25px");
-				button.addClickHandler(new ClickHandler()
-				{
-					public void onClick(ClickEvent event)
-					{
-						main.setContent(new NewUserDialog(main), "login");
-					}
-				});
+
+		Label lblCreateANew = new Label("Don't Have an Account?");
+		verticalPanel_1.add(lblCreateANew);
+		lblCreateANew.setStyleName("gwt-Label-User");
+
+		Button button = new Button("Create Account");
+		button.setText("CREATE ACCOUNT");
+		button.setStyleName("LoginButton");
+		verticalPanel_1.add(button);
+		button.setSize("167px", "25px");
+		button.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				main.setContent(new NewUserDialog(main), "login");
+			}
+		});
 		setStyleName("Login");
 	}
 

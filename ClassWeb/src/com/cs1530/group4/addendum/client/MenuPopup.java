@@ -83,7 +83,6 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 		}
 		else
 		{
-			System.out.println("here, loggedInUser="+Cookies.getCookie("loggedIn")+",postUser="+post.getUsername());
 			Label flagPost = new Label("Report Post");
 			flagPost.setStyleName("menuitem");
 			flagPost.addClickHandler(new ClickHandler()
@@ -127,7 +126,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 	private class FlagPostForm extends DialogBox
 	{
 		FlagPostForm form = this;
-		String[] options = {"Unwanted commercial content or spam","Pornography or sexually explicit material","Hate speech or graphic violence","Harassment or bullying","This account might be compromised or hacked"};
+		String[] options = {"Unwanted commercial content or spam","Pornography or sexually explicit material","Hate speech or graphic violence","Harassment or bullying","This account might be compromised or hacked","Other"};
 		
 		public FlagPostForm(final String postKey)
 		{
@@ -140,6 +139,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 				radios.add(button);
 				vPanel.add(button);
 			}
+			vPanel.add(new Label("Any additional remarks?"));
 			vPanel.add(new TextBox());
 			HorizontalPanel buttonPanel = new HorizontalPanel();
 			Button cancelButton = new Button("Cancel");

@@ -26,14 +26,13 @@ public class CommentBox extends Composite
 		verticalPanel.setStyleName("CommentBoxBackground");
 		verticalPanel.getElement().getStyle().setProperty("padding", "10px");
 		initWidget(verticalPanel);
-		verticalPanel.setSize("611px", "124px");
+		verticalPanel.setSize("600px", "124px");
 				
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName("CommentBox");
 		verticalPanel.add(horizontalPanel);
-		horizontalPanel.setSize("null", "null");
 		
-		Image image = new Image("/addendum/getImage?username="+post.getUsername());
+		Image image = new Image("/addendum/getImage?username="+Cookies.getCookie("loggedIn"));
 		image.getElement().getStyle().setProperty("marginRight", "10px");
 		horizontalPanel.add(image);
 		image.setSize("28px", "28px");
@@ -44,8 +43,10 @@ public class CommentBox extends Composite
 		textArea.setSize("600px", "75px");
 		
 		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
+		horizontalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		horizontalPanel_1.setSpacing(10);
 		verticalPanel.add(horizontalPanel_1);
+		horizontalPanel_1.setSize("307px", "43px");
 		verticalPanel.setCellHorizontalAlignment(horizontalPanel_1, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		Button btnSubmit = new Button("Post Comment");

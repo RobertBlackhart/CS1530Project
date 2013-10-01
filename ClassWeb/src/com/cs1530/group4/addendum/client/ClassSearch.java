@@ -37,7 +37,7 @@ public class ClassSearch extends Composite
 		initWidget(verticalPanel);
 		verticalPanel.setSize("600px", "600px");
 
-		Label lblPleaseFillIn = new Label("PLEASE FIIL IN ONE OR MORE FIELDS");
+		Label lblPleaseFillIn = new Label("PLEASE FILL IN ONE OR MORE FIELDS");
 		lblPleaseFillIn.setStyleName("CSLabel");
 		verticalPanel.add(lblPleaseFillIn);
 
@@ -193,8 +193,7 @@ public class ClassSearch extends Composite
 		Label lblNewLabel = new Label("Couldn't find your course? Why not try ");
 		flexTable_1.setWidget(0, 0, lblNewLabel);
 
-		Anchor addNewCourse = new Anchor("Add New Course");
-		addNewCourse.setHTML("Adding a New Course");
+		Anchor addNewCourse = new Anchor("Adding a New Course");
 		flexTable_1.setWidget(0, 1, addNewCourse);
 		addNewCourse.addClickHandler(new ClickHandler()
 		{
