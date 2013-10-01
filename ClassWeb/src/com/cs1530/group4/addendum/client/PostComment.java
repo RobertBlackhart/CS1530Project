@@ -3,8 +3,11 @@ package com.cs1530.group4.addendum.client;
 import java.sql.Date;
 
 import com.cs1530.group4.addendum.shared.Comment;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -15,7 +18,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PostComment extends Composite
 {	
-	public PostComment(Comment comment)
+	public PostComment(final Comment comment, final Profile profile)
 	{
 		FlexTable flexTable = new FlexTable();
 		initWidget(flexTable);
@@ -30,9 +33,19 @@ public class PostComment extends Composite
 		
 		VerticalPanel verticalPanel = new VerticalPanel();
 		
-		Label lblUsername = new Label(comment.getUsername());
-		lblUsername.setStyleName("gwt-Label-bold");
-		verticalPanel.add(lblUsername);
+		Anchor usernameLabel = new Anchor(comment.getUsername());
+		if(profile != null)
+		{
+			usernameLabel.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					profile.postSearch("username:"+comment.getUsername());
+				}
+			});
+		}
+		usernameLabel.setStyleName("gwt-Label-bold");
+		verticalPanel.add(usernameLabel);
 		
 		String timeFormatString = "h:mm a";
 		String editFormatString = "h:mm a";

@@ -9,18 +9,18 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class ClassSearch extends Composite
+public class ClassSearch extends DialogBox
 {
 	private TextBox subjectTextBox;
 	private IntegerBox numberTextBox;
@@ -34,7 +34,7 @@ public class ClassSearch extends Composite
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.setStyleName("ADCBasic");
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		initWidget(verticalPanel);
+		add(verticalPanel);
 		verticalPanel.setSize("600px", "600px");
 
 		Label lblPleaseFillIn = new Label("PLEASE FILL IN ONE OR MORE FIELDS");
@@ -202,5 +202,7 @@ public class ClassSearch extends Composite
 				main.setContent(new AddNewCourse(main), "addNewCourse");
 			}
 		});
+		
+		center();
 	}
 }

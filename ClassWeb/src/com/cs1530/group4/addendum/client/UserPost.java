@@ -31,9 +31,11 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	Image menu;
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
+	Profile profile;
 
 	public UserPost(final MainView main, final Profile profile, final Post post)
 	{
+		this.profile = profile;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
 		border.setBorderWidth(1);
@@ -257,7 +259,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		if(post.getComments() != null)
 		{
 			for(Comment comment : post.getComments())
-				commentPanel.add(new PostComment(comment));
+				commentPanel.add(new PostComment(comment,profile));
 		}
 
 		VerticalPanel addCommentPanel = new VerticalPanel();
@@ -285,7 +287,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 
 	public void addSubmittedComment(Comment comment)
 	{
-		commentPanel.add(new PostComment(comment));
+		commentPanel.add(new PostComment(comment,profile));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 	}
 
