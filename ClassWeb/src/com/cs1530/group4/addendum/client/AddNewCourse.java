@@ -4,18 +4,18 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class AddNewCourse extends Composite
+public class AddNewCourse extends DialogBox
 {
+	private AddNewCourse dialog = this;
 	private TextBox descriptionTextBox;
 	private TextBox nameTextBox;
 	private TextBox subjectTextBox;
@@ -26,7 +26,7 @@ public class AddNewCourse extends Composite
 
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.setStyleName("whatever");
-		initWidget(verticalPanel);
+		add(verticalPanel);
 		verticalPanel.setSize("600px", "430px");
 
 		FlexTable flexTable = new FlexTable();
@@ -40,7 +40,7 @@ public class AddNewCourse extends Composite
 		lblSubjectCode.setSize("150px", "");
 		
 				subjectTextBox = new TextBox();
-				subjectTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+				subjectTextBox.setAlignment(TextAlignment.CENTER);
 				subjectTextBox.setStyleName("ADCTextbox");
 				flexTable.setWidget(0, 3, subjectTextBox);
 				subjectTextBox.setSize("240px", "50%");
@@ -95,15 +95,14 @@ public class AddNewCourse extends Composite
 					@Override
 					public void onFailure(Throwable caught)
 					{
+						//TODO: show error message?
 					}
 
 					@Override
 					public void onSuccess(Void v)
 					{
-						subjectTextBox.setText("");
-						numberIntegerBox.setText("");
-						nameTextBox.setText("");
-						descriptionTextBox.setText("");
+						dialog.hide();
+						//TODO: show new class on user's profile
 					}
 				};
 
@@ -122,10 +121,14 @@ public class AddNewCourse extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new ClassSearch(main), "classSearch");
+				dialog.hide();
+				new ClassSearch(main);
 			}
 		});
 		setStyleName("ADCBasic");
+		
+		setGlassEnabled(true);
+		center();
 	}
 
 }

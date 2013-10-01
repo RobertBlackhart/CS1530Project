@@ -216,7 +216,8 @@ public class ClassSearch extends DialogBox
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new AddNewCourse(main), "addNewCourse");
+				dialog.hide();
+				new AddNewCourse(main);
 			}
 		});
 
