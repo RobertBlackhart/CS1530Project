@@ -8,17 +8,17 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class CommentBox extends Composite
 {
 	CommentBox commentBox = this;
 	UserServiceAsync userService = UserService.Util.getInstance();
-	TextArea textArea;
+	RichTextArea textArea;
 	
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
@@ -37,10 +37,14 @@ public class CommentBox extends Composite
 		horizontalPanel.add(image);
 		image.setSize("28px", "28px");
 		
-		textArea = new TextArea();
+		VerticalPanel editorPanel = new VerticalPanel();
+		textArea = new RichTextArea();
+		RichTextToolbar toolbar = new RichTextToolbar(textArea);
 		textArea.addStyleName("small");
-		horizontalPanel.add(textArea);
 		textArea.setSize("600px", "75px");
+		editorPanel.add(toolbar);
+		editorPanel.add(textArea);
+		horizontalPanel.add(editorPanel);
 		
 		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
 		horizontalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
@@ -56,7 +60,7 @@ public class CommentBox extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				final Comment comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getText());
+				final Comment comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getHTML());
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
 					@Override
