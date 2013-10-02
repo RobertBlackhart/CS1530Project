@@ -27,10 +27,10 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 	UserServiceAsync userService = UserService.Util.getInstance();
 	MenuPopup popup = this;
 	Widget relativeWidget;
-	boolean open = false;
 
 	public MenuPopup(final MainView main, Widget w, final Post post, boolean isUser)
 	{
+		super(true);
 		setStyleName("MenuPopUp");
 		relativeWidget = w;
 		VerticalPanel vPanel = new VerticalPanel();
@@ -99,16 +99,6 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 		addDomHandler(this, MouseOverEvent.getType());
 
 		add(vPanel);
-	}
-
-	public boolean isOpen()
-	{
-		return open;
-	}
-
-	public void setOpen(boolean open)
-	{
-		this.open = open;
 	}
 
 	@Override

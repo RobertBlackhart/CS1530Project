@@ -354,6 +354,7 @@ a:visited {
 }
 .menuitem:HOVER {
 	background-color: mediumaquamarine;
+	cursor: pointer;
 }
 .whatever {
 	color: White;

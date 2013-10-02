@@ -78,7 +78,7 @@ public class AddNewCourse extends DialogBox
 		Button btnNewButton = new Button("Add Course");
 		btnNewButton.setText("ADD COURSE");
 		btnNewButton.setStyleName("ADCButton");
-		flexTable.setWidget(4, 1, btnNewButton);
+		flexTable.setWidget(4, 3, btnNewButton);
 		btnNewButton.setSize("200px", "75%");
 		btnNewButton.addClickHandler(new ClickHandler()
 		{
@@ -109,14 +109,14 @@ public class AddNewCourse extends DialogBox
 				userService.newCourseRequest(code, num, name, desc, callback);
 			}
 		});
-		flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_LEFT);
+		flexTable.getCellFormatter().setHorizontalAlignment(4, 3, HasHorizontalAlignment.ALIGN_LEFT);
 		
 				Button btnBackToSearch = new Button("Back to Search");
 				btnBackToSearch.setText("BACK TO SEARCH");
 				btnBackToSearch.setStyleName("ADCButton");
-				flexTable.setWidget(4, 3, btnBackToSearch);
+				flexTable.setWidget(4, 1, btnBackToSearch);
 				btnBackToSearch.setSize("215px", "75%");
-				flexTable.getCellFormatter().setHorizontalAlignment(4, 3, HasHorizontalAlignment.ALIGN_CENTER);
+				flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		btnBackToSearch.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)

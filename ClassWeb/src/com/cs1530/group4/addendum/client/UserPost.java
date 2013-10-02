@@ -71,7 +71,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					@Override
 					public void onSuccess(Boolean success)
 					{
-						if(success)
+						if(success) //user has not upvoted before or they have downvoted before
 						{
 							if(post.isDownvoted())
 								upDownVotes++;
@@ -89,6 +89,12 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 								post.setUpvoted(true);
 								upArrow.setUrl("images/voted_up.png");
 							}
+						}
+						else //user has upvoted before - undo it
+						{
+							scoreLabel.setText(String.valueOf(--upDownVotes));
+							post.setUpvoted(false);
+							upArrow.setUrl("images/default_up.png");
 						}
 					}
 				};
@@ -128,6 +134,12 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 								post.setDownvoted(true);
 								downArrow.setUrl("images/voted_down.png");
 							}
+						}
+						else
+						{
+							post.setDownvoted(false);
+							scoreLabel.setText(String.valueOf(++upDownVotes));
+							downArrow.setUrl("images/default_down.png");
 						}
 					}
 				};
@@ -225,16 +237,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			{
 				public void onClick(ClickEvent event)
 				{
-					if(popup.isOpen())
-					{
+					if(popup.isShowing())
 						popup.hide();
-						popup.setOpen(false);
-					}
 					else
-					{
 						popup.showRelativeTo(menu);
-						popup.setOpen(true);
-					}
 				}
 			});
 			menuPanel.add(menu);

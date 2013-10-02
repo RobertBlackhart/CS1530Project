@@ -573,6 +573,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@SuppressWarnings("unchecked")
 	private Boolean changeScore(String postKey, String property, String user)
 	{
+		boolean success = false;
 		Entity post = getPost(postKey);
 		if(post != null)
 		{
@@ -583,33 +584,41 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			if(post.hasProperty("usersVotedDown") && post.getProperty("usersVotedDown") != null)
 				downUsers = (ArrayList<String>) post.getProperty("usersVotedDown");
 			if(property.equals("upvotes") && upUsers.contains(user))
-				return false;
-			if(property.equals("downvotes") && downUsers.contains(user))
-				return false;
-			post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
-
-			if(property.equals("upvotes"))
 			{
+				post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString())-1);
+				upUsers.remove(user);
+			}
+			else if(property.equals("downvotes") && downUsers.contains(user))
+			{
+				post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString())-1);
+				downUsers.remove(user);
+			}
+			else if(property.equals("upvotes"))
+			{
+				post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
 				upUsers.add(user);
 				if(downUsers.remove(user))
 					post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
 				post.setProperty("usersVotedUp", upUsers);
 				post.setProperty("usersVotedDown", downUsers);
+				success = true;
 			}
-			if(property.equals("downvotes"))
+			else if(property.equals("downvotes"))
 			{
+				post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
 				downUsers.add(user);
 				if(upUsers.remove(user))
 					post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
 				post.setProperty("usersVotedUp", upUsers);
 				post.setProperty("usersVotedDown", downUsers);
+				success = true;
 			}
 			updateScore(post, user);
 			memcache.put(post.getKey(), post);
 			datastore.put(post);
 		}
 
-		return true;
+		return success;
 	}
 
 	private Entity getPost(String postKey)
