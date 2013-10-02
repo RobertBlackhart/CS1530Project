@@ -83,7 +83,7 @@ public class Login extends Composite
 		flexTable.setWidget(1, 0, lblUsername);
 
 		usernameTextBox = new TextBox();
-		usernameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+		usernameTextBox.setTextAlignment(TextBoxBase.ALIGN_LEFT);
 		usernameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -100,7 +100,7 @@ public class Login extends Composite
 		flexTable.setWidget(2, 0, lblPassword);
 
 		passwordTextBox = new PasswordTextBox();
-		passwordTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+		passwordTextBox.setTextAlignment(TextBoxBase.ALIGN_LEFT);
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)

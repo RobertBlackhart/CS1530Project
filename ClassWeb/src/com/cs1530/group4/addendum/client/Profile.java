@@ -196,9 +196,10 @@ public class Profile extends Composite
 		getClasses(classPanel, addRemove, allAnchor);
 
 		tabPanel = new TabPanel();
-		tabPanel.setStyleName("profileTablPanel");
+		tabPanel.setStyleName("gwt-TabBar .gwt-TabBarFirst");
 		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
+		tabPanel.setSize("800px", "89");
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();
 		popularUpdatesPanel.setWidth("600px");

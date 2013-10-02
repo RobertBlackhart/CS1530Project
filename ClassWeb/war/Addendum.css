@@ -73,13 +73,9 @@ a:visited {
 }
 
 .gwt-TabPanel {
-	
 }
 
 .gwt-TabPanelBottom {
-	border-left: 1px solid #87b3ff;
-	border-right: 1px solid #87b3ff;
-	border-bottom: 1px solid #87b3ff;
 }
 
 .gwt-TabBar {
@@ -88,34 +84,19 @@ a:visited {
 
 .gwt-TabBar .gwt-TabBarFirst {
 	height: 100%;
-	border-bottom: 1px solid #87b3ff;
-	border-right: 1px solid #87b3ff;
-	padding-left: 3px;
 }
 
 .gwt-TabBar .gwt-TabBarRest {
-	border-bottom: 1px solid #87b3ff;
-	padding-right: 3px;
 }
 
 .gwt-TabBar .gwt-TabBarItem {
-	border-top: 1px solid #87b3ff;
-	border-bottom: 1px solid #87b3ff;
-	padding: 2px;
 	cursor: hand;
-	white-space: nowrap;
-	border-right: 1px solid #87b3ff;
 }
 
 .gwt-TabBar .gwt-TabBarItem-selected {
 	font-weight: bold;
-	background-color: #e8eef7;
-	border-top: 1px solid #87b3ff;
-	border-right: 1px solid #87b3ff;
-	border-bottom: 1px solid #e8eef7;
 	padding: 2px;
 	cursor: default;
-	white-space: nowrap;
 }
 
 .gwt-PushButton-up {
@@ -350,10 +331,10 @@ a:visited {
 	background-color: white;
 }
 .menuitem {
-	background-color: white;
+	background-color: #FF7940;
 }
 .menuitem:HOVER {
-	background-color: mediumaquamarine;
+	background-color: #D04103;
 	cursor: pointer;
 }
 .whatever {
@@ -488,7 +469,7 @@ a:visited {
 		border-bottom-color: #FFAA00;
 }
 .CommentBoxBackground {
-	font-family: Arial Black;
+	font-family: Arial;
 	background-color: #FFD073;
 }
 .UserPostBackround {
@@ -529,14 +510,28 @@ padding: 0px 0px 6px 6px;
 	font-weight: bold;
 }
 .CommentSeperator {
-	border-bottom: 2px ridge;
-	border-bottom-color: #FFAA00;
-	font-family:Arial;
-	font-size: 12px;
 	color: Black;
+	font-size: 14px;
+	font-family: Arial;
+	font-weight: normal;
+	border-bottom: 2px ridge #FFAA00;
 }
 .PostComment {
 	font-family:Arial;
 	font-size: 14px;
 	color: Black;
+	padding-left: 6px;
+}
+.userpostcomment {
+	color: black;
+	padding-left: 6px;
+	font-size: 16px;
+	font-family: Calibri;
+	font-weight: normal;
+	
+}
+.CommentPanelbackcolor {
+	background-color: #FFA240;
+}	
+. {
 }
