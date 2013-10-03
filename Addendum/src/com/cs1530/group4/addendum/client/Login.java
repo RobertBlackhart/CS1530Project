@@ -2,11 +2,13 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.Date;
 
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -51,7 +53,13 @@ public class Login extends Composite
 		welcomeLabel.setSize("100%", "136px");
 
 		if(Cookies.getCookie("loggedIn") != null)
-			m.setContent(new Profile(m, Cookies.getCookie("loggedIn")), "profile-" + Cookies.getCookie("loggedIn"));
+		{
+			Storage localStorage = Storage.getLocalStorageIfSupported();
+			User user = new User(Cookies.getCookie("loggedIn"));
+			if(localStorage.getItem("loggedIn") != null)
+				user = User.deserialize(localStorage.getItem("loggedIn"));
+			m.setContent(new Stream(m, user), "profile-" + Cookies.getCookie("loggedIn"));
+		}
 
 		errorLabel = new Label("Could not login.  Invalid username or password.");
 		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -170,7 +178,7 @@ public class Login extends Composite
 		{
 			UserServiceAsync loginService = UserService.Util.getInstance();
 			// Set up the callback object.
-			AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
+			AsyncCallback<User> callback = new AsyncCallback<User>()
 			{
 				@Override
 				public void onFailure(Throwable caught)
@@ -178,10 +186,10 @@ public class Login extends Composite
 				}
 
 				@Override
-				public void onSuccess(Boolean result)
+				public void onSuccess(User user)
 				{
-					if(result)
-						acceptLogin();
+					if(user != null)
+						acceptLogin(user);
 					else
 						rejectLogin();
 				}
@@ -191,13 +199,15 @@ public class Login extends Composite
 		}
 	}
 
-	private void acceptLogin()
+	private void acceptLogin(User user)
 	{
 		if(rememberMeCheckBox.getValue())
 		{
 			Date expires = new Date();
 			expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24 * 14)); //14 days from now
 			Cookies.setCookie("loggedIn", usernameTextBox.getText(), expires);
+			Storage localStorage = Storage.getLocalStorageIfSupported();
+			localStorage.setItem("loggedIn", user.serialize());
 		}
 		else
 			Cookies.setCookie("loggedIn", usernameTextBox.getText());
@@ -205,7 +215,7 @@ public class Login extends Composite
 		if(usernameTextBox.getText().equals("Administrator"))
 			main.setContent(new AdminPanel(main), "adminPanel");
 		else
-			main.setContent(new Profile(main, usernameTextBox.getText()), "profile-" + usernameTextBox.getText());
+			main.setContent(new Stream(main, user), "profile-" + usernameTextBox.getText());
 	}
 
 	private void rejectLogin()

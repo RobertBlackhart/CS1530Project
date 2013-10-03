@@ -3,8 +3,10 @@ package com.cs1530.group4.addendum.client;
 import java.util.ArrayList;
 
 import com.cs1530.group4.addendum.shared.Course;
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -167,14 +169,15 @@ public class ClassSearch extends DialogBox
 		{
 			public void onClick(ClickEvent event)
 			{
-				ArrayList<String> courses = new ArrayList<String>();
+				final ArrayList<String> courses = new ArrayList<String>();
 				for(int i = 0; i < resultsBox.getItemCount(); i++)
 				{
 					if(resultsBox.isItemSelected(i))
 					{
 						String item = resultsBox.getValue(i);
 						String course = item.substring(0, item.indexOf(' '));
-						courses.add(course);
+						if(!course.equals("No"))
+							courses.add(course);
 					}
 				}
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
@@ -188,8 +191,19 @@ public class ClassSearch extends DialogBox
 					public void onSuccess(Void v)
 					{
 						dialog.hide();
-						String user = Cookies.getCookie("loggedIn");
-						main.setContent(new Profile(main, user), "profile-" + user);
+						Storage localStorage = Storage.getLocalStorageIfSupported();
+						User user = new User(Cookies.getCookie("loggedIn"));
+						if(localStorage.getItem("loggedIn") != null)
+						{
+							user = User.deserialize(localStorage.getItem("loggedIn"));
+							for(String course : courses)
+							{
+								if(!user.getCourseList().contains(course))
+									user.getCourseList().add(course);
+							}
+							localStorage.setItem("loggedIn", user.serialize());
+						}
+						main.setContent(new Stream(main, user), "profile-" + Cookies.getCookie("loggedIn"));
 					}
 				};
 
@@ -197,8 +211,11 @@ public class ClassSearch extends DialogBox
 					userService.userAddCourse(Cookies.getCookie("loggedIn"), courses, callback);
 				else
 				{
-					String user = Cookies.getCookie("loggedIn");
-					main.setContent(new Profile(main, user), "profile-" + user);
+					Storage localStorage = Storage.getLocalStorageIfSupported();
+					User user = new User(Cookies.getCookie("loggedIn"));
+					if(localStorage.getItem("loggedIn") != null)
+						user = User.deserialize(localStorage.getItem("loggedIn"));
+					main.setContent(new Stream(main, user), "profile-" + Cookies.getCookie("loggedIn"));
 				}
 			}
 		});

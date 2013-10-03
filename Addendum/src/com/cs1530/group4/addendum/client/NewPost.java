@@ -3,8 +3,10 @@ package com.cs1530.group4.addendum.client;
 import java.util.ArrayList;
 
 import com.cs1530.group4.addendum.shared.Post;
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -64,8 +66,11 @@ public class NewPost extends DialogBox
 					@Override
 					public void onSuccess(Void v)
 					{
-						String user = Cookies.getCookie("loggedIn");
-						main.setContent(new Profile(main,user),"profile-"+user);
+						Storage localStorage = Storage.getLocalStorageIfSupported();
+						User user = new User(Cookies.getCookie("loggedIn"));
+						if(localStorage.getItem("loggedIn") != null)
+							user = User.deserialize(localStorage.getItem("loggedIn"));
+						main.setContent(new Stream(main,user),"profile-"+user);
 						postBox.hide();
 					}
 				};

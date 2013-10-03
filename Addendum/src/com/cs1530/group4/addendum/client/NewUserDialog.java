@@ -1,10 +1,12 @@
 package com.cs1530.group4.addendum.client;
 
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -173,12 +175,15 @@ public class NewUserDialog extends Composite
 			{
 				if(result)
 				{
-					Cookies.setCookie("loggedIn", usernameTextBox.getText());
+					Storage localStorage = Storage.getLocalStorageIfSupported();
+					User user = new User(Cookies.getCookie("loggedIn"));
+					if(localStorage.getItem("loggedIn") != null)
+						user = User.deserialize(localStorage.getItem("loggedIn"));
 					
 					if(usernameTextBox.getText().equals("Administrator"))
 						main.setContent(new AdminPanel(main), "adminPanel");
 					else
-						main.setContent(new Profile(main, username),"profile-"+username);
+						main.setContent(new Stream(main, user),"profile-"+username);
 				}
 				else
 					errorLabel.setVisible(true);

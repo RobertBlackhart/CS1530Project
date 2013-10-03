@@ -23,6 +23,7 @@ import com.cs1530.group4.addendum.client.UserService;
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
+import com.cs1530.group4.addendum.shared.User;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -61,25 +62,29 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	IndexSpec courseIndexSpec = IndexSpec.newBuilder().setName("coursesIndex").build();
 	Index courseIndex = SearchServiceFactory.getSearchService().getIndex(courseIndexSpec);
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean doLogin(String username, String password)
+	public User doLogin(String username, String password)
 	{
-		Entity user = getUserEntity(username);
+		Entity userEntity = getUserEntity(username);
+		User user = null;
 
-		if(user != null)
+		if(userEntity != null)
 		{
-			if(user.hasProperty("password"))
+			if(userEntity.hasProperty("password"))
 			{
-				if(user.getProperty("password").toString().equals(password))
-					return true;
-				else
-					return false;
+				if(userEntity.getProperty("password").toString().equals(password))
+				{
+					user = new User(username);
+					if(userEntity.hasProperty("courseList"))
+						user.setCourseList(((ArrayList<String>)userEntity.getProperty("courseList")));
+					else
+						user.setCourseList(new ArrayList<String>());
+				}
 			}
 		}
-		else
-			return false;
-
-		return false;
+		
+		return user;
 	}
 
 	@Override

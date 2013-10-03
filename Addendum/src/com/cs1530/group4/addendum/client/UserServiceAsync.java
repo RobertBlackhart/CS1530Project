@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface UserServiceAsync
 {
-	void doLogin(String username, String password, AsyncCallback<Boolean> callback);
+	void doLogin(String username, String password, AsyncCallback<User> callback);
 	void createUser(String username, String password, String firstName, String lastName, AsyncCallback<Boolean> callback);
 	void courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<ArrayList<Course>> callback);
 	void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);

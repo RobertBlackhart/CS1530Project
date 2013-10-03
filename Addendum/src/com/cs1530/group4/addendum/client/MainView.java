@@ -14,9 +14,11 @@
  *******************************************************************************/
 package com.cs1530.group4.addendum.client;
 
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -56,7 +58,11 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 
 		if(Cookies.getCookie("loggedIn") != null)
 		{
-			contentPanel.add(new Profile(this, Cookies.getCookie("loggedIn")));
+			Storage localStorage = Storage.getLocalStorageIfSupported();
+			User user = new User(Cookies.getCookie("loggedIn"));
+			if(localStorage.getItem("loggedIn") != null)
+				user = User.deserialize(localStorage.getItem("loggedIn"));
+			contentPanel.add(new Stream(this, user));
 		}
 		else
 			contentPanel.add(new Login(this));
@@ -79,24 +85,36 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			content = new Login(main);
 		else if(historyToken[0].equals("profile"))
 		{
-			String user = historyToken[1];
+			String username = historyToken[1];
 			String loggedUser = Cookies.getCookie("loggedIn");
 			if(loggedUser == null)
 				content = new Login(main);
-			else if(user.equals(loggedUser))
-				content = new Profile(main, user);
 			else
-				content = new Profile(main, loggedUser);
+			{
+				Storage localStorage = Storage.getLocalStorageIfSupported();
+				User user = new User(Cookies.getCookie("loggedIn"));
+				if(localStorage.getItem("loggedIn") != null)
+					user = User.deserialize(localStorage.getItem("loggedIn"));
+				
+				content = new Stream(main, user);
+			}
 		}
 		else if(historyToken[0].equals("adminPanel"))
 			content = new AdminPanel(main);
 		else
 		{
-			String user = Cookies.getCookie("loggedIn");
-			if(user == null)
+			String username = Cookies.getCookie("loggedIn");
+			if(username == null)
 				content = new Login(main);
 			else
-				content = new Profile(main, user);
+			{
+				Storage localStorage = Storage.getLocalStorageIfSupported();
+				User user = new User(Cookies.getCookie("loggedIn"));
+				if(localStorage.getItem("loggedIn") != null)
+					user = User.deserialize(localStorage.getItem("loggedIn"));
+				
+				content = new Stream(main, user);
+			}
 		}
 		
 		contentPanel.clear();

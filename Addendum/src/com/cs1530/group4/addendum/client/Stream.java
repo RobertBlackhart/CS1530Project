@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.cs1530.group4.addendum.shared.Post;
+import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -30,10 +31,11 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class Profile extends Composite
+public class Stream extends Composite
 {
 	MainView main;
 	String username, streamLevel = "all", sortMethod = "Popular";
+	User user;
 	UserServiceAsync userService = UserService.Util.getInstance();
 	VerticalPanel vPanel, currentTab;
 	int startIndex = 0;
@@ -41,12 +43,13 @@ public class Profile extends Composite
 	ArrayList<String> userCourses;
 	TabPanel tabPanel;
 	VerticalPanel searchPanel;
-	Profile profile = this;
+	Stream profile = this;
 
-	public Profile(MainView m, String u)
+	public Stream(MainView m, User u)
 	{
 		main = m;
-		username = u;
+		username = u.getUsername();
+		user = u;
 		vPanel = new VerticalPanel();
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
@@ -191,7 +194,6 @@ public class Profile extends Composite
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
-		getClasses(classPanel, addRemove, allAnchor);
 
 		tabPanel = new TabPanel();
 		tabPanel.setStyleName("gwt-TabBar .gwt-TabBarFirst");
@@ -230,7 +232,8 @@ public class Profile extends Composite
 		newUpdatesPanel.setSpacing(15);
 
 		tabPanel.selectTab(0);
-
+		getClasses(classPanel, addRemove, allAnchor);
+		
 		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
 		nextPage.setVisible(false);
@@ -304,46 +307,32 @@ public class Profile extends Composite
 
 	private void getClasses(final VerticalPanel classPanel, final Button addRemove, final Anchor allAnchor)
 	{
-		AsyncCallback<ArrayList<String>> callback = new AsyncCallback<ArrayList<String>>()
+		userCourses = user.getCourseList();
+		classPanel.clear();
+		classPanel.add(allAnchor);
+		for(final String course : userCourses)
 		{
-			@Override
-			public void onFailure(Throwable caught)
+			Anchor courseAnchor = new Anchor(course);
+			courseAnchor.addClickHandler(new ClickHandler()
 			{
-			}
-
-			@Override
-			public void onSuccess(ArrayList<String> courses)
-			{
-				userCourses = courses;
-				classPanel.clear();
-				classPanel.add(allAnchor);
-				for(final String course : courses)
+				@Override
+				public void onClick(ClickEvent event)
 				{
-					Anchor courseAnchor = new Anchor(course);
-					courseAnchor.addClickHandler(new ClickHandler()
-					{
-						@Override
-						public void onClick(ClickEvent event)
-						{
-							streamLevel = course.trim();
-							ArrayList<String> streamLevels = new ArrayList<String>();
-							streamLevels.add(streamLevel);
-							getPosts(currentTab, streamLevels, sortMethod);
-						}
-					});
-					classPanel.add(courseAnchor);
+					streamLevel = course.trim();
+					ArrayList<String> streamLevels = new ArrayList<String>();
+					streamLevels.add(streamLevel);
+					getPosts(currentTab, streamLevels, sortMethod);
 				}
-				classPanel.add(addRemove);
+			});
+			classPanel.add(courseAnchor);
+		}
+		classPanel.add(addRemove);
 
-				ArrayList<String> streamLevels = new ArrayList<String>();
-				streamLevels.add(streamLevel);
-				if(streamLevel.equals("all"))
-					streamLevels.addAll(userCourses);
-				getPosts(currentTab, streamLevels, sortMethod);
-			}
-		};
-
-		userService.getUserCourses(username, callback);
+		ArrayList<String> streamLevels = new ArrayList<String>();
+		streamLevels.add(streamLevel);
+		if(streamLevel.equals("all"))
+			streamLevels.addAll(userCourses);
+		getPosts(currentTab, streamLevels, sortMethod);
 	}
 
 	public void postSearch(final String searchString)

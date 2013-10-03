@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PostComment extends Composite
 {	
-	public PostComment(final Comment comment, final Profile profile)
+	public PostComment(final Comment comment, final Stream profile)
 	{
 		FlexTable flexTable = new FlexTable();
 		flexTable.setStyleName("CommentPanelbackcolor");

@@ -31,9 +31,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	Image menu;
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
-	Profile profile;
+	Stream profile;
 
-	public UserPost(final MainView main, final Profile profile, final Post post)
+	public UserPost(final MainView main, final Stream profile, final Post post)
 	{
 		this.profile = profile;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
