@@ -1,2 +1,3 @@
 # Module addendum
 # RPC service class, partial path of RPC policy file
+com.cs1530.group4.addendum.client.UserService, 7E81E442935CA9FF80CE52717CDF4CDD.gwt.rpc
