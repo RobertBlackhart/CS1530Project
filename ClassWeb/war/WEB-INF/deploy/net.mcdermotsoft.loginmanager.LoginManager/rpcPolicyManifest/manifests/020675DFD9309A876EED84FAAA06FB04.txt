@@ -1,2 +1,0 @@
-serviceClass: net.mcdermotsoft.loginmanager.client.UserService
-path: E9BE13E8890CEF329B2609145CEDFDD2.gwt.rpc

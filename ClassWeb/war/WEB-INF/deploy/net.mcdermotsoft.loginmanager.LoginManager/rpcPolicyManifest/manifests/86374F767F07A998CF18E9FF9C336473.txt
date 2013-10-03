@@ -1,2 +1,0 @@
-serviceClass: net.mcdermotsoft.loginmanager.client.LoginService
-path: 016A60107AA24B4B43ED298F6F6DA458.gwt.rpc
