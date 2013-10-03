@@ -31,7 +31,6 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 	public MenuPopup(final MainView main, Widget w, final Post post, boolean isUser)
 	{
 		super(true);
-		setGlassStyleName("");
 		setStyleName("MenuPopUp");
 		relativeWidget = w;
 		VerticalPanel vPanel = new VerticalPanel();

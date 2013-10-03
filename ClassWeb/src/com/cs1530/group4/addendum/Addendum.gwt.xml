@@ -1,6 +1,9 @@
 <module rename-to="addendum">
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
+	
+	<!-- Attempt to speed up compilation time -->
+	<collapse-all-properties />
 			
 	<!-- Include GWTUpload library -->
 	<inherits name="gwtupload.GWTUpload"/>
