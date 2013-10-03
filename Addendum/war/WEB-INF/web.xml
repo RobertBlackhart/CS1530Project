@@ -12,7 +12,6 @@
 	<servlet>
 		<servlet-name>UserService</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.UserServiceImpl</servlet-class>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>ImageServlet</servlet-name>
@@ -33,15 +32,6 @@
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
 		<url-pattern>*.gupld</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>_ah_warmup</servlet-name>
-		<servlet-class>com.google.apphosting.utils.servlet.WarmupServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>_ah_warmup</servlet-name>
-		<url-pattern>/_ah/warmup</url-pattern>
 	</servlet-mapping>
 
 	<context-param>
