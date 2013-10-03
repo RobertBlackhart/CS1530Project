@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ProfilePictureUpload extends DialogBox
@@ -24,9 +25,11 @@ public class ProfilePictureUpload extends DialogBox
 	public ProfilePictureUpload(String username)
 	{
 		//TODO: make dialog not look sucky
+		setStyleName("NewPostBackground");
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		vPanel.add(new Label("For best results, use a picture with a square aspect ration (i.e. 128px x 128px)"));
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		Button okButton = new Button("OK");

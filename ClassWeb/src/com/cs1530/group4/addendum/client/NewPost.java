@@ -50,6 +50,11 @@ public class NewPost extends DialogBox
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				if(editor.getHTML().length() == 0)
+				{
+					//TODO: show error message and return
+				}
+				
 				UserServiceAsync userService = UserService.Util.getInstance();
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{

@@ -26,11 +26,12 @@ public class CommentBox extends Composite
 		verticalPanel.setStyleName("CommentBoxBackground");
 		verticalPanel.getElement().getStyle().setProperty("padding", "10px");
 		initWidget(verticalPanel);
-		verticalPanel.setSize("600px", "124px");
+		verticalPanel.setSize("444", "124px");
 				
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName("CommentBox");
 		verticalPanel.add(horizontalPanel);
+		horizontalPanel.setWidth("100%");
 		
 		Image image = new Image("/addendum/getImage?username="+Cookies.getCookie("loggedIn"));
 		image.getElement().getStyle().setProperty("marginRight", "10px");
@@ -41,10 +42,11 @@ public class CommentBox extends Composite
 		textArea = new RichTextArea();
 		RichTextToolbar toolbar = new RichTextToolbar(textArea);
 		textArea.addStyleName("small");
-		textArea.setSize("600px", "75px");
+		textArea.setSize("95%", "75px");
 		editorPanel.add(toolbar);
 		editorPanel.add(textArea);
 		horizontalPanel.add(editorPanel);
+		editorPanel.setWidth("100%");
 		
 		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
 		horizontalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
@@ -60,6 +62,11 @@ public class CommentBox extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				if(textArea.getHTML().length() == 0)
+				{
+					//TODO: show error message and return
+				}
+				
 				final Comment comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getHTML());
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
@@ -77,6 +84,7 @@ public class CommentBox extends Composite
 			}
 		});
 		horizontalPanel_1.add(btnSubmit);
+		btnSubmit.setSize("131px", "29px");
 		
 		Button btnCancel = new Button("Cancel");
 		btnCancel.setStyleName("ADCButton");

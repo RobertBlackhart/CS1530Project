@@ -94,7 +94,6 @@ public class Profile extends Composite
 
 		VerticalPanel userPanel = new VerticalPanel();
 		userPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		userPanel.getElement().getStyle().setProperty("marginLeft", "10px");
 		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
 		hPanel.add(userPanel);
 
@@ -104,7 +103,6 @@ public class Profile extends Composite
 		userPanel.add(absolutePanel);
 
 		Image image = new Image("/addendum/getImage?username=" + username);
-		image.setStyleName("");
 		final Label changeImageLabel = new Label("Change Image");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
 		changeImageLabel.setSize("128px", "28px");
@@ -196,14 +194,15 @@ public class Profile extends Composite
 		getClasses(classPanel, addRemove, allAnchor);
 
 		tabPanel = new TabPanel();
-		tabPanel.setStyleName("profileTablPanel");
+		tabPanel.setStyleName("gwt-TabBar .gwt-TabBarFirst");
 		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
+		tabPanel.setSize("800px", "89");
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();
-		popularUpdatesPanel.setWidth("600px");
+		popularUpdatesPanel.setWidth("100%");
 		VerticalPanel newUpdatesPanel = new VerticalPanel();
-		newUpdatesPanel.setWidth("600px");
+		newUpdatesPanel.setWidth("100%");
 		tabPanel.add(popularUpdatesPanel, "Popular", false);
 		tabPanel.add(newUpdatesPanel, "New", false);
 		tabPanel.getElement().getStyle().setProperty("marginRight", "10px");

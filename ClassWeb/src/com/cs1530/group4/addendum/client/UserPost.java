@@ -39,7 +39,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
 		border.setBorderWidth(1);
-		border.setWidth("600px");
+		border.setWidth("100%");
 		initWidget(border);
 
 		VerticalPanel scorePanel = new VerticalPanel();
@@ -250,7 +250,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		}
 
 		HTML postContent = new HTML(post.getPostContent());
-		postContent.setStyleName("");
+		postContent.setStyleName("userpostcomment");
 		postPanel.add(postContent);
 
 		HTML separator = new HTML("<hr  style=\"width:100%;\" />");
@@ -260,7 +260,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		commentPanel.setSpacing(5);
 		commentPanel.setWidth("100%");
 		if(post.getComments().size() > 0)
-			commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
+			commentPanel.setStyleName("CommentPanelbackcolor");
 		postPanel.add(commentPanel);
 		if(post.getComments() != null)
 		{
@@ -274,9 +274,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		final PromptedTextBox addAComment = new PromptedTextBox("Add a comment...", "promptText");
 		addAComment.getElement().getStyle().setProperty("margin", "10px");
 		final CommentBox commentBox = new CommentBox(addAComment, post, this);
-		commentBox.setStyleName("CommentSeperator");
 		commentBox.setVisible(false);
 		addCommentPanel.add(commentBox);
+		commentBox.setWidth("100%");
 		addAComment.addClickHandler(new ClickHandler()
 		{
 			@Override

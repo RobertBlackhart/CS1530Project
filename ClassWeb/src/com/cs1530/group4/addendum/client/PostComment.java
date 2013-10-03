@@ -21,7 +21,9 @@ public class PostComment extends Composite
 	public PostComment(final Comment comment, final Profile profile)
 	{
 		FlexTable flexTable = new FlexTable();
+		flexTable.setStyleName("CommentPanelbackcolor");
 		initWidget(flexTable);
+		flexTable.setWidth("100%");
 		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		flexTable.setWidget(0, 0, horizontalPanel);
