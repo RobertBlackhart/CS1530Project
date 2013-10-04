@@ -21,6 +21,10 @@
 		<servlet-name>UploadServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.UploadServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GetPostsServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.GetPostsServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -28,6 +32,10 @@
 	<servlet-mapping>
 		<servlet-name>ImageServlet</servlet-name>
 		<url-pattern>/addendum/getImage</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetPostsServlet</servlet-name>
+		<url-pattern>/addendum/getPosts</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
