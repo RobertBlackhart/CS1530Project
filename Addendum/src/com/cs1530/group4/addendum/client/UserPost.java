@@ -270,6 +270,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 
 		VerticalPanel addCommentPanel = new VerticalPanel();
 		postPanel.add(addCommentPanel);
+		addCommentPanel.setWidth("100%");
 
 		final PromptedTextBox addAComment = new PromptedTextBox("Add a comment...", "promptText");
 		addAComment.getElement().getStyle().setProperty("margin", "10px");

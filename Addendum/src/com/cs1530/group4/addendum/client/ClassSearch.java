@@ -35,8 +35,9 @@ public class ClassSearch extends DialogBox
 
 	public ClassSearch(final MainView main)
 	{
+		setStyleName("");
 		VerticalPanel verticalPanel = new VerticalPanel();
-		verticalPanel.setStyleName("ADCBasic");
+		
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		add(verticalPanel);
 		verticalPanel.setSize("600px", "600px");
@@ -237,7 +238,7 @@ public class ClassSearch extends DialogBox
 				new AddNewCourse(main);
 			}
 		});
-
+		setStyleName("ADCBasic");
 		setGlassEnabled(true);
 		center();
 	}

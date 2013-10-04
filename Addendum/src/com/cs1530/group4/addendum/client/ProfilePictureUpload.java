@@ -25,6 +25,7 @@ public class ProfilePictureUpload extends DialogBox
 	public ProfilePictureUpload(String username)
 	{
 		//TODO: make dialog not look sucky
+		//I set the css for ok button but I couldn't find the other one? --Ricky 10/4/13
 		setStyleName("NewPostBackground");
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
@@ -33,6 +34,7 @@ public class ProfilePictureUpload extends DialogBox
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		Button okButton = new Button("OK");
+		okButton.setStyleName("ADCButton");
 		okButton.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)

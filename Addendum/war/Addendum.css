@@ -1,6 +1,5 @@
 body { 
 	color: black;
-	margin: 5px;
 	font-size: small;
 	font-family: Arial, sans-serif;
 	background-color: white;
@@ -15,17 +14,9 @@ a:visited {
 }
 
 .gwt-DialogBox {
-	border: 2px solid #AAAAAA;
-	background-color: white;
 }
 
 .gwt-DialogBox .Caption {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	padding: 4px;
-	padding-bottom: 8px;
-	font-weight: bold;
-	cursor: default;
 }
 
 .gwt-MenuBar {
@@ -76,10 +67,11 @@ a:visited {
 }
 
 .gwt-TabPanelBottom {
+	border: 5px solid #BF6464;
+	border-radius:5px;
 }
 
 .gwt-TabBar {
-	font-size: smaller;
 }
 
 .gwt-TabBar .gwt-TabBarFirst {
@@ -90,12 +82,24 @@ a:visited {
 }
 
 .gwt-TabBar .gwt-TabBarItem {
+	color: White;
+	font-size: 14px;
+	font-family: sans-serif;
+	font-weight: bold;
+	background-color: #54E6BE;
 	cursor: hand;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
 }
 
 .gwt-TabBar .gwt-TabBarItem-selected {
-	font-weight: bold;
-	padding: 2px;
+	color: White;
+	font-size: 14px;
+	font-family: sans-serif;
+	font-weight: bolder;
+	background-color: #BF6464;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
 	cursor: default;
 }
 
@@ -470,7 +474,7 @@ a:visited {
 }
 .CommentBoxBackground {
 	font-family: Arial;
-	background-color: #FFD073;
+	background-color: #FFCF73;
 }
 .UserPostBackround {
 	font-family: Arial Black;
@@ -530,5 +534,39 @@ padding: 0px 0px 6px 6px;
 	font-weight: normal;
 }
 .CommentPanelbackcolor {
-	background-color: #FFA240;
-}	
+	background-color: #FFCF73;
+}
+.USername {
+	font-size: 14px;
+	font-style: normal;
+	font-family: cursive;
+	font-weight: bold;
+	color:Black;
+}
+.logout {
+	backgournd-color:;
+	Color:Red;
+	font: cursive;
+	size: 12;
+	font-size: 12px;
+	font-family: cursive;
+	
+}
+. {
+}
+.gwt-TabLayoutPanelTab { 
+
+}
+.Anchor {
+	font-size: 14px;
+	font-family: cursive;
+	font-weight: bold;
+	background-color: #FFBD40;
+	border-top-right-radius:20px;
+	border-bottom-right-radius:20px;
+}
+.courseAnchor {
+	font-size: 14px;
+	font-family: cursive;
+	font-weight: bold;
+}

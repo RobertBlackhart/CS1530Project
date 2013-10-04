@@ -23,10 +23,11 @@ public class CommentBox extends Composite
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();
+		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		verticalPanel.setStyleName("CommentBoxBackground");
 		verticalPanel.getElement().getStyle().setProperty("padding", "10px");
 		initWidget(verticalPanel);
-		verticalPanel.setSize("444", "124px");
+		verticalPanel.setSize("100%", "124px");
 				
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName("CommentBox");
@@ -39,6 +40,7 @@ public class CommentBox extends Composite
 		image.setSize("28px", "28px");
 		
 		VerticalPanel editorPanel = new VerticalPanel();
+		editorPanel.setStyleName("body");
 		textArea = new RichTextArea();
 		RichTextToolbar toolbar = new RichTextToolbar(textArea);
 		textArea.addStyleName("small");

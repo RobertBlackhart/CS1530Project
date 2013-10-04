@@ -151,10 +151,12 @@ public class Stream extends Composite
 		userPanel.add(horizontalPanel);
 
 		Label usernameLabel = new Label(username);
+		usernameLabel.setStyleName("USername");
 		usernameLabel.getElement().getStyle().setProperty("marginRight", "10px");
 		horizontalPanel.add(usernameLabel);
 
 		Anchor logoutAnchor = new Anchor("Logout");
+		logoutAnchor.setStyleName("logout");
 		horizontalPanel.add(logoutAnchor);
 		logoutAnchor.addClickHandler(new ClickHandler()
 		{
@@ -168,10 +170,13 @@ public class Stream extends Composite
 		usernameLabel.getElement().getStyle().setProperty("marginBottom", "30px");
 
 		VerticalPanel classPanel = new VerticalPanel();
+		classPanel.setStyleName("Anchor");
+		classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
 		Button addRemove = new Button("Add/Remove Classes");
+		addRemove.setStyleName("ADCButton");
 		addRemove.getElement().getStyle().setProperty("marginTop", "10px");
 		addRemove.addClickHandler(new ClickHandler()
 		{
@@ -182,6 +187,9 @@ public class Stream extends Composite
 			}
 		});
 		Anchor allAnchor = new Anchor("All Classes");
+		allAnchor.setText("ALL CLASSES");
+		allAnchor.setStyleName("courseAnchor");
+		allAnchor.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 		allAnchor.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -196,7 +204,7 @@ public class Stream extends Composite
 		});
 
 		tabPanel = new TabPanel();
-		tabPanel.setStyleName("gwt-TabBar .gwt-TabBarFirst");
+		tabPanel.setStyleName("gwt-TabBar .gwt-TabBarItem-selected");
 		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
 		tabPanel.setSize("800px", "89");
@@ -236,6 +244,7 @@ public class Stream extends Composite
 		
 		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
+		nextPage.setStyleName("courseAnchor");
 		nextPage.setVisible(false);
 		nextPage.addClickHandler(new ClickHandler()
 		{
@@ -252,6 +261,7 @@ public class Stream extends Composite
 			}
 		});
 		prevPage = new Anchor("Prev 10 Posts");
+		prevPage.setStyleName("courseAnchor");
 		prevPage.setVisible(false);
 		prevPage.getElement().getStyle().setProperty("marginRight", "10px");
 		prevPage.addClickHandler(new ClickHandler()
@@ -313,6 +323,7 @@ public class Stream extends Composite
 		for(final String course : userCourses)
 		{
 			Anchor courseAnchor = new Anchor(course);
+			courseAnchor.setStyleName("courseAnchor");
 			courseAnchor.addClickHandler(new ClickHandler()
 			{
 				@Override
