@@ -77,7 +77,17 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				{
 					user = new User(username);
 					if(userEntity.hasProperty("courseList"))
-						user.setCourseList(((ArrayList<String>)userEntity.getProperty("courseList")));
+					{
+						ArrayList<String> courseList = (ArrayList<String>)userEntity.getProperty("courseList");
+						if(courseList.remove("No"))
+						{
+							user.setCourseList(courseList);
+							userEntity.setProperty("courseList", courseList);
+							datastore.put(userEntity);
+							memcache.put("user_"+user.getUsername(), userEntity);
+						}
+						user.setCourseList(courseList);
+					}
 					else
 						user.setCourseList(new ArrayList<String>());
 				}
