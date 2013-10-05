@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Image;
 
 public class Login extends Composite
 {
@@ -42,16 +43,6 @@ public class Login extends Composite
 		initWidget(verticalPanel);
 		verticalPanel.setSize("843px", "657px");
 
-		Label welcomeLabel = new Label("ADDENDUM");
-		welcomeLabel.setDirectionEstimator(false);
-		welcomeLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		welcomeLabel.getElement().getStyle().setProperty("marginBottom", "20px");
-		welcomeLabel.setStyleName("LoginTitle");
-		verticalPanel.add(welcomeLabel);
-		verticalPanel.setCellVerticalAlignment(welcomeLabel, HasVerticalAlignment.ALIGN_MIDDLE);
-		verticalPanel.setCellHorizontalAlignment(welcomeLabel, HasHorizontalAlignment.ALIGN_CENTER);
-		welcomeLabel.setSize("100%", "136px");
-
 		if(Cookies.getCookie("loggedIn") != null)
 		{
 			Storage localStorage = Storage.getLocalStorageIfSupported();
@@ -64,6 +55,13 @@ public class Login extends Composite
 		errorLabel = new Label("Could not login.  Invalid username or password.");
 		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		errorLabel.setVisible(false);
+		
+		Image image = new Image("image001.jpg");
+		image.setStyleName("LoginTitle");
+		verticalPanel.add(image);
+		verticalPanel.setCellVerticalAlignment(image, HasVerticalAlignment.ALIGN_MIDDLE);
+		verticalPanel.setCellHorizontalAlignment(image, HasHorizontalAlignment.ALIGN_CENTER);
+		image.setSize("600px", "100px");
 		errorLabel.setStyleName("gwt-Label-Error");
 		verticalPanel.add(errorLabel);
 		errorLabel.setWidth("315px");

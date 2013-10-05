@@ -393,10 +393,7 @@ a:visited {
 	
 }
 .LoginTitle {
-	margin-up:300px;
-	font-size: 100px;
-	font-family: sans-serif;
-	font-weight: 700;
+	image: url('Background.jpg');
 }
 .LoginBox {
 	
