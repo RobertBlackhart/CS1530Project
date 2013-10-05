@@ -85,7 +85,9 @@ public class AddNewCourse extends DialogBox
 			public void onClick(ClickEvent event)
 			{
 				String code = subjectTextBox.getText();
-				int num = numberIntegerBox.getValue();
+				int num = 0;
+				if(numberIntegerBox.getValue() != null)
+					num = numberIntegerBox.getValue();
 				String name = nameTextBox.getText();
 				String desc = descriptionTextBox.getText();
 				UserServiceAsync userService = UserService.Util.getInstance();

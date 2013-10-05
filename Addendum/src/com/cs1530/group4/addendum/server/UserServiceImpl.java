@@ -234,6 +234,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription)
 	{
+		System.out.println("here");
 		Entity courseEntity = new Entity("CourseRequest", subjectCode + catalogueNumber);
 		courseEntity.setProperty("subjectCode", subjectCode.toUpperCase()); //always upper case for search purposes
 		courseEntity.setProperty("catalogueNumber", catalogueNumber);

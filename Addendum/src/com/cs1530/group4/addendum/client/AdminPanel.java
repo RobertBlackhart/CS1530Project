@@ -6,6 +6,8 @@ import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -39,16 +41,26 @@ public class AdminPanel extends Composite
 			}
 		});
 
-		VerticalPanel courseAddRequests = new VerticalPanel();
-		VerticalPanel reportedPosts = new VerticalPanel();
+		final VerticalPanel courseAddRequests = new VerticalPanel();
+		final VerticalPanel reportedPosts = new VerticalPanel();
 
-		TabPanel tabPanel = new TabPanel();
+		final TabPanel tabPanel = new TabPanel();
 		verticalPanel.add(tabPanel);
 		tabPanel.add(courseAddRequests, "Course Add Requests");
 		tabPanel.add(reportedPosts, "Reported Posts");
-
-		getCourseAddRequests(courseAddRequests);
-		getReportedPosts(reportedPosts);
+		tabPanel.addSelectionHandler(new SelectionHandler<Integer>()
+		{
+			@Override
+			public void onSelection(SelectionEvent<Integer> event)
+			{
+				if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Course Add Requests"))
+					getCourseAddRequests(courseAddRequests);
+				else if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Reported Posts"))
+					getReportedPosts(reportedPosts);
+			}
+		});
+		
+		tabPanel.selectTab(0);
 	}
 
 	private void getReportedPosts(VerticalPanel reportedPosts)
@@ -69,6 +81,7 @@ public class AdminPanel extends Composite
 		public ReportedPostsCallback(VerticalPanel p)
 		{
 			postsPanel = p;
+			postsPanel.clear();
 		}
 
 		@Override
@@ -131,6 +144,7 @@ public class AdminPanel extends Composite
 		public CourseRequestCallback(VerticalPanel p)
 		{
 			requestsPanel = p;
+			requestsPanel.clear();
 		}
 
 		@Override
