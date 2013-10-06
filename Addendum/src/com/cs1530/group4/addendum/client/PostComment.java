@@ -60,7 +60,7 @@ public class PostComment extends Composite
 		DateTimeFormat editDtf = new DateTimeFormat(editFormatString, new DefaultDateTimeFormatInfo()){};
 		String timeLabel = dtf.format(comment.getCommentTime());
 		if(comment.getLastEdit() != null)
-			timeLabel += editDtf.format(comment.getLastEdit());
+			timeLabel += " (last edit - " + editDtf.format(comment.getLastEdit()) + ")";
 		Label lblCommenttime = new Label(timeLabel);
 		lblCommenttime.setStyleName("gwt-Label-grey");
 		verticalPanel.add(lblCommenttime);
