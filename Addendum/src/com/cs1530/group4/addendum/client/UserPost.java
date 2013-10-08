@@ -1,6 +1,7 @@
 package com.cs1530.group4.addendum.client;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Post;
@@ -259,10 +260,63 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		if(post.getComments().size() > 0)
 			commentPanel.setStyleName("CommentPanelbackcolor");
 		postPanel.add(commentPanel);
+		
 		if(post.getComments() != null)
 		{
-			for(Comment comment : post.getComments())
-				commentPanel.add(new PostComment(comment,profile));
+			if(post.getComments().size() > 2)
+			{
+				final HorizontalPanel expandPanel = new HorizontalPanel();
+				commentPanel.add(expandPanel);
+				final HorizontalPanel hidePanel = new HorizontalPanel();
+				final ArrayList<Comment> comments = post.getComments();
+				
+				Label expandComments = new Label(comments.size() + " comments");
+				expandComments.setStyleName("expandCloseLink");
+				Image expandImage = new Image("images/open_arrow.png");
+				expandImage.setStyleName("expandCloseLink");
+				expandPanel.add(expandComments);
+				expandPanel.add(expandImage);
+				
+				Label hideComments = new Label("Hide comments");
+				hideComments.setStyleName("expandCloseLink");
+				Image hideImage = new Image("images/close_arrow.png");
+				hideImage.setStyleName("expandCloseLink");
+				hidePanel.add(hideComments);
+				hidePanel.add(hideImage);
+				
+				ClickHandler expandHandler = new ClickHandler()
+				{
+					public void onClick(ClickEvent event)
+					{
+						commentPanel.clear();
+						commentPanel.add(hidePanel);
+						for(Comment comment : post.getComments())
+							commentPanel.add(new PostComment(comment,profile));
+					}
+				};
+				expandComments.addClickHandler(expandHandler);
+				expandImage.addClickHandler(expandHandler);
+				
+				ClickHandler hideHandler = new ClickHandler()
+				{
+					public void onClick(ClickEvent event)
+					{
+						commentPanel.clear();
+						commentPanel.add(expandPanel);
+						commentPanel.add(new PostComment(comments.get(comments.size()-1),profile));
+					}
+				};
+				hideComments.addClickHandler(hideHandler);
+				hideImage.addClickHandler(hideHandler);
+				
+				commentPanel.add(expandPanel);
+				commentPanel.add(new PostComment(comments.get(comments.size()-1),profile));
+			}
+			else
+			{
+				for(Comment comment : post.getComments())
+					commentPanel.add(new PostComment(comment,profile));
+			}
 		}
 
 		VerticalPanel addCommentPanel = new VerticalPanel();

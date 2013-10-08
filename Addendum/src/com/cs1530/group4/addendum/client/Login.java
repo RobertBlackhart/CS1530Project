@@ -156,7 +156,7 @@ public class Login extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new NewUserDialog(main), "login");
+				new NewUserDialog(main);
 			}
 		});
 		setStyleName("Login");

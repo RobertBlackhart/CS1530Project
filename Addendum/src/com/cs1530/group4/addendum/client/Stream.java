@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -50,6 +51,7 @@ public class Stream extends Composite
 		main = m;
 		username = u.getUsername();
 		user = u;
+		userCourses = u.getCourseList();
 		vPanel = new VerticalPanel();
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
@@ -163,6 +165,8 @@ public class Stream extends Composite
 			public void onClick(ClickEvent event)
 			{
 				Cookies.removeCookie("loggedIn");
+				Storage localStorage = Storage.getLocalStorageIfSupported();
+				localStorage.removeItem("loggedIn");
 				main.setContent(new Login(main), "login");
 			}
 		});
@@ -233,8 +237,8 @@ public class Stream extends Composite
 		popularUpdatesPanel.setSpacing(15);
 		newUpdatesPanel.setSpacing(15);
 
-		tabPanel.selectTab(0);
 		getClasses(classPanel, addRemove, allAnchor);
+		tabPanel.selectTab(0);
 		
 		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
@@ -331,12 +335,6 @@ public class Stream extends Composite
 			classPanel.add(courseAnchor);
 		}
 		classPanel.add(addRemove);
-
-		ArrayList<String> streamLevels = new ArrayList<String>();
-		streamLevels.add(streamLevel);
-		if(streamLevel.equals("all"))
-			streamLevels.addAll(userCourses);
-		getPosts(currentTab, streamLevels, sortMethod);
 	}
 
 	public void postSearch(final String searchString)

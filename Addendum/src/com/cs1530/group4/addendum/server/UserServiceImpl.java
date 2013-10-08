@@ -362,10 +362,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			{
 				user = datastore.get(KeyFactory.createKey("User", username));
 			}
-			catch(EntityNotFoundException ex)
-			{
-				ex.printStackTrace();
-			}
+			catch(EntityNotFoundException ex){}
 		}
 		return user;
 	}
@@ -461,7 +458,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	{
 		ArrayList<Post> posts = new ArrayList<Post>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
-
+		
+		System.out.println(streamLevels);
+		
 		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(10);
 		Filter filter = null;
 		if(streamLevels.size() > 1)

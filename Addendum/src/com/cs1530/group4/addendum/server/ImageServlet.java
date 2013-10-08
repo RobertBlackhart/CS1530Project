@@ -25,7 +25,12 @@ public class ImageServlet extends HttpServlet
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
 		String username = req.getParameter("username");
-		Entity user = getUserEntity(username);
+		Entity user = null;
+		
+		if(username == null)
+			user = getUserEntity("default");
+		
+		user = getUserEntity(username);
 
 		if(user == null)
 			user = getUserEntity("default");

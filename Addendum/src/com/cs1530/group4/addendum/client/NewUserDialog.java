@@ -11,7 +11,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -19,19 +19,21 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
-public class NewUserDialog extends Composite
+public class NewUserDialog extends DialogBox
 {
 	MainView main;
 	Label errorLabel;
 	TextBox firstNameTextBox, lastNameTextBox, usernameTextBox;
 	PasswordTextBox passwordTextBox;
-	
+	DialogBox dialog = this;
+
 	public NewUserDialog(MainView m)
 	{
 		main = m;
 		FlexTable flexTable = new FlexTable();
-		initWidget(flexTable);
+		add(flexTable);
 		flexTable.setSize("528px", "432px");
 
 		Label lblFillInYour = new Label("Fill in your details below");
@@ -39,20 +41,20 @@ public class NewUserDialog extends Composite
 		flexTable.setWidget(0, 0, lblFillInYour);
 
 		firstNameTextBox = new TextBox();
-		firstNameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+		firstNameTextBox.setAlignment(TextAlignment.CENTER);
 		firstNameTextBox.setStyleName("ADCTextbox");
 		firstNameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		
-				Label lblFirstName = new Label("First Name:");
-				lblFirstName.setStyleName("whatever");
-				flexTable.setWidget(1, 1, lblFirstName);
+
+		Label lblFirstName = new Label("First Name:");
+		lblFirstName.setStyleName("whatever");
+		flexTable.setWidget(1, 1, lblFirstName);
 		flexTable.setWidget(1, 4, firstNameTextBox);
 		firstNameTextBox.setSize("200px", "30px");
 
@@ -64,13 +66,13 @@ public class NewUserDialog extends Composite
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		
-				Label lblLastName = new Label("Last Name:");
-				lblLastName.setStyleName("whatever");
-				flexTable.setWidget(2, 1, lblLastName);
+
+		Label lblLastName = new Label("Last Name:");
+		lblLastName.setStyleName("whatever");
+		flexTable.setWidget(2, 1, lblLastName);
 		flexTable.setWidget(2, 4, lastNameTextBox);
 		lastNameTextBox.setSize("200px", "30px");
 
@@ -82,13 +84,13 @@ public class NewUserDialog extends Composite
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		
-				Label lblUsername = new Label("Username:");
-				lblUsername.setStyleName("whatever");
-				flexTable.setWidget(3, 1, lblUsername);
+
+		Label lblUsername = new Label("Username:");
+		lblUsername.setStyleName("whatever");
+		flexTable.setWidget(3, 1, lblUsername);
 		flexTable.setWidget(3, 4, usernameTextBox);
 		usernameTextBox.setSize("200px", "30px");
 
@@ -100,16 +102,16 @@ public class NewUserDialog extends Composite
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
-		
-				Label lblPassword = new Label("Password:");
-				lblPassword.setStyleName("whatever");
-				flexTable.setWidget(4, 1, lblPassword);
+
+		Label lblPassword = new Label("Password:");
+		lblPassword.setStyleName("whatever");
+		flexTable.setWidget(4, 1, lblPassword);
 		flexTable.setWidget(4, 4, passwordTextBox);
 		passwordTextBox.setSize("200px", "30px");
-		
+
 		errorLabel = new Label("username already in use");
 		errorLabel.setVisible(false);
 		errorLabel.setStyleName("gwt-Label-Error");
@@ -127,7 +129,7 @@ public class NewUserDialog extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new Login(main),"login");
+				dialog.hide();
 			}
 		});
 		horizontalPanel.add(btnCancel);
@@ -138,7 +140,7 @@ public class NewUserDialog extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				createUser(firstNameTextBox.getText(),lastNameTextBox.getText(),usernameTextBox.getText(), passwordTextBox.getText());
+				createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
 		btnOk.setStyleName("ADCButton");
@@ -151,6 +153,9 @@ public class NewUserDialog extends Composite
 		flexTable.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable.getFlexCellFormatter().setColSpan(5, 0, 5);
 		setStyleName("ADCBasic");
+
+		setGlassEnabled(true);
+		center();
 	}
 
 	protected void createUser(String firstName, String lastName, final String username, String password)
@@ -159,8 +164,8 @@ public class NewUserDialog extends Composite
 		{
 			Window.alert("All fields are required");
 			return;
-		}				
-		
+		}
+
 		UserServiceAsync userService = UserService.Util.getInstance();
 		// Set up the callback object.
 		AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
@@ -175,15 +180,17 @@ public class NewUserDialog extends Composite
 			{
 				if(result)
 				{
+					dialog.hide();
+					Cookies.setCookie("loggedIn", username);
+					User user = new User(username);
+
 					Storage localStorage = Storage.getLocalStorageIfSupported();
-					User user = new User(Cookies.getCookie("loggedIn"));
-					if(localStorage.getItem("loggedIn") != null)
-						user = User.deserialize(localStorage.getItem("loggedIn"));
-					
+					localStorage.setItem("loggedIn", user.serialize());
+
 					if(usernameTextBox.getText().equals("Administrator"))
 						main.setContent(new AdminPanel(main), "adminPanel");
 					else
-						main.setContent(new Stream(main, user),"profile-"+username);
+						main.setContent(new Stream(main, user), "profile-" + username);
 				}
 				else
 					errorLabel.setVisible(true);

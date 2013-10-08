@@ -579,3 +579,18 @@ padding: 0px 0px 6px 6px;
 	font-family: Arial Black;
 	background-color: #BF5B30;
 }
+.expandCloseLink {
+	-webkit-transition: color .218s;
+	transition: color .218s;
+	color: #262626;
+	font-size: 12px;
+	font-weight: normal;
+	padding-right: 5px;
+	text-transform: none;
+}
+.expandCloseLink:HOVER {
+	color: #427fed;
+	cursor: pointer;
+	text-decoration:underline;
+	
+}
