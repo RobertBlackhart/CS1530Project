@@ -64,40 +64,37 @@ a:visited {
 }
 
 .gwt-TabPanel {
+  margin: 10px 10px 0px 0px;
+  border: #BF6464;
 }
 
-.gwt-TabPanelBottom {
-	border: 5px solid #BF6464;
-	border-radius:5px;
-}
+.gwt-TabPanelBottom { 
+	border-radius: 5px; 
+	border: 5px solid !important;
+	border-color: #BF6464 !important; 
+} 
 
 .gwt-TabBar {
 }
 
-.gwt-TabBar .gwt-TabBarFirst {
-	height: 100%;
-}
-
-.gwt-TabBar .gwt-TabBarRest {
-}
-
-.gwt-TabBar .gwt-TabBarItem {
+.gwt-TabBarItem {
 	color: White;
 	font-size: 14px;
 	font-family: sans-serif;
 	font-weight: bold;
-	background-color: #54E6BE;
-	cursor: hand;
+	cursor: pointer;
+	background-color: #54E6BE !important;
+	margin-right: 2px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 }
 
-.gwt-TabBar .gwt-TabBarItem-selected {
-	color: White;
+.gwt-TabBarItem-selected {
+  color: White;
 	font-size: 14px;
 	font-family: sans-serif;
 	font-weight: bolder;
-	background-color: #BF6464;
+	background-color: #BF6464 !important;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	cursor: default;
@@ -367,8 +364,8 @@ a:visited {
 }
 .ADCButton {
 	color: White;
-	font-size: 14px;
 	border-radius:15px;
+	font-size: 14px;
 	font-family: Arial Black;
 	background-color: #BF5B30;
 }
@@ -534,11 +531,13 @@ padding: 0px 0px 6px 6px;
 	background-color: #FFCF73;
 }
 .USername {
+	color: Black;
+	margin-right: 10px;
+	margin-bottom: 30px;
 	font-size: 14px;
 	font-style: normal;
 	font-family: cursive;
 	font-weight: bold;
-	color:Black;
 }
 .logout {
 	backgournd-color:;
@@ -563,7 +562,20 @@ padding: 0px 0px 6px 6px;
 	border-bottom-right-radius:20px;
 }
 .courseAnchor {
+	margin-right: 10px;
 	font-size: 14px;
 	font-family: cursive;
 	font-weight: bold;
+}
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs 
+{
+	background: none !important;
+}
+.ADCButton-addRemoveClasses {
+	color: White;
+	margin-top: 10px;
+	border-radius:15px;
+	font-size: 14px;
+	font-family: Arial Black;
+	background-color: #BF5B30;
 }

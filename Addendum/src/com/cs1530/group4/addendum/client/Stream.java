@@ -152,7 +152,6 @@ public class Stream extends Composite
 
 		Label usernameLabel = new Label(username);
 		usernameLabel.setStyleName("USername");
-		usernameLabel.getElement().getStyle().setProperty("marginRight", "10px");
 		horizontalPanel.add(usernameLabel);
 
 		Anchor logoutAnchor = new Anchor("Logout");
@@ -167,7 +166,6 @@ public class Stream extends Composite
 				main.setContent(new Login(main), "login");
 			}
 		});
-		usernameLabel.getElement().getStyle().setProperty("marginBottom", "30px");
 
 		VerticalPanel classPanel = new VerticalPanel();
 		classPanel.setStyleName("Anchor");
@@ -176,8 +174,7 @@ public class Stream extends Composite
 		userPanel.add(classPanel);
 
 		Button addRemove = new Button("Add/Remove Classes");
-		addRemove.setStyleName("ADCButton");
-		addRemove.getElement().getStyle().setProperty("marginTop", "10px");
+		addRemove.setStyleName("ADCButton-addRemoveClasses");
 		addRemove.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -204,8 +201,6 @@ public class Stream extends Composite
 		});
 
 		tabPanel = new TabPanel();
-		tabPanel.setStyleName("gwt-TabBar .gwt-TabBarItem-selected");
-		tabPanel.getElement().getStyle().setProperty("marginTop", "10px");
 		hPanel.add(tabPanel);
 		tabPanel.setSize("800px", "89");
 
@@ -215,7 +210,6 @@ public class Stream extends Composite
 		newUpdatesPanel.setWidth("100%");
 		tabPanel.add(popularUpdatesPanel, "Popular", false);
 		tabPanel.add(newUpdatesPanel, "New", false);
-		tabPanel.getElement().getStyle().setProperty("marginRight", "10px");
 		tabPanel.addSelectionHandler(new SelectionHandler<Integer>()
 		{
 			@Override
@@ -263,7 +257,6 @@ public class Stream extends Composite
 		prevPage = new Anchor("Prev 10 Posts");
 		prevPage.setStyleName("courseAnchor");
 		prevPage.setVisible(false);
-		prevPage.getElement().getStyle().setProperty("marginRight", "10px");
 		prevPage.addClickHandler(new ClickHandler()
 		{
 			@Override
