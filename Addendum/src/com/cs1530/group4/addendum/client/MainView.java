@@ -55,13 +55,12 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 
 		rootPanel.add(topPanel);
 		rootPanel.add(contentPanel);
+		
+		Storage localStorage = Storage.getLocalStorageIfSupported();
 
-		if(Cookies.getCookie("loggedIn") != null)
+		if(Cookies.getCookie("loggedIn") != null && localStorage.getItem("loggedIn") != null)
 		{
-			Storage localStorage = Storage.getLocalStorageIfSupported();
-			User user = new User(Cookies.getCookie("loggedIn"));
-			if(localStorage.getItem("loggedIn") != null)
-				user = User.deserialize(localStorage.getItem("loggedIn"));
+			User user = User.deserialize(localStorage.getItem("loggedIn"));
 			contentPanel.add(new Stream(this, user));
 		}
 		else

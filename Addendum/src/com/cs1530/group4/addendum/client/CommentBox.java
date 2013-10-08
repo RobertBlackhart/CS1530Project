@@ -13,12 +13,14 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Label;
 
 public class CommentBox extends Composite
 {
 	CommentBox commentBox = this;
 	UserServiceAsync userService = UserService.Util.getInstance();
 	RichTextArea textArea;
+	Label errorLabel;
 	
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
@@ -50,6 +52,11 @@ public class CommentBox extends Composite
 		horizontalPanel.add(editorPanel);
 		editorPanel.setWidth("100%");
 		
+		errorLabel = new Label("Error: Message length must be greater than 0");
+		errorLabel.setStyleName("gwt-Label-Error");
+		errorLabel.setVisible(false);
+		verticalPanel.add(errorLabel);
+		
 		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
 		horizontalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		horizontalPanel_1.setSpacing(10);
@@ -57,7 +64,7 @@ public class CommentBox extends Composite
 		horizontalPanel_1.setSize("307px", "43px");
 		verticalPanel.setCellHorizontalAlignment(horizontalPanel_1, HasHorizontalAlignment.ALIGN_RIGHT);
 		
-		Button btnSubmit = new Button("Post Comment");
+		final Button btnSubmit = new Button("Post Comment");
 		btnSubmit.setStyleName("ADCButton");
 		btnSubmit.addClickHandler(new ClickHandler()
 		{
@@ -66,14 +73,22 @@ public class CommentBox extends Composite
 			{
 				if(textArea.getHTML().length() == 0)
 				{
-					//TODO: show error message and return
+					errorLabel.setVisible(true);
+					return;
 				}
+				
+				btnSubmit.setEnabled(false);
 				
 				final Comment comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getHTML());
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
 					@Override
-					public void onFailure(Throwable caught){}
+					public void onFailure(Throwable caught)
+					{
+						btnSubmit.setEnabled(true);
+						errorLabel.setVisible(true);
+						errorLabel.setText("There was a problem uploading your post, please try again later.");
+					}
 					@Override
 					public void onSuccess(Void v)
 					{

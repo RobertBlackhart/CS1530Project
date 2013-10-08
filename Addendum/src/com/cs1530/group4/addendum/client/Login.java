@@ -204,11 +204,12 @@ public class Login extends Composite
 			Date expires = new Date();
 			expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24 * 14)); //14 days from now
 			Cookies.setCookie("loggedIn", usernameTextBox.getText(), expires);
-			Storage localStorage = Storage.getLocalStorageIfSupported();
-			localStorage.setItem("loggedIn", user.serialize());
 		}
 		else
 			Cookies.setCookie("loggedIn", usernameTextBox.getText());
+		
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		localStorage.setItem("loggedIn", user.serialize());
 
 		if(usernameTextBox.getText().equals("Administrator"))
 			main.setContent(new AdminPanel(main), "adminPanel");

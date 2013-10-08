@@ -25,6 +25,7 @@ public class NewPost extends DialogBox
 	RichTextArea editor;
 	ListBox streamLevelBox;
 	MainView main;
+	Label errorLabel;
 
 	public NewPost(MainView m, ArrayList<String> streams, final Post post)
 	{
@@ -45,7 +46,7 @@ public class NewPost extends DialogBox
 		buttonPanel.setStyleName("NewPostBottomLine");
 		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		buttonPanel.setWidth("100%");
-		Button submitButton = new Button("Submit");
+		final Button submitButton = new Button("Submit");
 		submitButton.setStyleName("LoginButton");
 		submitButton.addClickHandler(new ClickHandler()
 		{
@@ -54,14 +55,22 @@ public class NewPost extends DialogBox
 			{
 				if(editor.getHTML().length() == 0)
 				{
-					//TODO: show error message and return
+					errorLabel.setVisible(true);
+					return;
 				}
+				
+				submitButton.setEnabled(false);
 				
 				UserServiceAsync userService = UserService.Util.getInstance();
 				AsyncCallback<Void> callback = new AsyncCallback<Void>()
 				{
 					@Override
-					public void onFailure(Throwable caught){}
+					public void onFailure(Throwable caught)
+					{
+						submitButton.setEnabled(true);
+						errorLabel.setVisible(true);
+						errorLabel.setText("There was a problem uploading your post, please try again later.");
+					}
 					
 					@Override
 					public void onSuccess(Void v)
@@ -131,6 +140,11 @@ public class NewPost extends DialogBox
 		}
 		streamPanel.add(streamLevelBox);
 		streamLevelBox.setWidth("171px");
+		
+		errorLabel = new Label("Error: Message length must be greater than 0");
+		errorLabel.setStyleName("gwt-Label-Error");
+		errorLabel.setVisible(false);
+		vPanel.add(errorLabel);
 		vPanel.add(buttonPanel);
 		add(vPanel);
 
