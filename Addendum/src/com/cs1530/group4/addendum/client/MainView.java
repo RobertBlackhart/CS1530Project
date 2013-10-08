@@ -84,7 +84,6 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			content = new Login(main);
 		else if(historyToken[0].equals("profile"))
 		{
-			String username = historyToken[1];
 			String loggedUser = Cookies.getCookie("loggedIn");
 			if(loggedUser == null)
 				content = new Login(main);

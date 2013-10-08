@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 public class NewUserDialog extends DialogBox
@@ -59,7 +58,7 @@ public class NewUserDialog extends DialogBox
 		firstNameTextBox.setSize("200px", "30px");
 
 		lastNameTextBox = new TextBox();
-		lastNameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+		lastNameTextBox.setAlignment(TextAlignment.CENTER);
 		lastNameTextBox.setStyleName("ADCTextbox");
 		lastNameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
@@ -77,7 +76,7 @@ public class NewUserDialog extends DialogBox
 		lastNameTextBox.setSize("200px", "30px");
 
 		usernameTextBox = new TextBox();
-		usernameTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+		usernameTextBox.setAlignment(TextAlignment.CENTER);
 		usernameTextBox.setStyleName("ADCTextbox");
 		usernameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
@@ -95,7 +94,7 @@ public class NewUserDialog extends DialogBox
 		usernameTextBox.setSize("200px", "30px");
 
 		passwordTextBox = new PasswordTextBox();
-		passwordTextBox.setTextAlignment(TextBoxBase.ALIGN_CENTER);
+		passwordTextBox.setAlignment(TextAlignment.CENTER);
 		passwordTextBox.setStyleName("ADCTextbox");
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
