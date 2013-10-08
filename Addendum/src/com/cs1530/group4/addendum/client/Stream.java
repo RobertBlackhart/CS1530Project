@@ -39,7 +39,7 @@ public class Stream extends Composite
 	User user;
 	UserServiceAsync userService = UserService.Util.getInstance();
 	VerticalPanel vPanel, currentTab;
-	int startIndex = 0;
+	int startIndex = 0, searchStart = 0;
 	Anchor nextPage, prevPage;
 	ArrayList<String> userCourses;
 	TabPanel tabPanel;
@@ -205,7 +205,6 @@ public class Stream extends Composite
 		});
 
 		tabPanel = new TabPanel();
-		hPanel.add(tabPanel);
 		tabPanel.setSize("800px", "89");
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();
@@ -221,7 +220,18 @@ public class Stream extends Composite
 			public void onSelection(SelectionEvent<Integer> event)
 			{
 				if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Search Results"))
+				{
+					if(searchStart < 10)
+						prevPage.setVisible(false);
+					else
+						prevPage.setVisible(true);
 					return;
+				}
+				
+				if(startIndex < 10)
+					prevPage.setVisible(false);
+				else
+					prevPage.setVisible(true);
 
 				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
 				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
@@ -237,9 +247,17 @@ public class Stream extends Composite
 		});
 		popularUpdatesPanel.setSpacing(15);
 		newUpdatesPanel.setSpacing(15);
+		
+		hPanel.add(tabPanel);
+		currentTab = (VerticalPanel) tabPanel.getWidget(0);
 
 		getClasses(classPanel, addRemove, allAnchor);
-		tabPanel.selectTab(0);
+		
+		ArrayList<String> streamLevels = new ArrayList<String>();
+		streamLevels.add(streamLevel);
+		if(streamLevel.equals("all"))
+			streamLevels.addAll(userCourses);
+		getPosts(((VerticalPanel)tabPanel.getWidget(0)), streamLevels, sortMethod);
 		
 		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
@@ -251,7 +269,10 @@ public class Stream extends Composite
 			public void onClick(ClickEvent event)
 			{
 				prevPage.setVisible(true);
-				startIndex += 10;
+				if(tabPanel.getTabBar().getTabHTML(tabPanel.getTabBar().getSelectedTab()).equals("Search Results"))
+					searchStart += 10;
+				else
+					startIndex += 10;
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
 				if(streamLevel.equals("all"))
@@ -268,8 +289,11 @@ public class Stream extends Composite
 			public void onClick(ClickEvent event)
 			{
 				nextPage.setVisible(true);
-				startIndex -= 10;
-				if(startIndex < 10)
+				if(tabPanel.getTabBar().getTabHTML(tabPanel.getTabBar().getSelectedTab()).equals("Search Results"))
+					searchStart -= 10;
+				else
+					startIndex -= 10;
+				if(startIndex < 10 || searchStart < 10)
 					prevPage.setVisible(false);
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
@@ -302,12 +326,19 @@ public class Stream extends Composite
 				if(sortMethod.equals("New"))
 					Collections.sort(posts, Post.PostTimeComparator);
 
+				int count = 0;
 				for(Post post : posts)
 				{
+					count++;
+					if(count == 11)
+					{
+						nextPage.setVisible(true);
+						break;
+					}
+					
+					nextPage.setVisible(false);
 					updatesPanel.add(new UserPost(main, profile, post));
 				}
-				if(posts.size() == 10)
-					nextPage.setVisible(true);
 			}
 		};
 		userService.getPosts(startIndex, streamLevels, username, callback);
@@ -367,14 +398,21 @@ public class Stream extends Composite
 				searchPanel.clear();
 
 				Collections.sort(posts, Post.PostScoreComparator);
+				int count = 0;
 				for(Post post : posts)
 				{
+					count++;
+					if(count == 11)
+					{
+						nextPage.setVisible(true);
+						break;
+					}
+					
+					nextPage.setVisible(false);
 					searchPanel.add(new UserPost(main, profile, post));
 				}
-				if(posts.size() == 10)
-					nextPage.setVisible(true);
 			}
 		};
-		userService.postSearch(searchString, username, callback);
+		userService.postSearch(searchStart,searchString, username, callback);
 	}
 }

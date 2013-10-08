@@ -12,20 +12,20 @@ import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Image;
 
 public class Login extends Composite
 {
@@ -55,7 +55,7 @@ public class Login extends Composite
 		errorLabel = new Label("Could not login.  Invalid username or password.");
 		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		errorLabel.setVisible(false);
-		
+
 		Image image = new Image("image001.jpg");
 		image.setStyleName("LoginTitle");
 		verticalPanel.add(image);
@@ -72,13 +72,9 @@ public class Login extends Composite
 		verticalPanel.add(horizontalPanel);
 		horizontalPanel.setSize("543px", "154px");
 
-		DecoratorPanel decoratorPanel = new DecoratorPanel();
-		horizontalPanel.add(decoratorPanel);
-		decoratorPanel.setStyleName("LoginBox");
-
 		FlexTable flexTable = new FlexTable();
-		decoratorPanel.setWidget(flexTable);
-		flexTable.setHeight("155px");
+		horizontalPanel.add(flexTable);
+		flexTable.setSize("329px", "155px");
 
 		Label lblAlreadyAUser = new Label("Already a User?");
 		lblAlreadyAUser.setStyleName("gwt-Label-User");
@@ -89,7 +85,7 @@ public class Login extends Composite
 		flexTable.setWidget(1, 0, lblUsername);
 
 		usernameTextBox = new TextBox();
-		usernameTextBox.setTextAlignment(TextBoxBase.ALIGN_LEFT);
+		usernameTextBox.setAlignment(TextAlignment.LEFT);
 		usernameTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -106,7 +102,7 @@ public class Login extends Composite
 		flexTable.setWidget(2, 0, lblPassword);
 
 		passwordTextBox = new PasswordTextBox();
-		passwordTextBox.setTextAlignment(TextBoxBase.ALIGN_LEFT);
+		passwordTextBox.setAlignment(TextAlignment.LEFT);
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			public void onKeyPress(KeyPressEvent event)
@@ -116,6 +112,17 @@ public class Login extends Composite
 			}
 		});
 		flexTable.setWidget(2, 1, passwordTextBox);
+
+		Anchor forgotPassword = new Anchor("Forgot Password?");
+		forgotPassword.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				//TODO: implement dialog prompting user's email
+				Window.alert("To Be Implemented");
+			}
+		});
+		flexTable.setWidget(3, 0, forgotPassword);
 
 		rememberMeCheckBox = new CheckBox("Remember me on this Computer");
 		flexTable.setWidget(3, 1, rememberMeCheckBox);
@@ -133,15 +140,10 @@ public class Login extends Composite
 		btnNewButton.setSize("110px", "25px");
 		flexTable.getFlexCellFormatter().setColSpan(0, 0, 2);
 
-		DecoratorPanel decoratorPanel_1 = new DecoratorPanel();
-		decoratorPanel_1.setStyleName("LoginBox");
-		horizontalPanel.add(decoratorPanel_1);
-		decoratorPanel_1.setSize("240px", "104px");
-
 		VerticalPanel verticalPanel_1 = new VerticalPanel();
+		horizontalPanel.add(verticalPanel_1);
 		verticalPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		decoratorPanel_1.setWidget(verticalPanel_1);
-		verticalPanel_1.setSize("244px", "155px");
+		verticalPanel_1.setSize("211px", "155px");
 
 		Label lblCreateANew = new Label("Don't Have an Account?");
 		verticalPanel_1.add(lblCreateANew);
@@ -207,7 +209,7 @@ public class Login extends Composite
 		}
 		else
 			Cookies.setCookie("loggedIn", usernameTextBox.getText());
-		
+
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		localStorage.setItem("loggedIn", user.serialize());
 

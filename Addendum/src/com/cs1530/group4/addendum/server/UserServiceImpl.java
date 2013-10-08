@@ -46,6 +46,7 @@ import com.google.appengine.api.search.Document;
 import com.google.appengine.api.search.Field;
 import com.google.appengine.api.search.Index;
 import com.google.appengine.api.search.IndexSpec;
+import com.google.appengine.api.search.QueryOptions;
 import com.google.appengine.api.search.Results;
 import com.google.appengine.api.search.ScoredDocument;
 import com.google.appengine.api.search.SearchServiceFactory;
@@ -397,8 +398,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		int begin = postHtml.indexOf("[CODE]");
 		int end = postHtml.indexOf("[/CODE]");
 
-		System.out.println("begin: " + begin + ", end: " + end);
-
 		if(begin != -1 && end != -1)
 		{
 			postHtml = postHtml.substring(0, begin) + "<b>CODE:</b><br><div style=\"background-color:#99CCFF;text-indent:10px;\">" + postHtml.substring(begin + 6, end) + "</div>";
@@ -407,13 +406,19 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public ArrayList<Post> postSearch(String searchText, String requestingUser)
+	public ArrayList<Post> postSearch(int startIndex, String searchText, String requestingUser)
 	{
 		ArrayList<Post> results = new ArrayList<Post>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
+		
 		try
 		{
-			Results<ScoredDocument> docs = postIndex.search(searchText);
+			QueryOptions options = QueryOptions.newBuilder()
+		            .setLimit(11)  
+		            .setOffset(startIndex)
+		            .build();
+			com.google.appengine.api.search.Query query = com.google.appengine.api.search.Query.newBuilder().setOptions(options).build(searchText);
+			Results<ScoredDocument> docs = postIndex.search(query);
 			for(ScoredDocument document : docs)
 			{
 				Key entityKey = KeyFactory.createKey("Post", Long.valueOf(document.getId()));
@@ -461,7 +466,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		
 		System.out.println(streamLevels);
 		
-		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(10);
+		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(11);
 		Filter filter = null;
 		if(streamLevels.size() > 1)
 		{

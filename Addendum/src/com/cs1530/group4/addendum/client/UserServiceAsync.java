@@ -41,7 +41,7 @@ public interface UserServiceAsync
 	void deletePost(String postKey, AsyncCallback<Void> callback);
 	void flagPost(String postKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);
 	void deleteComment(String commentKey, AsyncCallback<Void> callback);
-	void postSearch(String searchText, String requestingUser, AsyncCallback<ArrayList<Post>> callback);
+	void postSearch(int startIndex, String searchText, String requestingUser, AsyncCallback<ArrayList<Post>> callback);
 	void getCourseRequests(AsyncCallback<ArrayList<Course>> callback);
 	void removeCourseRequest(Course course, boolean add, AsyncCallback<Void> callback);
 	void getFlaggedPosts(AsyncCallback<ArrayList<Post>> callback);
