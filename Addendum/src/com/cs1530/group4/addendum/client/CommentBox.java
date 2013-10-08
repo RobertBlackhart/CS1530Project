@@ -95,12 +95,14 @@ public class CommentBox extends Composite
 						userPost.addSubmittedComment(comment);
 						commentBox.setVisible(false);
 						addComment.setVisible(true);
+						btnSubmit.setEnabled(true);
+						errorLabel.setText("Error: Message length must be greater than 0");
+						errorLabel.setVisible(false);
 					}
 				};
 				userService.uploadComment(post.getPostKey(), comment, callback);
 			}
 		});
-		horizontalPanel_1.add(btnSubmit);
 		btnSubmit.setSize("131px", "29px");
 		
 		Button btnCancel = new Button("Cancel");
@@ -112,9 +114,12 @@ public class CommentBox extends Composite
 			{
 				commentBox.setVisible(false);
 				addComment.setVisible(true);
+				btnSubmit.setEnabled(true);
+				errorLabel.setVisible(false);
 			}		
 		});
 		horizontalPanel_1.add(btnCancel);
+		horizontalPanel_1.add(btnSubmit);
 		btnCancel.setSize("131px", "29px");
 		setStyleName("CommentBoxBackground");
 	}
