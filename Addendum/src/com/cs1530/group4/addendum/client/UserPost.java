@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
+public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler, ClickHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
 	int upDownVotes;
@@ -237,10 +237,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			{
 				public void onClick(ClickEvent event)
 				{
-					if(popup.isShowing())
-						popup.hide();
-					else
-						popup.showRelativeTo(menu);
+					
 				}
 			});
 			menuPanel.add(menu);
@@ -290,6 +287,8 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 		});
 		addCommentPanel.add(addAComment);
+		
+		addDomHandler(this,ClickEvent.getType());
 	}
 
 	public void addSubmittedComment(Comment comment)
@@ -308,5 +307,21 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	public void onMouseOver(MouseOverEvent event)
 	{
 		menu.setVisible(true);
+	}
+	
+	@Override
+	public void onClick(ClickEvent event) //hack to make post menu work
+	{
+		int x = event.getClientX(), y = event.getClientY();
+		if(x >= menu.getAbsoluteLeft() && x <= menu.getAbsoluteLeft()+menu.getWidth() &&
+				event.getClientY() >= menu.getAbsoluteTop() && y <= menu.getAbsoluteTop()+menu.getHeight())
+		{
+			if(popup.isShowing())
+				popup.hide();
+			else
+				popup.showRelativeTo(menu);
+		}
+		else
+			popup.hide();
 	}
 }
