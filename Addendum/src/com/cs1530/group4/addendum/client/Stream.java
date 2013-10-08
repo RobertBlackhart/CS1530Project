@@ -213,6 +213,7 @@ public class Stream extends Composite
 		VerticalPanel newUpdatesPanel = new VerticalPanel();
 		newUpdatesPanel.setWidth("100%");
 		tabPanel.add(popularUpdatesPanel, "Popular", false);
+		tabPanel.selectTab(0);
 		tabPanel.add(newUpdatesPanel, "New", false);
 		tabPanel.addSelectionHandler(new SelectionHandler<Integer>()
 		{
@@ -284,7 +285,7 @@ public class Stream extends Composite
 	}
 
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
-	{
+	{		
 		updatesPanel.clear();
 		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
 		{
