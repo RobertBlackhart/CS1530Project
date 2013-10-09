@@ -50,6 +50,7 @@ public class GetPostsServlet extends HttpServlet
 	{
 		String username = req.getParameter("username");
 		String streamLevel = req.getParameter("level");
+		String sort = req.getParameter("sort");
 		Entity user = getUserEntity(username);
 		ArrayList<String> courses = new ArrayList<String>();
 		courses.add(streamLevel);
@@ -61,6 +62,10 @@ public class GetPostsServlet extends HttpServlet
 		}
 		
 		ArrayList<Post> posts = getPosts(0,courses,username);
+		if(sort.equals("Popular"))
+			Collections.sort(posts, Post.PostScoreComparator);
+		if(sort.equals("New"))
+			Collections.sort(posts, Post.PostTimeComparator);
 		
 		resp.setContentType("application/json");
 		Gson gson = new Gson();

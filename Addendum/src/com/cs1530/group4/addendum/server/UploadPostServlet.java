@@ -47,8 +47,9 @@ public class UploadPostServlet extends HttpServlet
 		String username = req.getParameter("username");
 		String postText = req.getParameter("text");
 		String streamLevel = req.getParameter("level");
+		Gson gson = new Gson();
+		Date now = gson.fromJson(req.getParameter("time"), Date.class);
 		
-		Date now = new Date();
 		Entity post = new Entity("Post");
 		post.setProperty("username", username);
 		post.setProperty("postContent", new Text(formatCode(postText)));

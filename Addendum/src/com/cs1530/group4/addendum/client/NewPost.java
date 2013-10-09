@@ -1,6 +1,7 @@
 package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
@@ -90,7 +91,7 @@ public class NewPost extends DialogBox
 				else
 					stream = stream.substring(11);
 				if(post == null)
-					userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), editor.getText(),stream, callback);
+					userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), editor.getText(),stream, new Date(),callback);
 				else
 					userService.editPost(post.getPostKey(), editor.getHTML(), editor.getText(), callback);
 			}

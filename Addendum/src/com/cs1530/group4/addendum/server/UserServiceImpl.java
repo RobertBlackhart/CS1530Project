@@ -39,6 +39,7 @@ import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -50,6 +51,7 @@ import com.google.appengine.api.search.QueryOptions;
 import com.google.appengine.api.search.Results;
 import com.google.appengine.api.search.ScoredDocument;
 import com.google.appengine.api.search.SearchServiceFactory;
+import com.google.gson.Gson;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
@@ -369,18 +371,17 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel)
+	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time)
 	{
 		double secondsSinceRedditEpoch = System.currentTimeMillis() / 1000 - 1134028003;
 		double score = secondsSinceRedditEpoch / 45000;
 
-		Date now = new Date();
 		Entity post = new Entity("Post");
 		post.setProperty("username", username);
 		post.setProperty("postContent", new Text(formatCode(postHtml)));
 		post.setProperty("streamLevel", streamLevel);
 		post.setProperty("score", score);
-		post.setProperty("time", now);
+		post.setProperty("time", time);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
 		post.setProperty("usersVotedUp", new ArrayList<String>());
@@ -392,7 +393,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		Document doc = Document.newBuilder().setId(String.valueOf(post.getKey().getId()))
 				.addField(Field.newBuilder().setName("username").setText(username))
 				.addField(Field.newBuilder().setName("content").setText(postPlain))
-				.addField(Field.newBuilder().setName("time").setDate(now))
+				.addField(Field.newBuilder().setName("time").setDate(time))
 				.addField(Field.newBuilder().setName("level").setText(streamLevel)).build();
 		postIndex.put(doc);
 	}
@@ -463,12 +464,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser)
+	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser, String sort)
 	{
 		ArrayList<Post> posts = new ArrayList<Post>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
 		
-		System.out.println(streamLevels);
 		
 		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(11);
 		Filter filter = null;
@@ -483,7 +483,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 		else
 			filter = new FilterPredicate("streamLevel", FilterOperator.EQUAL, streamLevels.get(0));
-		Query q = new Query("Post").setKeysOnly();
+		Query q = new Query("Post").setKeysOnly().addSort(sort, SortDirection.DESCENDING);
 		q.setFilter(filter);
 
 		for(Entity entity : datastore.prepare(q).asList(options))
@@ -500,6 +500,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			memcache.put(entity.getKey(), entity);
 		}
 
+		if(sort.equals("Popular"))
+			Collections.sort(posts, Post.PostScoreComparator);
+		if(sort.equals("New"))
+			Collections.sort(posts, Post.PostTimeComparator);
+
+		
 		return posts;
 	}
 

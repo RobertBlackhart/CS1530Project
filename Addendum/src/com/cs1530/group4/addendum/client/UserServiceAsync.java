@@ -15,6 +15,7 @@
 package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
@@ -31,8 +32,8 @@ public interface UserServiceAsync
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
-	void getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, AsyncCallback<ArrayList<Post>> callback);
-	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, AsyncCallback<Void> callback);
+	void getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort, AsyncCallback<ArrayList<Post>> callback);
+	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, AsyncCallback<Void> callback);
 	void uploadComment(String postKey, Comment comment, AsyncCallback<Void> callback);
 	void upvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	void downvotePost(String postKey, String user, AsyncCallback<Boolean> callback);

@@ -321,11 +321,6 @@ public class Stream extends Composite
 			@Override
 			public void onSuccess(ArrayList<Post> posts)
 			{
-				if(sortMethod.equals("Popular"))
-					Collections.sort(posts, Post.PostScoreComparator);
-				if(sortMethod.equals("New"))
-					Collections.sort(posts, Post.PostTimeComparator);
-
 				int count = 0;
 				for(Post post : posts)
 				{
@@ -341,7 +336,7 @@ public class Stream extends Composite
 				}
 			}
 		};
-		userService.getPosts(startIndex, streamLevels, username, callback);
+		userService.getPosts(startIndex, streamLevels, username, sortMethod,callback);
 	}
 
 	private void getClasses(final VerticalPanel classPanel, final Button addRemove, final Anchor allAnchor)
