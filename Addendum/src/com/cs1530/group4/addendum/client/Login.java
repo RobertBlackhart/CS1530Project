@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Grid;
 
 public class Login extends Composite
 {
@@ -52,24 +53,28 @@ public class Login extends Composite
 			m.setContent(new Stream(m, user), "profile-" + Cookies.getCookie("loggedIn"));
 		}
 
-		errorLabel = new Label("Could not login.  Invalid username or password.");
-		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		errorLabel.setVisible(false);
-
 		Image image = new Image("image001.jpg");
 		image.setStyleName("LoginTitle");
 		verticalPanel.add(image);
 		verticalPanel.setCellVerticalAlignment(image, HasVerticalAlignment.ALIGN_MIDDLE);
 		verticalPanel.setCellHorizontalAlignment(image, HasHorizontalAlignment.ALIGN_CENTER);
 		image.setSize("600px", "100px");
+		
+		Grid grid = new Grid(2, 1);
+		verticalPanel.add(grid);
+		verticalPanel.setCellHorizontalAlignment(grid, HasHorizontalAlignment.ALIGN_CENTER);
+		
+				errorLabel = new Label("Could not login.  Invalid username or password.");
+				grid.setWidget(0, 0, errorLabel);
+				errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+				errorLabel.setVisible(false);
 		errorLabel.setStyleName("gwt-Label-Error");
-		verticalPanel.add(errorLabel);
 		errorLabel.setWidth("315px");
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		grid.setWidget(1, 0, horizontalPanel);
 		horizontalPanel.setStyleName("LoginBox");
 		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		verticalPanel.add(horizontalPanel);
 		horizontalPanel.setSize("543px", "154px");
 
 		FlexTable flexTable = new FlexTable();
@@ -154,6 +159,10 @@ public class Login extends Composite
 		button.setStyleName("LoginButton");
 		verticalPanel_1.add(button);
 		button.setSize("167px", "25px");
+		grid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		grid.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		grid.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
+		grid.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
 		button.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
