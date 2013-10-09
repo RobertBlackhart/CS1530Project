@@ -41,6 +41,10 @@
 		<servlet-name>DeleteCommentServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.DeleteCommentServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>UploadPostServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.UploadPostServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -68,6 +72,10 @@
 	<servlet-mapping>
 		<servlet-name>DeleteCommentServlet</servlet-name>
 		<url-pattern>/addendum/deleteComment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UploadPostServlet</servlet-name>
+		<url-pattern>/addendum/uploadPost</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>

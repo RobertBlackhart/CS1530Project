@@ -389,7 +389,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put(post.getKey(), post); //when looking up posts, do a key only query and check if they are in memcache first
 
 		//for text search within posts
-		Document doc = Document.newBuilder().setId(String.valueOf(post.getKey().getId())).addField(Field.newBuilder().setName("username").setText(username)).addField(Field.newBuilder().setName("content").setText(postPlain)).addField(Field.newBuilder().setName("time").setDate(now)).build();
+		Document doc = Document.newBuilder().setId(String.valueOf(post.getKey().getId()))
+				.addField(Field.newBuilder().setName("username").setText(username))
+				.addField(Field.newBuilder().setName("content").setText(postPlain))
+				.addField(Field.newBuilder().setName("time").setDate(now))
+				.addField(Field.newBuilder().setName("level").setText(streamLevel)).build();
 		postIndex.put(doc);
 	}
 
