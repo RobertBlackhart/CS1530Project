@@ -51,7 +51,6 @@ import com.google.appengine.api.search.QueryOptions;
 import com.google.appengine.api.search.Results;
 import com.google.appengine.api.search.ScoredDocument;
 import com.google.appengine.api.search.SearchServiceFactory;
-import com.google.gson.Gson;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
@@ -467,8 +466,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser, String sort)
 	{
 		ArrayList<Post> posts = new ArrayList<Post>();
-		ArrayList<Key> datastoreGet = new ArrayList<Key>();
-		
 		
 		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(11);
 		Filter filter = null;
@@ -483,23 +480,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 		else
 			filter = new FilterPredicate("streamLevel", FilterOperator.EQUAL, streamLevels.get(0));
-		Query q = new Query("Post").setKeysOnly().addSort(sort, SortDirection.DESCENDING);
+		Query q = new Query("Post");
+		q.addSort(sort.equals("Popular") ? "score" : "time", SortDirection.DESCENDING);
 		q.setFilter(filter);
 
 		for(Entity entity : datastore.prepare(q).asList(options))
-		{
-			if(memcache.contains(entity.getKey()))
-				posts.add(postFromEntity((Entity) memcache.get(entity.getKey()), requestingUser));
-			else
-				datastoreGet.add(entity.getKey());
-		}
-		Map<Key, Entity> results = datastore.get(datastoreGet);
-		for(Entity entity : results.values())
-		{
 			posts.add(postFromEntity(entity, requestingUser));
-			memcache.put(entity.getKey(), entity);
-		}
-
+		
 		if(sort.equals("Popular"))
 			Collections.sort(posts, Post.PostScoreComparator);
 		if(sort.equals("New"))
