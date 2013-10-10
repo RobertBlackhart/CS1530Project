@@ -26,7 +26,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface UserServiceAsync
 {
 	void doLogin(String username, String password, AsyncCallback<User> callback);
-	void createUser(String username, String password, String firstName, String lastName, AsyncCallback<Boolean> callback);
+	void createUser(String username, String password, String email, String firstName, String lastName, AsyncCallback<String> callback);
 	void courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<ArrayList<Course>> callback);
 	void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);

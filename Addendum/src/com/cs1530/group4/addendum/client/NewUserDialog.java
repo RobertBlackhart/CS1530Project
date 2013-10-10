@@ -23,10 +23,11 @@ import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 public class NewUserDialog extends DialogBox
 {
 	MainView main;
-	Label errorLabel;
-	TextBox firstNameTextBox, lastNameTextBox, usernameTextBox;
+	Label errorLabel, invalidEmailLabel;
+	TextBox firstNameTextBox, lastNameTextBox, usernameTextBox, emailTextBox;
 	PasswordTextBox passwordTextBox;
 	DialogBox dialog = this;
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	public NewUserDialog(MainView m)
 	{
@@ -47,7 +48,7 @@ public class NewUserDialog extends DialogBox
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), emailTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
 
@@ -65,7 +66,7 @@ public class NewUserDialog extends DialogBox
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), emailTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
 
@@ -83,14 +84,29 @@ public class NewUserDialog extends DialogBox
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), emailTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
+		
+		Label lblEmail = new Label("Email:");
+		lblEmail.setStyleName("whatever");
+		flexTable.setWidget(3, 1, lblEmail);
+		
+		emailTextBox = new TextBox();
+		emailTextBox.setStyleName("ADCTextbox");
+		emailTextBox.setAlignment(TextAlignment.CENTER);
+		flexTable.setWidget(3, 4, emailTextBox);
+		emailTextBox.setSize("200px", "30px");
+		
+		invalidEmailLabel = new Label("not a valid email address");
+		invalidEmailLabel.setVisible(false);
+		invalidEmailLabel.setStyleName("gwt-Label-Error");
+		flexTable.setWidget(4, 0, invalidEmailLabel);
 
 		Label lblUsername = new Label("Username:");
 		lblUsername.setStyleName("whatever");
-		flexTable.setWidget(3, 1, lblUsername);
-		flexTable.setWidget(3, 4, usernameTextBox);
+		flexTable.setWidget(5, 1, lblUsername);
+		flexTable.setWidget(5, 4, usernameTextBox);
 		usernameTextBox.setSize("200px", "30px");
 
 		passwordTextBox = new PasswordTextBox();
@@ -101,26 +117,26 @@ public class NewUserDialog extends DialogBox
 			public void onKeyPress(KeyPressEvent event)
 			{
 				if(event.getCharCode() == KeyCodes.KEY_ENTER)
-					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
+					createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), emailTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
 
 		Label lblPassword = new Label("Password:");
 		lblPassword.setStyleName("whatever");
-		flexTable.setWidget(4, 1, lblPassword);
-		flexTable.setWidget(4, 4, passwordTextBox);
+		flexTable.setWidget(6, 1, lblPassword);
+		flexTable.setWidget(6, 4, passwordTextBox);
 		passwordTextBox.setSize("200px", "30px");
 
 		errorLabel = new Label("username already in use");
 		errorLabel.setVisible(false);
 		errorLabel.setStyleName("gwt-Label-Error");
-		flexTable.setWidget(5, 0, errorLabel);
+		flexTable.setWidget(7, 0, errorLabel);
 		errorLabel.setWidth("500px");
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName((String) null);
 		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable.setWidget(6, 0, horizontalPanel);
+		flexTable.setWidget(8, 0, horizontalPanel);
 
 		Button btnCancel = new Button("Cancel");
 		btnCancel.setStyleName("ADCButton");
@@ -139,7 +155,7 @@ public class NewUserDialog extends DialogBox
 		{
 			public void onClick(ClickEvent event)
 			{
-				createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
+				createUser(firstNameTextBox.getText(), lastNameTextBox.getText(), emailTextBox.getText(), usernameTextBox.getText(), passwordTextBox.getText());
 			}
 		});
 		btnOk.setStyleName("ADCButton");
@@ -147,27 +163,35 @@ public class NewUserDialog extends DialogBox
 		btnOk.setSize("70px", "30px");
 		flexTable.getFlexCellFormatter().setColSpan(0, 0, 5);
 		flexTable.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable.getFlexCellFormatter().setColSpan(6, 0, 5);
-		flexTable.getCellFormatter().setHorizontalAlignment(6, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable.getFlexCellFormatter().setColSpan(5, 0, 5);
+		flexTable.getFlexCellFormatter().setColSpan(8, 0, 5);
+		flexTable.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getFlexCellFormatter().setColSpan(7, 0, 5);
+		flexTable.getFlexCellFormatter().setColSpan(4, 0, 5);
 		setStyleName("ADCBasic");
 
 		setGlassEnabled(true);
 		center();
 	}
 
-	protected void createUser(String firstName, String lastName, final String username, String password)
+	protected void createUser(String firstName, String lastName, String email, final String username, String password)
 	{
-		if(firstName.length() == 0 || lastName.length() == 0 || username.length() == 0 || password.length() == 0)
+		if(firstName.length() == 0 || lastName.length() == 0 || email.length() == 0 || username.length() == 0 || password.length() == 0)
 		{
 			Window.alert("All fields are required");
+			return;
+		}
+		
+		if(!email.matches(EMAIL_PATTERN))
+		{
+			invalidEmailLabel.setText("not a valid email address");
+			invalidEmailLabel.setVisible(true);
 			return;
 		}
 
 		UserServiceAsync userService = UserService.Util.getInstance();
 		// Set up the callback object.
-		AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
+		AsyncCallback<String> callback = new AsyncCallback<String>()
 		{
 			@Override
 			public void onFailure(Throwable caught)
@@ -175,9 +199,9 @@ public class NewUserDialog extends DialogBox
 			}
 
 			@Override
-			public void onSuccess(Boolean result)
+			public void onSuccess(String result)
 			{
-				if(result)
+				if(result.equals("success"))
 				{
 					dialog.hide();
 					Cookies.setCookie("loggedIn", username);
@@ -191,11 +215,16 @@ public class NewUserDialog extends DialogBox
 					else
 						main.setContent(new Stream(main, user), "profile-" + username);
 				}
-				else
+				else if(result.equals("user_exists"))
 					errorLabel.setVisible(true);
+				else if(result.equals("email_exists"))
+				{
+					invalidEmailLabel.setText("email addres is already in use");
+					invalidEmailLabel.setVisible(true);
+				}
 			}
 		};
 
-		userService.createUser(username, password, firstName, lastName, callback);
+		userService.createUser(username, password, email, firstName, lastName, callback);
 	}
 }

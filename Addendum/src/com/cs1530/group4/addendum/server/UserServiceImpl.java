@@ -18,6 +18,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
+import java.util.UUID;
+
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import com.cs1530.group4.addendum.client.UserService;
 import com.cs1530.group4.addendum.shared.Comment;
@@ -98,23 +106,64 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public Boolean createUser(String username, String password, String firstName, String lastName)
+	public String createUser(String username, String password, String email, String firstName, String lastName)
 	{
 		Entity user = getUserEntity(username);
 
 		if(user != null)
-			return false;
+			return "user_exists";
+		if(!validateEmail(email))
+			return "email_exists";
+		
 		else
 		{
+			String uuid = UUID.randomUUID().toString();
 			user = new Entity("User", username);
 			user.setProperty("username", username);
 			user.setProperty("password", password);
+			user.setProperty("email", email);
+			user.setProperty("uuid", uuid);
 			user.setProperty("firstName", firstName);
 			user.setProperty("lastName", lastName);
+			
+			sendEmail(email, uuid, username);
+			
 			memcache.put("user_" + username, user);
 			datastore.put(user);
-			return true;
+			return "success";
 		}
+	}
+	
+	private void sendEmail(String email, String uuid, String username)
+	{
+        String msgBody = "Welcome to Addendum!\n\n" +
+        		"In order to validate your account, please click on the link below or copy and paste it into" +
+        		"your browser's address bar:\n\n" +
+        		"http://studentclassnet.appspot.com/addendum/validate?username="+username+"&uuid="+uuid;
+        
+        try 
+        {
+        	Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+            msg.setFrom(new InternetAddress("addendumapp@gmail.com", "Addendum"));
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            msg.setSubject("Welcome to Addendum");
+            msg.setText(msgBody);
+            Transport.send(msg);
+
+        } catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private boolean validateEmail(String email)
+	{
+		Query q = new Query("User");
+		q.setFilter(new FilterPredicate("email", FilterOperator.EQUAL, email));
+		for(Entity entity : datastore.prepare(q).asIterable())
+			return false;
+		
+		return true;
 	}
 
 	@Override
