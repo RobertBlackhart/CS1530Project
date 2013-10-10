@@ -61,11 +61,7 @@ public class GetPostsServlet extends HttpServlet
 			courses.add("all");
 		}
 		
-		ArrayList<Post> posts = getPosts(0,courses,username);
-		if(sort.equals("Popular"))
-			Collections.sort(posts, Post.PostScoreComparator);
-		if(sort.equals("New"))
-			Collections.sort(posts, Post.PostTimeComparator);
+		ArrayList<Post> posts = getPosts(0,courses,username,sort);
 		
 		resp.setContentType("application/json");
 		Gson gson = new Gson();
@@ -73,12 +69,12 @@ public class GetPostsServlet extends HttpServlet
 		resp.getWriter().print(json);
 	}
 	
-	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser)
+	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser, String sort)
 	{
 		ArrayList<Post> posts = new ArrayList<Post>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
 
-		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(10);
+		FetchOptions options = FetchOptions.Builder.withOffset(startIndex);
 		Filter filter = null;
 		if(streamLevels.size() > 1)
 		{
@@ -107,8 +103,17 @@ public class GetPostsServlet extends HttpServlet
 			posts.add(postFromEntity(entity, requestingUser));
 			memcache.put(entity.getKey(), entity);
 		}
-
-		return posts;
+		
+		if(sort.equals("Popular"))
+			Collections.sort(posts, Post.PostScoreComparator);
+		if(sort.equals("New"))
+			Collections.sort(posts, Post.PostTimeComparator);
+		
+		ArrayList<Post> returnPosts = new ArrayList<Post>();
+		for(int i=startIndex; i<Math.min(startIndex+11, posts.size()); i++)
+			returnPosts.add(posts.get(i));
+		
+		return returnPosts;
 	}
 
 	private Entity getUserEntity(String username)

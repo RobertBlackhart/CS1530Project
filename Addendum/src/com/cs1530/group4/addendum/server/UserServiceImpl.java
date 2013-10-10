@@ -30,7 +30,6 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -39,7 +38,6 @@ import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -466,8 +464,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser, String sort)
 	{
 		ArrayList<Post> posts = new ArrayList<Post>();
-		
-		FetchOptions options = FetchOptions.Builder.withOffset(startIndex).limit(11);
+		ArrayList<Key> datastoreGet = new ArrayList<Key>();
+
+		//FetchOptions options = FetchOptions.Builder.withOffset(startIndex);
 		Filter filter = null;
 		if(streamLevels.size() > 1)
 		{
@@ -480,20 +479,33 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 		else
 			filter = new FilterPredicate("streamLevel", FilterOperator.EQUAL, streamLevels.get(0));
-		Query q = new Query("Post");
-		q.addSort(sort.equals("Popular") ? "score" : "time", SortDirection.DESCENDING);
+		Query q = new Query("Post").setKeysOnly();
 		q.setFilter(filter);
 
-		for(Entity entity : datastore.prepare(q).asList(options))
+		for(Entity entity : datastore.prepare(q).asIterable())
+		{
+			if(memcache.contains(entity.getKey()))
+				posts.add(postFromEntity((Entity) memcache.get(entity.getKey()), requestingUser));
+			else
+				datastoreGet.add(entity.getKey());
+		}
+		Map<Key, Entity> results = datastore.get(datastoreGet);
+		for(Entity entity : results.values())
+		{
 			posts.add(postFromEntity(entity, requestingUser));
+			memcache.put(entity.getKey(), entity);
+		}
 		
 		if(sort.equals("Popular"))
 			Collections.sort(posts, Post.PostScoreComparator);
 		if(sort.equals("New"))
 			Collections.sort(posts, Post.PostTimeComparator);
-
 		
-		return posts;
+		ArrayList<Post> returnPosts = new ArrayList<Post>();
+		for(int i=startIndex; i<Math.min(startIndex+11, posts.size()); i++)
+			returnPosts.add(posts.get(i));
+		
+		return returnPosts;
 	}
 
 	@SuppressWarnings("unchecked")

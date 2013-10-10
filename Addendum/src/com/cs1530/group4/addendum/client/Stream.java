@@ -322,6 +322,7 @@ public class Stream extends Composite
 			public void onSuccess(ArrayList<Post> posts)
 			{
 				int count = 0;
+				
 				for(Post post : posts)
 				{
 					count++;
@@ -353,6 +354,8 @@ public class Stream extends Composite
 				@Override
 				public void onClick(ClickEvent event)
 				{
+					startIndex = 0;
+					prevPage.setVisible(false);
 					streamLevel = course.trim();
 					ArrayList<String> streamLevels = new ArrayList<String>();
 					streamLevels.add(streamLevel);
