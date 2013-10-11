@@ -15,7 +15,7 @@ import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 @SuppressWarnings("serial")
-public class ValidateEmailServlet extends HttpServlet
+public class PasswordResetServlet extends HttpServlet
 {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
@@ -37,7 +37,7 @@ public class ValidateEmailServlet extends HttpServlet
 		
 		Entity user = getUserEntity(username);
 		if(user != null && user.getProperty("uuid").toString().equals(uuid))
-			resp.sendRedirect("http://studentclassnet.appspot.com/#setCookie-"+username);
+			resp.sendRedirect("http://studentclassnet.appspot.com/#passwordReset-"+username);
 		else
 			resp.sendRedirect("http://studentclassnet.appspot.com/");
 	}

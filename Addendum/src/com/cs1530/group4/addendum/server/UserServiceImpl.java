@@ -813,4 +813,54 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			datastore.delete(comment.getKey());
 		}
 	}
+
+	@Override
+	public Boolean resetPassword(String username)
+	{
+		Entity user = getUserEntity(username);
+		if(user != null && user.hasProperty("uuid") && user.hasProperty("email"))
+		{
+			String msgBody = "To reset your password, please click on the link below or copy and paste it into" +
+	        		"your browser's address bar:\n\n" +
+	        		"http://studentclassnet.appspot.com/addendum/passwordReset?username="+username+"&uuid="+user.getProperty("uuid").toString();
+	        
+	        try 
+	        {
+	        	Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+	            msg.setFrom(new InternetAddress("addendumapp@gmail.com", "Addendum"));
+	            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getProperty("email").toString()));
+	            msg.setSubject("Password Reset");
+	            msg.setText(msgBody);
+	            Transport.send(msg);
+	            return true;
+	        } 
+	        catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+        
+        return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public User changePassword(String username, String newPassword)
+	{
+		Entity entity = getUserEntity(username);
+		if(entity != null)
+		{
+			entity.setProperty("password", newPassword);
+			memcache.put("user_"+username, entity);
+			datastore.put(entity);
+			
+			User user = new User(username);
+			if(entity.hasProperty("courseList"))
+				user.setCourseList((ArrayList<String>)entity.getProperty("courseList"));
+			
+			return user;
+		}
+		else
+			return null;
+	}
 }

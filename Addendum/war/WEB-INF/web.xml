@@ -49,6 +49,10 @@
 		<servlet-name>ValidateEmailServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.ValidateEmailServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>PasswordResetServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.PasswordResetServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -84,6 +88,10 @@
 	<servlet-mapping>
 		<servlet-name>ValidateEmailServlet</servlet-name>
 		<url-pattern>/addendum/validate</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PasswordResetServlet</servlet-name>
+		<url-pattern>/addendum/passwordReset</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>

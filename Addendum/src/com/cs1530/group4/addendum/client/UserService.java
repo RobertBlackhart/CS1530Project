@@ -66,4 +66,6 @@ public interface UserService extends RemoteService
 	ArrayList<Course> getCourseRequests();
 	void removeCourseRequest(Course course, boolean add);
 	ArrayList<Post> getFlaggedPosts();
+	Boolean resetPassword(String username);
+	User changePassword(String username, String newPassword);
 }

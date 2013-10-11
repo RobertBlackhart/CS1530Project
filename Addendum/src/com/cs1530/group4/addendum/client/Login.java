@@ -123,8 +123,7 @@ public class Login extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				//TODO: implement dialog prompting user's email
-				Window.alert("To Be Implemented");
+				new ResetPasswordDialog();
 			}
 		});
 		flexTable.setWidget(3, 0, forgotPassword);

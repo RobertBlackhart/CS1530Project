@@ -204,16 +204,19 @@ public class NewUserDialog extends DialogBox
 				if(result.equals("success"))
 				{
 					dialog.hide();
-					Cookies.setCookie("loggedIn", username);
-					User user = new User(username);
-
-					Storage localStorage = Storage.getLocalStorageIfSupported();
-					localStorage.setItem("loggedIn", user.serialize());
-
+					
 					if(usernameTextBox.getText().equals("Administrator"))
+					{
+						Cookies.setCookie("loggedIn", username);
+						User user = new User(username);
+						Storage localStorage = Storage.getLocalStorageIfSupported();
+						localStorage.setItem("loggedIn", user.serialize());
 						main.setContent(new AdminPanel(main), "adminPanel");
+					}
 					else
-						main.setContent(new Stream(main, user), "profile-" + username);
+					{
+						Window.alert("Please check your email to verify your account");
+					}
 				}
 				else if(result.equals("user_exists"))
 					errorLabel.setVisible(true);

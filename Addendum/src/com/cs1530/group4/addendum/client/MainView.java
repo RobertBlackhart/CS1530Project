@@ -78,9 +78,24 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		Widget content = null;
 
 		String[] historyToken = event.getValue().split("-");
-
+		
 		// Parse the history token
-		if(historyToken[0].equals("login"))
+		if(historyToken[0].equals("setCookie"))
+		{
+			String username = historyToken[1];
+			Cookies.setCookie("loggedIn", username);
+			Storage localStorage = Storage.getLocalStorageIfSupported();
+			localStorage.setItem("loggedIn", new User(username).serialize());
+			
+			History.newItem("profile-"+username);
+			return;
+		}
+		else if(historyToken[0].equals("passwordReset"))
+		{
+			new NewPasswordDialog(historyToken[1],this);
+			return;
+		}
+		else if(historyToken[0].equals("login"))
 			content = new Login(main);
 		else if(historyToken[0].equals("profile"))
 		{

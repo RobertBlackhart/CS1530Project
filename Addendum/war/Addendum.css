@@ -594,3 +594,11 @@ padding: 0px 0px 6px 6px;
 	text-decoration:underline;
 	
 }
+.whatever-small {
+	color: White;
+	font-variant: small-caps;
+	font-size: 24px;
+	font-style: normal;
+	font-family: monospace;
+	font-weight: 900;
+}

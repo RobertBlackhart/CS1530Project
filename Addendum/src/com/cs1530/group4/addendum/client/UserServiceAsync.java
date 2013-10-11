@@ -46,4 +46,6 @@ public interface UserServiceAsync
 	void getCourseRequests(AsyncCallback<ArrayList<Course>> callback);
 	void removeCourseRequest(Course course, boolean add, AsyncCallback<Void> callback);
 	void getFlaggedPosts(AsyncCallback<ArrayList<Post>> callback);
+	void resetPassword(String username, AsyncCallback<Boolean> callback);
+	void changePassword(String username, String newPassword, AsyncCallback<User> callback);
 }
