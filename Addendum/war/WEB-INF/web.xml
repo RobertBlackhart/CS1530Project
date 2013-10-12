@@ -53,6 +53,22 @@
 		<servlet-name>PasswordResetServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.PasswordResetServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ImageUploadServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.ImageUploadServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>UploadSuccessServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.UploadSuccessServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>EditPostServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.EditPostServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeletePostServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.DeletePostServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -92,6 +108,22 @@
 	<servlet-mapping>
 		<servlet-name>PasswordResetServlet</servlet-name>
 		<url-pattern>/addendum/passwordReset</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ImageUploadServlet</servlet-name>
+		<url-pattern>/addendum/imageUpload</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UploadSuccessServlet</servlet-name>
+		<url-pattern>/addendum/uploadSuccess</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EditPostServlet</servlet-name>
+		<url-pattern>/addendum/editPost</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeletePostServlet</servlet-name>
+		<url-pattern>/addendum/deletePost</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
