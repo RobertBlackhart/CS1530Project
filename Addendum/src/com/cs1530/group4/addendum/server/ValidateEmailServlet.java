@@ -37,7 +37,12 @@ public class ValidateEmailServlet extends HttpServlet
 		
 		Entity user = getUserEntity(username);
 		if(user != null && user.getProperty("uuid").toString().equals(uuid))
+		{
+			user.setProperty("emailValid",true);
+			memcache.put("user_"+username, user);
+			datastore.put(user);
 			resp.sendRedirect("http://studentclassnet.appspot.com/#setCookie-"+username);
+		}
 		else
 			resp.sendRedirect("http://studentclassnet.appspot.com/");
 	}

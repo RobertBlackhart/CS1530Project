@@ -79,6 +79,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 		if(userEntity != null)
 		{
+			//if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
+				//return user;
+			
 			if(userEntity.hasProperty("password"))
 			{
 				if(userEntity.getProperty("password").toString().equals(password))
@@ -122,6 +125,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			user.setProperty("username", username);
 			user.setProperty("password", password);
 			user.setProperty("email", email);
+			user.setProperty("emailValid",false);
 			user.setProperty("uuid", uuid);
 			user.setProperty("firstName", firstName);
 			user.setProperty("lastName", lastName);
@@ -862,5 +866,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 		else
 			return null;
+	}
+
+	@Override
+	public void flagComment(String commentKey, String reason, boolean setFlagged)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

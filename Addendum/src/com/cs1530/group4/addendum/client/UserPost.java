@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler, ClickHandler
+public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
 	int upDownVotes;
@@ -33,10 +33,12 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
 	Stream profile;
+	MainView main;
 
-	public UserPost(final MainView main, final Stream profile, final Post post)
+	public UserPost(MainView m, final Stream profile, final Post post)
 	{
 		this.profile = profile;
+		main = m;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
 		border.setBorderWidth(1);
@@ -227,25 +229,26 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		horizontalPanel.add(menuPanel);
 		menuPanel.setWidth("100%");
 
-		if(main != null)
+		menu = new Image("images/menu.png");
+		menu.setSize("24px", "24px");
+		menu.setVisible(false);
+		menu.getElement().getStyle().setProperty("marginRight", "5px");
+		menu.addClickHandler(new ClickHandler()
 		{
-			menu = new Image("images/menu.png");
-			menu.setSize("24px", "24px");
-			menu.setVisible(false);
-			menu.getElement().getStyle().setProperty("marginRight", "5px");
-			popup = new MenuPopup(main,menu,post,post.getUsername().equals(loggedInUser));
-			menu.addClickHandler(new ClickHandler()
+			public void onClick(ClickEvent event)
 			{
-				public void onClick(ClickEvent event)
-				{
-					
-				}
-			});
-			menuPanel.add(menu);
-			
-			addDomHandler(this, MouseOverEvent.getType());
-			addDomHandler(this, MouseOutEvent.getType());
-		}
+				if(popup.isShowing())
+					popup.hide();
+				else
+					popup.showRelativeTo(menu);
+			}
+		});
+		popup = new MenuPopup(main,menu,post,post.getUsername().equals(loggedInUser));
+		
+		menuPanel.add(menu);
+		
+		addDomHandler(this, MouseOverEvent.getType());
+		addDomHandler(this, MouseOutEvent.getType());
 
 		HTML postContent = new HTML(post.getPostContent());
 		postContent.setStyleName("userpostcomment");
@@ -291,7 +294,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 						commentPanel.clear();
 						commentPanel.add(hidePanel);
 						for(Comment comment : post.getComments())
-							commentPanel.add(new PostComment(comment,profile));
+							commentPanel.add(new PostComment(main,comment,profile));
 					}
 				};
 				expandComments.addClickHandler(expandHandler);
@@ -303,19 +306,19 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					{
 						commentPanel.clear();
 						commentPanel.add(expandPanel);
-						commentPanel.add(new PostComment(comments.get(comments.size()-1),profile));
+						commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile));
 					}
 				};
 				hideComments.addClickHandler(hideHandler);
 				hideImage.addClickHandler(hideHandler);
 				
 				commentPanel.add(expandPanel);
-				commentPanel.add(new PostComment(comments.get(comments.size()-1),profile));
+				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile));
 			}
 			else
 			{
 				for(Comment comment : post.getComments())
-					commentPanel.add(new PostComment(comment,profile));
+					commentPanel.add(new PostComment(main,comment,profile));
 			}
 		}
 
@@ -341,13 +344,11 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 		});
 		addCommentPanel.add(addAComment);
-		
-		addDomHandler(this,ClickEvent.getType());
 	}
 
 	public void addSubmittedComment(Comment comment)
 	{
-		commentPanel.add(new PostComment(comment,profile));
+		commentPanel.add(new PostComment(main,comment,profile));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 	}
 
@@ -361,21 +362,5 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	public void onMouseOver(MouseOverEvent event)
 	{
 		menu.setVisible(true);
-	}
-	
-	@Override
-	public void onClick(ClickEvent event) //hack to make post menu work
-	{
-		int x = event.getClientX(), y = event.getClientY();
-		if(x >= menu.getAbsoluteLeft() && x <= menu.getAbsoluteLeft()+menu.getWidth() &&
-				event.getClientY() >= menu.getAbsoluteTop() && y <= menu.getAbsoluteTop()+menu.getHeight())
-		{
-			if(popup.isShowing())
-				popup.hide();
-			else
-				popup.showRelativeTo(menu);
-		}
-		else
-			popup.hide();
 	}
 }

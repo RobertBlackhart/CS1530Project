@@ -61,6 +61,7 @@ public interface UserService extends RemoteService
 	void editComment(String commentKey, String commentText);
 	void deletePost(String postKey);
 	void flagPost(String postKey, String reason, boolean setFlagged);
+	void flagComment(String commentKey, String reason, boolean setFlagged);
 	void deleteComment(String commentKey);
 	ArrayList<Post> postSearch(int startIndex, String searchText, String requestingUser);
 	ArrayList<Course> getCourseRequests();

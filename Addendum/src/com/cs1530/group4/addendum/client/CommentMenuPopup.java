@@ -1,17 +1,12 @@
 package com.cs1530.group4.addendum.client;
 
-import java.util.ArrayList;
-
-import com.cs1530.group4.addendum.shared.Post;
-import com.cs1530.group4.addendum.shared.User;
+import com.cs1530.group4.addendum.shared.Comment;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.storage.client.Storage;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -19,13 +14,13 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutHandler
+public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, MouseOutHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
-	MenuPopup popup = this;
+	CommentMenuPopup popup = this;
 	Widget relativeWidget;
 
-	public MenuPopup(final MainView main, Widget w, final Post post, boolean isUser)
+	public CommentMenuPopup(final MainView main, Widget w, final Comment comment, boolean isUser)
 	{
 		super(true);
 		setStyleName("MenuPopUp");
@@ -35,27 +30,24 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 		vPanel.setSpacing(5);
 		if(isUser)
 		{
-			Label editPost = new Label("Edit Post");
-			editPost.setStyleName("menuitem");
-			editPost.addClickHandler(new ClickHandler()
+			Label editComment = new Label("Edit Comment");
+			editComment.setStyleName("menuitem");
+			editComment.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
 				{
 					popup.hide();
-					ArrayList<String> originalStream = new ArrayList<String>();
-					originalStream.add(post.getStreamLevel());
-					NewPost editor = new NewPost(main, originalStream, post);
-					editor.show();
+					//TODO: show comment edit box
 				}
 			});
-			Label deletePost = new Label("Delete Post");
-			deletePost.setStyleName("menuitem");
-			deletePost.addClickHandler(new ClickHandler()
+			Label deleteComment = new Label("Delete Comment");
+			deleteComment.setStyleName("menuitem");
+			deleteComment.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
 				{
 					popup.hide();
-					if(Window.confirm("Are you sure you want to delete this post?"))
+					if(Window.confirm("Are you sure you want to delete this comment?"))
 					{
 						AsyncCallback<Void> callback = new AsyncCallback<Void>()
 						{
@@ -67,34 +59,30 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 							@Override
 							public void onSuccess(Void v)
 							{
-								Storage localStorage = Storage.getLocalStorageIfSupported();
-								User user = new User(Cookies.getCookie("loggedIn"));
-								if(localStorage.getItem("loggedIn") != null)
-									user = User.deserialize(localStorage.getItem("loggedIn"));
-								main.setContent(new Stream(main, user), "profile-" + user);
+								//TODO: refresh comments on post
 							}
 						};
-						userService.deletePost(post.getPostKey(), callback);
+						userService.deleteComment(comment.getCommentKey(), callback);
 					}
 				}
 			});
 
-			vPanel.add(editPost);
-			vPanel.add(deletePost);
+			vPanel.add(editComment);
+			vPanel.add(deleteComment);
 		}
 		else
 		{
-			Label flagPost = new Label("Report Post");
-			flagPost.setStyleName("menuitem");
-			flagPost.addClickHandler(new ClickHandler()
+			Label flagComment = new Label("Report Comment");
+			flagComment.setStyleName("menuitem");
+			flagComment.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
 				{
 					popup.hide();
-					new FlagForm(post.getPostKey(),FlagForm.POST);
+					new FlagForm(comment.getCommentKey(),FlagForm.COMMENT);
 				}
 			});
-			vPanel.add(flagPost);
+			vPanel.add(flagComment);
 		}
 		addDomHandler(this, MouseOutEvent.getType());
 		addDomHandler(this, MouseOverEvent.getType());
