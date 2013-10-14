@@ -67,6 +67,7 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 									if(comments.get(i).getCommentKey() != null && comments.get(i).getCommentKey().equals(comment.getCommentKey()))
 									{
 										comments.remove(i);
+										break;
 									}
 								}
 								userPost.commentPanel.clear();

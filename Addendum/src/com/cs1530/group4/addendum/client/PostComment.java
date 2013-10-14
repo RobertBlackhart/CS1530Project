@@ -1,6 +1,7 @@
 package com.cs1530.group4.addendum.client;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,7 +29,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	CommentMenuPopup popup;
 	UserServiceAsync userService = UserService.Util.getInstance();
 
-	public PostComment(final MainView main, final Comment comment, final Stream profile, UserPost userPost)
+	public PostComment(final MainView main, final Comment comment, final Stream profile, final UserPost userPost)
 	{
 		VerticalPanel rowPanel = new VerticalPanel();
 		rowPanel.setStyleName("CommentPanelbackcolor");
@@ -106,6 +107,8 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 					@Override
 					public void onSuccess(Boolean result)
 					{
+						comment.setPlusOned(result);
+						
 						if(result) //was increased
 						{
 							comment.setPlusOnes(comment.getPlusOnes()+1);
@@ -121,6 +124,20 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 								plusOnesLabel.setVisible(false);
 							plusOneButton.setUrl("/images/plus_one_default.png");
 						}
+						
+						ArrayList<Comment> comments = userPost.post.getComments();
+						for(int i=0; i<comments.size(); i++)
+						{
+							if(comments.get(i).getCommentKey() != null && comments.get(i).getCommentKey().equals(comment.getCommentKey()))
+							{
+								comments.remove(i);
+								comments.add(i,comment);
+								break;
+							}
+						}
+						userPost.commentPanel.clear();
+						for(Comment comment : comments)
+							userPost.commentPanel.add(new PostComment(main,comment,userPost.profile,userPost));
 					}
 
 				};

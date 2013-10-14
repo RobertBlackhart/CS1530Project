@@ -69,6 +69,10 @@
 		<servlet-name>DeletePostServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.DeletePostServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>PlusOneServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.PlusOneServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -124,6 +128,10 @@
 	<servlet-mapping>
 		<servlet-name>DeletePostServlet</servlet-name>
 		<url-pattern>/addendum/deletePost</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PlusOneServlet</servlet-name>
+		<url-pattern>/addendum/plusOne</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
