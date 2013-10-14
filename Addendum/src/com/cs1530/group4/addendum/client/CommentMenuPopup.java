@@ -1,5 +1,7 @@
 package com.cs1530.group4.addendum.client;
 
+import java.util.ArrayList;
+
 import com.cs1530.group4.addendum.shared.Comment;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,7 +22,7 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 	CommentMenuPopup popup = this;
 	Widget relativeWidget;
 
-	public CommentMenuPopup(final MainView main, Widget w, final Comment comment, boolean isUser)
+	public CommentMenuPopup(final MainView main, Widget w, final Comment comment, boolean isUser, final UserPost userPost)
 	{
 		super(true);
 		setStyleName("MenuPopUp");
@@ -37,7 +39,7 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 				public void onClick(ClickEvent event)
 				{
 					popup.hide();
-					//TODO: show comment edit box
+					userPost.showCommentBox(comment);
 				}
 			});
 			Label deleteComment = new Label("Delete Comment");
@@ -59,7 +61,17 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 							@Override
 							public void onSuccess(Void v)
 							{
-								//TODO: refresh comments on post
+								ArrayList<Comment> comments = userPost.post.getComments();
+								for(int i=0; i<comments.size(); i++)
+								{
+									if(comments.get(i).getCommentKey() != null && comments.get(i).getCommentKey().equals(comment.getCommentKey()))
+									{
+										comments.remove(i);
+									}
+								}
+								userPost.commentPanel.clear();
+								for(Comment comment : comments)
+									userPost.commentPanel.add(new PostComment(main,comment,userPost.profile,userPost));
 							}
 						};
 						userService.deleteComment(comment.getCommentKey(), callback);

@@ -742,7 +742,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public void uploadComment(String postKey, Comment comment)
+	public String uploadComment(String postKey, Comment comment)
 	{
 		Entity commentEntity = new Entity("Comment");
 		commentEntity.setProperty("postKey", postKey);
@@ -751,10 +751,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		commentEntity.setProperty("content", new Text(comment.getContent()));
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(), commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
+		return String.valueOf(commentEntity.getKey().getId());
 	}
 
 	@Override
-	public void editComment(String commentKey, String commentText)
+	public String editComment(String commentKey, String commentText)
 	{
 		Entity comment = getComment(commentKey);
 		if(comment != null)
@@ -764,6 +765,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			memcache.put(comment.getKey(), comment);
 			datastore.put(comment);
 		}
+		return commentKey;
 	}
 
 	private Entity getComment(String commentKey)

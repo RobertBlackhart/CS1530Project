@@ -34,11 +34,11 @@ public interface UserServiceAsync
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
 	void getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort, AsyncCallback<ArrayList<Post>> callback);
 	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, AsyncCallback<Void> callback);
-	void uploadComment(String postKey, Comment comment, AsyncCallback<Void> callback);
+	void uploadComment(String postKey, Comment comment, AsyncCallback<String> callback);
 	void upvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	void downvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	void editPost(String postKey, String postHtml, String postPlain, AsyncCallback<Void> callback);
-	void editComment(String commentKey, String commentText, AsyncCallback<Void> callback);
+	void editComment(String commentKey, String commentText, AsyncCallback<String> callback);
 	void deletePost(String postKey, AsyncCallback<Void> callback);
 	void flagPost(String postKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);
 	void flagComment(String commentKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);

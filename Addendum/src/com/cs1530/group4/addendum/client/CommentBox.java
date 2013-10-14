@@ -21,6 +21,8 @@ public class CommentBox extends Composite
 	UserServiceAsync userService = UserService.Util.getInstance();
 	RichTextArea textArea;
 	Label errorLabel;
+	boolean isEdit = false;
+	Comment editComment;
 	
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
@@ -79,8 +81,15 @@ public class CommentBox extends Composite
 				
 				btnSubmit.setEnabled(false);
 				
-				final Comment comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getHTML());
-				AsyncCallback<Void> callback = new AsyncCallback<Void>()
+				final Comment comment;
+				if(isEdit)
+				{
+					editComment.setContent(textArea.getHTML());
+					comment = editComment;
+				}
+				else
+					comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getHTML());
+				AsyncCallback<String> callback = new AsyncCallback<String>()
 				{
 					@Override
 					public void onFailure(Throwable caught)
@@ -90,9 +99,10 @@ public class CommentBox extends Composite
 						errorLabel.setText("There was a problem uploading your post, please try again later.");
 					}
 					@Override
-					public void onSuccess(Void v)
+					public void onSuccess(String keyString)
 					{
-						userPost.addSubmittedComment(comment);
+						comment.setCommentKey(keyString);
+						userPost.addSubmittedComment(comment,isEdit);
 						commentBox.setVisible(false);
 						addComment.setVisible(true);
 						btnSubmit.setEnabled(true);
@@ -100,7 +110,10 @@ public class CommentBox extends Composite
 						errorLabel.setVisible(false);
 					}
 				};
-				userService.uploadComment(post.getPostKey(), comment, callback);
+				if(isEdit)
+					userService.editComment(comment.getCommentKey(), comment.getContent(), callback);
+				else
+					userService.uploadComment(post.getPostKey(), comment, callback);
 			}
 		});
 		btnSubmit.setSize("131px", "29px");

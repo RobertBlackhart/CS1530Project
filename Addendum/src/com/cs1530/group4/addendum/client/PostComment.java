@@ -26,7 +26,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	Image menu;
 	CommentMenuPopup popup;
 
-	public PostComment(final MainView main, final Comment comment, final Stream profile)
+	public PostComment(final MainView main, final Comment comment, final Stream profile, UserPost userPost)
 	{
 		VerticalPanel rowPanel = new VerticalPanel();
 		rowPanel.setStyleName("CommentPanelbackcolor");
@@ -92,7 +92,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		menu.setSize("24px", "24px");
 		menu.setVisible(false);
 		menu.getElement().getStyle().setProperty("marginRight", "5px");
-		popup = new CommentMenuPopup(main, menu, comment, comment.getUsername().equals(Cookies.getCookie("loggedIn")));
+		popup = new CommentMenuPopup(main, menu, comment, comment.getUsername().equals(Cookies.getCookie("loggedIn")),userPost);
 		menu.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)

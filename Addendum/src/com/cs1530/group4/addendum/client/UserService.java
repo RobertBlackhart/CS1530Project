@@ -54,11 +54,11 @@ public interface UserService extends RemoteService
 	ArrayList<String> getUserCourses(String username);
 	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort);
 	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time);
-	void uploadComment(String postKey, Comment comment);
+	String uploadComment(String postKey, Comment comment);
 	Boolean upvotePost(String postKey, String user);
 	Boolean downvotePost(String postKey, String user);
 	void editPost(String postKey, String postHtml, String postPlain);
-	void editComment(String commentKey, String commentText);
+	String editComment(String commentKey, String commentText);
 	void deletePost(String postKey);
 	void flagPost(String postKey, String reason, boolean setFlagged);
 	void flagComment(String commentKey, String reason, boolean setFlagged);

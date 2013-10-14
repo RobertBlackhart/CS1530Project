@@ -34,11 +34,16 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	String loggedInUser = Cookies.getCookie("loggedIn");
 	Stream profile;
 	MainView main;
+	PromptedTextBox addAComment;
+	CommentBox commentBox;
+	UserPost userPost = this;
+	Post post;
 
-	public UserPost(MainView m, final Stream profile, final Post post)
+	public UserPost(MainView m, final Stream profile, Post p)
 	{
 		this.profile = profile;
 		main = m;
+		post = p;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
 		border.setBorderWidth(1);
@@ -294,7 +299,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 						commentPanel.clear();
 						commentPanel.add(hidePanel);
 						for(Comment comment : post.getComments())
-							commentPanel.add(new PostComment(main,comment,profile));
+							commentPanel.add(new PostComment(main,comment,profile,userPost));
 					}
 				};
 				expandComments.addClickHandler(expandHandler);
@@ -306,19 +311,19 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					{
 						commentPanel.clear();
 						commentPanel.add(expandPanel);
-						commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile));
+						commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
 					}
 				};
 				hideComments.addClickHandler(hideHandler);
 				hideImage.addClickHandler(hideHandler);
 				
 				commentPanel.add(expandPanel);
-				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile));
+				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
 			}
 			else
 			{
 				for(Comment comment : post.getComments())
-					commentPanel.add(new PostComment(main,comment,profile));
+					commentPanel.add(new PostComment(main,comment,profile,userPost));
 			}
 		}
 
@@ -326,9 +331,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		postPanel.add(addCommentPanel);
 		addCommentPanel.setWidth("100%");
 
-		final PromptedTextBox addAComment = new PromptedTextBox("Add a comment...", "promptText");
+		addAComment = new PromptedTextBox("Add a comment...", "promptText");
 		addAComment.getElement().getStyle().setProperty("margin", "10px");
-		final CommentBox commentBox = new CommentBox(addAComment, post, this);
+		commentBox = new CommentBox(addAComment, post, this);
 		commentBox.setVisible(false);
 		addCommentPanel.add(commentBox);
 		commentBox.setWidth("100%");
@@ -337,19 +342,54 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				addAComment.setVisible(false);
-				commentBox.setVisible(true);
-				commentBox.textArea.setFocus(true);
-				commentBox.textArea.setText("");
+				showCommentBox(null);
 			}
 		});
 		addCommentPanel.add(addAComment);
 	}
-
-	public void addSubmittedComment(Comment comment)
+	
+	public void showCommentBox(Comment comment)
 	{
-		commentPanel.add(new PostComment(main,comment,profile));
+		addAComment.setVisible(false);
+		commentBox.setVisible(true);
+		commentBox.textArea.setFocus(true);
+		if(comment != null)
+		{
+			commentBox.textArea.setText(comment.getContent());
+			commentBox.isEdit = true;
+			commentBox.editComment = comment;
+		}
+		else
+		{
+			commentBox.textArea.setText("");
+			commentBox.isEdit = false;
+			commentBox.editComment = null;
+		}
+	}
+
+	public void addSubmittedComment(Comment comment, boolean isEdit)
+	{
+		if(isEdit)
+		{
+			comment.setLastEdit(new Date(System.currentTimeMillis()));
+			for(int i=0; i<post.getComments().size(); i++)
+			{
+				String commentKey = post.getComments().get(i).getCommentKey();
+				if(commentKey != null && commentKey.equals(comment.getCommentKey()))
+				{
+					post.getComments().remove(i);
+					post.getComments().add(i, comment);
+				}
+			}
+			commentPanel.clear();
+			for(Comment c : post.getComments())
+				commentPanel.add(new PostComment(main,c,profile,userPost));
+			
+			return;
+		}
+		commentPanel.add(new PostComment(main,comment,profile,userPost));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
+		post.getComments().add(comment);
 	}
 
 	@Override
