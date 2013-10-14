@@ -355,7 +355,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		commentBox.textArea.setFocus(true);
 		if(comment != null)
 		{
-			commentBox.textArea.setText(comment.getContent());
+			commentBox.textArea.setHTML(comment.getContent());
 			commentBox.isEdit = true;
 			commentBox.editComment = comment;
 		}

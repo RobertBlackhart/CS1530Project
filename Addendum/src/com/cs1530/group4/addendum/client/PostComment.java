@@ -73,9 +73,18 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		Anchor usernameLabel = new Anchor(comment.getUsername());
 		usernameLabel.setStyleName("gwt-Label-bold");
 		verticalPanel.add(usernameLabel);
+		
+		HorizontalPanel timePanel = new HorizontalPanel();
 		Label lblCommenttime = new Label(timeLabel);
 		lblCommenttime.setStyleName("gwt-Label-grey");
-		verticalPanel.add(lblCommenttime);
+		
+		Label lblCommentplusone = new Label("+"+String.valueOf(comment.getPlusOnes()));
+		lblCommentplusone.setStyleName("gwt-Label-grey-bold");
+		if(comment.getPlusOnes() == 0)
+			lblCommentplusone.setVisible(false);
+		timePanel.add(lblCommenttime);
+		timePanel.add(lblCommentplusone);
+		verticalPanel.add(timePanel);
 		
 		if(profile != null)
 		{

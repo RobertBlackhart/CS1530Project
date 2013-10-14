@@ -631,6 +631,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			comment.setContent((String) entity.getProperty("content"));
 		else
 			comment.setContent(((Text) entity.getProperty("content")).getValue());
+		if(entity.hasProperty("plusOne"))
+			comment.setPlusOnes(Integer.valueOf(entity.getProperty("plusOne").toString()));
+		else
+			comment.setPlusOnes(0);
 		comment.setCommentTime((Date) entity.getProperty("time"));
 		comment.setUsername((String) entity.getProperty("username"));
 		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
@@ -749,6 +753,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		commentEntity.setProperty("time", comment.getCommentTime());
 		commentEntity.setProperty("username", comment.getUsername());
 		commentEntity.setProperty("content", new Text(comment.getContent()));
+		commentEntity.setProperty("plusOne", 0);
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(), commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
 		return String.valueOf(commentEntity.getKey().getId());

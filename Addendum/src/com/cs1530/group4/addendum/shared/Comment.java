@@ -5,11 +5,20 @@ import java.util.Date;
 
 public class Comment implements Serializable, Comparable<Comment>
 {
-	private static final long serialVersionUID = 6157099786142218688L;
+	private static final long serialVersionUID = 3763260169521173359L;
 	private String username, content;
 	private Date commentTime, lastEdit;
 	private String commentKey;
+	private int plusOnes;
 	
+	public int getPlusOnes()
+	{
+		return plusOnes;
+	}
+	public void setPlusOnes(int plusOnes)
+	{
+		this.plusOnes = plusOnes;
+	}
 	public Comment(){}
 	public Comment(String username, String content)
 	{
