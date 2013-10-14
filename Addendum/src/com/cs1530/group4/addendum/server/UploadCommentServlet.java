@@ -42,6 +42,7 @@ public class UploadCommentServlet extends HttpServlet
 		commentEntity.setProperty("time", comment.getCommentTime());
 		commentEntity.setProperty("username", comment.getUsername());
 		commentEntity.setProperty("content", new Text(comment.getContent()));
+		commentEntity.setProperty("plusOne", 0);
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(), commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
 		

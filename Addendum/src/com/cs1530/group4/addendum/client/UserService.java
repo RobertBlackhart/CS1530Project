@@ -69,4 +69,5 @@ public interface UserService extends RemoteService
 	ArrayList<Post> getFlaggedPosts();
 	Boolean resetPassword(String username);
 	User changePassword(String username, String newPassword);
+	Boolean plusOne(String commentKey, String requestingUser);
 }

@@ -49,4 +49,5 @@ public interface UserServiceAsync
 	void getFlaggedPosts(AsyncCallback<ArrayList<Post>> callback);
 	void resetPassword(String username, AsyncCallback<Boolean> callback);
 	void changePassword(String username, String newPassword, AsyncCallback<User> callback);
+	void plusOne(String commentKey, String requestingUser, AsyncCallback<Boolean> callback);
 }

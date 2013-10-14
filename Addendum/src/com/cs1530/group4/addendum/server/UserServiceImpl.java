@@ -576,7 +576,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setDownvotes(Integer.valueOf(entity.getProperty("downvotes").toString()));
 		post.setScore(Double.valueOf(entity.getProperty("score").toString()));
 		post.setPostKey(String.valueOf(entity.getKey().getId()));
-		post.setComments(getComments(post.getPostKey()));
+		post.setComments(getComments(post.getPostKey(), requestingUser));
 		if(entity.hasProperty("edited"))
 			post.setLastEdit((Date) entity.getProperty("edited"));
 		if(entity.hasProperty("usersVotedUp") && entity.getProperty("usersVotedUp") != null)
@@ -599,7 +599,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return post;
 	}
 
-	private ArrayList<Comment> getComments(String postKey)
+	private ArrayList<Comment> getComments(String postKey, String requestingUser)
 	{
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
@@ -609,14 +609,14 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for(Entity entity : datastore.prepare(q).asIterable())
 		{
 			if(memcache.contains(entity.getKey()))
-				comments.add(commentFromEntity((Entity) memcache.get(entity.getKey())));
+				comments.add(commentFromEntity((Entity) memcache.get(entity.getKey()), requestingUser));
 			else
 				datastoreGet.add(entity.getKey());
 		}
 		Map<Key, Entity> results = datastore.get(datastoreGet);
 		for(Entity entity : results.values())
 		{
-			comments.add(commentFromEntity(entity));
+			comments.add(commentFromEntity(entity, requestingUser));
 			memcache.put(entity.getKey(), entity);
 		}
 
@@ -624,7 +624,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return comments;
 	}
 
-	private Comment commentFromEntity(Entity entity)
+	@SuppressWarnings("unchecked")
+	private Comment commentFromEntity(Entity entity, String requestingUser)
 	{
 		Comment comment = new Comment();
 		if(entity.getProperty("content") instanceof String)
@@ -635,6 +636,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			comment.setPlusOnes(Integer.valueOf(entity.getProperty("plusOne").toString()));
 		else
 			comment.setPlusOnes(0);
+		if(entity.hasProperty("usersPlusOne") && entity.getProperty("usersPlusOne") != null)
+		{
+			ArrayList<String> usersPlusOne = (ArrayList<String>) entity.getProperty("usersPlusOne");
+			comment.setPlusOned(usersPlusOne.contains(requestingUser));
+		}
 		comment.setCommentTime((Date) entity.getProperty("time"));
 		comment.setUsername((String) entity.getProperty("username"));
 		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
@@ -880,5 +886,43 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Boolean plusOne(String commentKey, String requestingUser)
+	{
+		boolean success = false;
+		Entity comment = getComment(commentKey);
+		if(comment != null)
+		{
+			ArrayList<String> plusOneUsers = new ArrayList<String>();
+			int plusOnes = 0;
+			
+			if(comment.hasProperty("usersPlusOne") && comment.getProperty("usersPlusOne") != null)
+				plusOneUsers = (ArrayList<String>) comment.getProperty("usersPlusOne");
+			if(comment.hasProperty("plusOne"))
+				plusOnes = Integer.valueOf(comment.getProperty("plusOne").toString());
+			
+			if(plusOneUsers.remove(requestingUser))
+			{
+				plusOnes--;
+				success = false;
+			}
+			else
+			{
+				plusOneUsers.add(requestingUser);
+				plusOnes++;
+				success = true;
+			}
+			
+			comment.setProperty("usersPlusOne", plusOneUsers);
+			comment.setProperty("plusOne", plusOnes);
+			
+			memcache.put(comment.getKey(), comment);
+			datastore.put(comment);
+		}
+
+		return success;
 	}
 }

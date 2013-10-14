@@ -10,7 +10,16 @@ public class Comment implements Serializable, Comparable<Comment>
 	private Date commentTime, lastEdit;
 	private String commentKey;
 	private int plusOnes;
+	private boolean plusOned;
 	
+	public boolean isPlusOned()
+	{
+		return plusOned;
+	}
+	public void setPlusOned(boolean plusOned)
+	{
+		this.plusOned = plusOned;
+	}
 	public int getPlusOnes()
 	{
 		return plusOnes;

@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -23,8 +24,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PostComment extends Composite implements MouseOverHandler, MouseOutHandler
 {
-	Image menu;
+	Image menu, plusOneButton;
 	CommentMenuPopup popup;
+	UserServiceAsync userService = UserService.Util.getInstance();
 
 	public PostComment(final MainView main, final Comment comment, final Stream profile, UserPost userPost)
 	{
@@ -73,19 +75,64 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		Anchor usernameLabel = new Anchor(comment.getUsername());
 		usernameLabel.setStyleName("gwt-Label-bold");
 		verticalPanel.add(usernameLabel);
-		
+
 		HorizontalPanel timePanel = new HorizontalPanel();
 		Label lblCommenttime = new Label(timeLabel);
 		lblCommenttime.setStyleName("gwt-Label-grey");
-		
-		Label lblCommentplusone = new Label("+"+String.valueOf(comment.getPlusOnes()));
-		lblCommentplusone.setStyleName("gwt-Label-grey-bold");
+
+		final Label plusOnesLabel = new Label("+" + String.valueOf(comment.getPlusOnes()));
+		plusOnesLabel.setStyleName("gwt-Label-grey-bold");
 		if(comment.getPlusOnes() == 0)
-			lblCommentplusone.setVisible(false);
+			plusOnesLabel.setVisible(false);
+
+		plusOneButton = new Image("/images/plus_one_default.png");
+		plusOneButton.setStyleName("plusOneButton");
+		plusOneButton.setVisible(false);
+		if(comment.isPlusOned())
+			plusOneButton.setUrl("/images/plus_one_checked.png");
+		plusOneButton.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void onSuccess(Boolean result)
+					{
+						if(result) //was increased
+						{
+							comment.setPlusOnes(comment.getPlusOnes()+1);
+							plusOnesLabel.setText("+"+comment.getPlusOnes());
+							plusOnesLabel.setVisible(true);
+							plusOneButton.setUrl("/images/plus_one_checked.png");
+						}
+						else
+						{
+							comment.setPlusOnes(comment.getPlusOnes()-1);
+							plusOnesLabel.setText("+"+comment.getPlusOnes());
+							if(comment.getPlusOnes() == 0)
+								plusOnesLabel.setVisible(false);
+							plusOneButton.setUrl("/images/plus_one_default.png");
+						}
+					}
+
+				};
+				userService.plusOne(comment.getCommentKey(),Cookies.getCookie("loggedIn"),callback);
+			}
+		});
+
 		timePanel.add(lblCommenttime);
-		timePanel.add(lblCommentplusone);
+		timePanel.add(plusOnesLabel);
+		timePanel.add(plusOneButton);
 		verticalPanel.add(timePanel);
-		
+
 		if(profile != null)
 		{
 			usernameLabel.addClickHandler(new ClickHandler()
@@ -101,7 +148,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		menu.setSize("24px", "24px");
 		menu.setVisible(false);
 		menu.getElement().getStyle().setProperty("marginRight", "5px");
-		popup = new CommentMenuPopup(main, menu, comment, comment.getUsername().equals(Cookies.getCookie("loggedIn")),userPost);
+		popup = new CommentMenuPopup(main, menu, comment, comment.getUsername().equals(Cookies.getCookie("loggedIn")), userPost);
 		menu.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -112,13 +159,13 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 					popup.showRelativeTo(menu);
 			}
 		});
-		
+
 		HorizontalPanel menuPanel = new HorizontalPanel();
 		menuPanel.setWidth("100%");
 		menuPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		menuPanel.add(menu);
 		horizontalPanel.add(menuPanel);
-		
+
 		rowPanel.add(horizontalPanel);
 		rowPanel.add(content);
 	}
@@ -127,11 +174,13 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	public void onMouseOut(MouseOutEvent event)
 	{
 		menu.setVisible(false);
+		plusOneButton.setVisible(false);
 	}
 
 	@Override
 	public void onMouseOver(MouseOverEvent event)
 	{
 		menu.setVisible(true);
+		plusOneButton.setVisible(true);
 	}
 }

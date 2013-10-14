@@ -603,6 +603,14 @@ padding: 0px 0px 6px 6px;
 	font-weight: 900;
 }
 .gwt-Label-grey-bold {
-	margin-left: 5px;
+	color: Gray;
+	margin-left: 10px;
+	font-style: italic;
 	font-weight: bold;
+}
+.plusOneButton {
+	cursor: pointer;
+	margin-left: 10px;
+	height: 13px;
+	width: 21px;
 }
