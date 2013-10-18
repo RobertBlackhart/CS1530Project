@@ -2,6 +2,7 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
@@ -203,61 +204,6 @@ public class Stream extends Composite
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
-
-		tabPanel = new TabPanel();
-		tabPanel.setSize("800px", "89");
-
-		VerticalPanel popularUpdatesPanel = new VerticalPanel();
-		popularUpdatesPanel.setWidth("100%");
-		VerticalPanel newUpdatesPanel = new VerticalPanel();
-		newUpdatesPanel.setWidth("100%");
-		tabPanel.add(popularUpdatesPanel, "Popular", false);
-		tabPanel.selectTab(0);
-		tabPanel.add(newUpdatesPanel, "New", false);
-		tabPanel.addSelectionHandler(new SelectionHandler<Integer>()
-		{
-			@Override
-			public void onSelection(SelectionEvent<Integer> event)
-			{
-				if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Search Results"))
-				{
-					if(searchStart < 10)
-						prevPage.setVisible(false);
-					else
-						prevPage.setVisible(true);
-					return;
-				}
-				
-				if(startIndex < 10)
-					prevPage.setVisible(false);
-				else
-					prevPage.setVisible(true);
-
-				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
-				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
-				if(userCourses != null)
-				{
-					ArrayList<String> streamLevels = new ArrayList<String>();
-					streamLevels.add(streamLevel);
-					if(streamLevel.equals("all"))
-						streamLevels.addAll(userCourses);
-					getPosts(currentTab, streamLevels, sortMethod);
-				}
-			}
-		});
-		popularUpdatesPanel.setSpacing(15);
-		newUpdatesPanel.setSpacing(15);
-		
-		hPanel.add(tabPanel);
-		currentTab = (VerticalPanel) tabPanel.getWidget(0);
-
-		getClasses(classPanel, addRemove, allAnchor);
-		
-		ArrayList<String> streamLevels = new ArrayList<String>();
-		streamLevels.add(streamLevel);
-		if(streamLevel.equals("all"))
-			streamLevels.addAll(userCourses);
-		getPosts(((VerticalPanel)tabPanel.getWidget(0)), streamLevels, sortMethod);
 		
 		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
@@ -305,6 +251,57 @@ public class Stream extends Composite
 		nextPrevPanel.add(prevPage);
 		nextPrevPanel.add(nextPage);
 		vPanel.add(nextPrevPanel);
+		
+		tabPanel = new TabPanel();
+		tabPanel.setSize("800px", "89");
+
+		VerticalPanel popularUpdatesPanel = new VerticalPanel();
+		popularUpdatesPanel.setWidth("100%");
+		VerticalPanel newUpdatesPanel = new VerticalPanel();
+		newUpdatesPanel.setWidth("100%");
+		tabPanel.add(popularUpdatesPanel, "Popular", false);
+		tabPanel.add(newUpdatesPanel, "New", false);
+		tabPanel.addSelectionHandler(new SelectionHandler<Integer>()
+		{
+			@Override
+			public void onSelection(SelectionEvent<Integer> event)
+			{
+				if(tabPanel.getTabBar().getTabHTML(event.getSelectedItem()).equals("Search Results"))
+				{
+					if(searchStart < 10)
+						prevPage.setVisible(false);
+					else
+						prevPage.setVisible(true);
+					return;
+				}
+				
+				if(startIndex < 10)
+					prevPage.setVisible(false);
+				else
+					prevPage.setVisible(true);
+
+				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
+				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
+				if(userCourses != null)
+				{
+					ArrayList<String> streamLevels = new ArrayList<String>();
+					streamLevels.add(streamLevel);
+					if(streamLevel.equals("all"))
+						streamLevels.addAll(userCourses);
+					
+					getPosts(currentTab, streamLevels, sortMethod);
+				}
+			}
+		});
+		popularUpdatesPanel.setSpacing(15);
+		newUpdatesPanel.setSpacing(15);
+		
+		currentTab = (VerticalPanel) tabPanel.getWidget(0);
+		
+		getClasses(classPanel, addRemove, allAnchor);
+		tabPanel.selectTab(0);
+		
+		hPanel.add(tabPanel);
 		setStyleName("profilePanel");
 	}
 

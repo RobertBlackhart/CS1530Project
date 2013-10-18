@@ -49,23 +49,9 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 	private void initialize()
 	{
 		RootPanel rootPanel = RootPanel.get("container");
-
-		VerticalPanel topPanel = new VerticalPanel();
 		contentPanel = new VerticalPanel();
-
-		rootPanel.add(topPanel);
 		rootPanel.add(contentPanel);
 		
-		Storage localStorage = Storage.getLocalStorageIfSupported();
-
-		if(Cookies.getCookie("loggedIn") != null && localStorage.getItem("loggedIn") != null)
-		{
-			User user = User.deserialize(localStorage.getItem("loggedIn"));
-			contentPanel.add(new Stream(this, user));
-		}
-		else
-			contentPanel.add(new Login(this));
-
 		History.addValueChangeHandler(this);
 	}
 

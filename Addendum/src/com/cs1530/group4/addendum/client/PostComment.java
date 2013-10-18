@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 
 public class PostComment extends Composite implements MouseOverHandler, MouseOutHandler
 {
@@ -31,7 +31,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 
 	public PostComment(final MainView main, final Comment comment, final Stream profile, final UserPost userPost)
 	{
-		VerticalPanel rowPanel = new VerticalPanel();
+		FlowPanel rowPanel = new FlowPanel();
 		rowPanel.setStyleName("CommentPanelbackcolor");
 		initWidget(rowPanel);
 		rowPanel.setWidth("100%");
@@ -70,7 +70,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		image.getElement().getStyle().setProperty("marginRight", "10px");
 		image.setSize("28px", "28px");
 
-		VerticalPanel verticalPanel = new VerticalPanel();
+		FlowPanel verticalPanel = new FlowPanel();
 		horizontalPanel_1.add(verticalPanel);
 
 		Anchor usernameLabel = new Anchor(comment.getUsername());
@@ -135,9 +135,8 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 								break;
 							}
 						}
-						userPost.commentPanel.clear();
-						for(Comment comment : comments)
-							userPost.commentPanel.add(new PostComment(main,comment,userPost.profile,userPost));
+						
+						userPost.displayComments();
 					}
 
 				};

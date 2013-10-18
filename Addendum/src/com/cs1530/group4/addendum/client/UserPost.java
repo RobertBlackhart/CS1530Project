@@ -22,13 +22,13 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 
 public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
 	int upDownVotes;
-	VerticalPanel commentPanel;
+	FlowPanel commentPanel;
 	Image menu;
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
@@ -38,6 +38,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	CommentBox commentBox;
 	UserPost userPost = this;
 	Post post;
+	boolean isExpanded = false;
 
 	public UserPost(MainView m, final Stream profile, Post p)
 	{
@@ -50,7 +51,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		border.setWidth("100%");
 		initWidget(border);
 
-		VerticalPanel scorePanel = new VerticalPanel();
+		FlowPanel scorePanel = new FlowPanel();
 		scorePanel.getElement().getStyle().setProperty("marginLeft", "5px");
 		scorePanel.getElement().getStyle().setProperty("marginRight", "5px");
 		border.add(scorePanel);
@@ -163,7 +164,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		scorePanel.add(downArrow);
 		downArrow.setSize("24px", "24px");
 
-		VerticalPanel postPanel = new VerticalPanel();
+		FlowPanel postPanel = new FlowPanel();
 		postPanel.setWidth("100%");
 		border.add(postPanel);
 		
@@ -192,7 +193,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		image.getElement().getStyle().setProperty("marginRight", "10px");
 		image.setSize("46px", "46px");
 
-		VerticalPanel verticalPanel = new VerticalPanel();
+		FlowPanel verticalPanel = new FlowPanel();
 		horizontalPanel_2.add(verticalPanel);
 
 		Anchor usernameLabel = new Anchor(post.getUsername());
@@ -262,8 +263,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		HTML separator = new HTML("<hr  style=\"width:100%;\" />");
 		postPanel.add(separator);
 
-		commentPanel = new VerticalPanel();
-		commentPanel.setSpacing(5);
+		commentPanel = new FlowPanel();
 		commentPanel.setWidth("100%");
 		if(post.getComments().size() > 0)
 			commentPanel.setStyleName("CommentPanelbackcolor");
@@ -271,63 +271,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		
 		if(post.getComments() != null)
 		{
-			if(post.getComments().size() > 2)
-			{
-				final HorizontalPanel expandPanel = new HorizontalPanel();
-				commentPanel.add(expandPanel);
-				final HorizontalPanel hidePanel = new HorizontalPanel();
-				final ArrayList<Comment> comments = post.getComments();
-				
-				Label expandComments = new Label(comments.size() + " comments");
-				expandComments.setStyleName("expandCloseLink");
-				Image expandImage = new Image("images/open_arrow.png");
-				expandImage.setStyleName("expandCloseLink");
-				expandPanel.add(expandComments);
-				expandPanel.add(expandImage);
-				
-				Label hideComments = new Label("Hide comments");
-				hideComments.setStyleName("expandCloseLink");
-				Image hideImage = new Image("images/close_arrow.png");
-				hideImage.setStyleName("expandCloseLink");
-				hidePanel.add(hideComments);
-				hidePanel.add(hideImage);
-				
-				ClickHandler expandHandler = new ClickHandler()
-				{
-					public void onClick(ClickEvent event)
-					{
-						commentPanel.clear();
-						commentPanel.add(hidePanel);
-						for(Comment comment : post.getComments())
-							commentPanel.add(new PostComment(main,comment,profile,userPost));
-					}
-				};
-				expandComments.addClickHandler(expandHandler);
-				expandImage.addClickHandler(expandHandler);
-				
-				ClickHandler hideHandler = new ClickHandler()
-				{
-					public void onClick(ClickEvent event)
-					{
-						commentPanel.clear();
-						commentPanel.add(expandPanel);
-						commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
-					}
-				};
-				hideComments.addClickHandler(hideHandler);
-				hideImage.addClickHandler(hideHandler);
-				
-				commentPanel.add(expandPanel);
-				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
-			}
-			else
-			{
-				for(Comment comment : post.getComments())
-					commentPanel.add(new PostComment(main,comment,profile,userPost));
-			}
+			displayComments();
 		}
 
-		VerticalPanel addCommentPanel = new VerticalPanel();
+		FlowPanel addCommentPanel = new FlowPanel();
 		postPanel.add(addCommentPanel);
 		addCommentPanel.setWidth("100%");
 
@@ -346,6 +293,76 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 		});
 		addCommentPanel.add(addAComment);
+	}
+	
+	public void displayComments()
+	{
+		commentPanel.clear();
+		
+		if(post.getComments().size() > 2)
+		{
+			final HorizontalPanel expandPanel = new HorizontalPanel();
+			final HorizontalPanel hidePanel = new HorizontalPanel();
+			final ArrayList<Comment> comments = post.getComments();
+			
+			Label expandComments = new Label(comments.size() + " comments");
+			expandComments.setStyleName("expandCloseLink");
+			Image expandImage = new Image("images/open_arrow.png");
+			expandImage.setStyleName("expandCloseLink");
+			expandPanel.add(expandComments);
+			expandPanel.add(expandImage);
+			
+			Label hideComments = new Label("Hide comments");
+			hideComments.setStyleName("expandCloseLink");
+			Image hideImage = new Image("images/close_arrow.png");
+			hideImage.setStyleName("expandCloseLink");
+			hidePanel.add(hideComments);
+			hidePanel.add(hideImage);
+			
+			ClickHandler expandHandler = new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					isExpanded = true;
+					commentPanel.clear();
+					commentPanel.add(hidePanel);
+					for(Comment comment : post.getComments())
+						commentPanel.add(new PostComment(main,comment,profile,userPost));
+				}
+			};
+			expandComments.addClickHandler(expandHandler);
+			expandImage.addClickHandler(expandHandler);
+			
+			ClickHandler hideHandler = new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					isExpanded = false;
+					commentPanel.clear();
+					commentPanel.add(expandPanel);
+					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
+				}
+			};
+			hideComments.addClickHandler(hideHandler);
+			hideImage.addClickHandler(hideHandler);
+			
+			if(isExpanded)
+			{
+				commentPanel.add(hidePanel);
+				for(Comment comment : post.getComments())
+					commentPanel.add(new PostComment(main,comment,profile,userPost));
+			}
+			else
+			{
+				commentPanel.add(expandPanel);
+				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
+			}
+		}
+		else
+		{
+			for(Comment comment : post.getComments())
+				commentPanel.add(new PostComment(main,comment,profile,userPost));
+		}
 	}
 	
 	public void showCommentBox(Comment comment)
@@ -381,9 +398,8 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					post.getComments().add(i, comment);
 				}
 			}
-			commentPanel.clear();
-			for(Comment c : post.getComments())
-				commentPanel.add(new PostComment(main,c,profile,userPost));
+			
+			displayComments();
 			
 			return;
 		}
