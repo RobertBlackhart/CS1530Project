@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PostComment extends Composite implements MouseOverHandler, MouseOutHandler
 {
@@ -31,27 +31,10 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 
 	public PostComment(final MainView main, final Comment comment, final Stream profile, final UserPost userPost)
 	{
-		FlowPanel rowPanel = new FlowPanel();
+		VerticalPanel rowPanel = new VerticalPanel();
 		rowPanel.setStyleName("CommentPanelbackcolor");
 		initWidget(rowPanel);
 		rowPanel.setWidth("100%");
-
-		String timeFormatString = "h:mm a";
-		String editFormatString = "h:mm a";
-		Date now = new Date(System.currentTimeMillis());
-		if(comment.getCommentTime().getDate() != now.getDate())
-			timeFormatString = "MMM d, yyyy";
-		if(comment.getLastEdit() != null && comment.getLastEdit().getDate() != now.getDate())
-			editFormatString = "MMM d, yyyy";
-		DateTimeFormat dtf = new DateTimeFormat(timeFormatString, new DefaultDateTimeFormatInfo())
-		{
-		};
-		DateTimeFormat editDtf = new DateTimeFormat(editFormatString, new DefaultDateTimeFormatInfo())
-		{
-		};
-		String timeLabel = dtf.format(comment.getCommentTime());
-		if(comment.getLastEdit() != null)
-			timeLabel += " (last edit - " + editDtf.format(comment.getLastEdit()) + ")";
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setWidth("100%");
@@ -70,7 +53,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		image.getElement().getStyle().setProperty("marginRight", "10px");
 		image.setSize("28px", "28px");
 
-		FlowPanel verticalPanel = new FlowPanel();
+		VerticalPanel verticalPanel = new VerticalPanel();
 		horizontalPanel_1.add(verticalPanel);
 
 		Anchor usernameLabel = new Anchor(comment.getUsername());
@@ -78,7 +61,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		verticalPanel.add(usernameLabel);
 
 		HorizontalPanel timePanel = new HorizontalPanel();
-		Label lblCommenttime = new Label(timeLabel);
+		Label lblCommenttime = new Label(getFormattedTime(comment));
 		lblCommenttime.setStyleName("gwt-Label-grey");
 
 		final Label plusOnesLabel = new Label("+" + String.valueOf(comment.getPlusOnes()));
@@ -184,6 +167,28 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 
 		rowPanel.add(horizontalPanel);
 		rowPanel.add(content);
+	}
+	
+	private String getFormattedTime(Comment comment)
+	{
+		String timeFormatString = "h:mm a";
+		String editFormatString = "h:mm a";
+		Date now = new Date(System.currentTimeMillis());
+		if(comment.getCommentTime().getDate() != now.getDate())
+			timeFormatString = "MMM d, yyyy";
+		if(comment.getLastEdit() != null && comment.getLastEdit().getDate() != now.getDate())
+			editFormatString = "MMM d, yyyy";
+		DateTimeFormat dtf = new DateTimeFormat(timeFormatString, new DefaultDateTimeFormatInfo())
+		{
+		};
+		DateTimeFormat editDtf = new DateTimeFormat(editFormatString, new DefaultDateTimeFormatInfo())
+		{
+		};
+		String timeLabel = dtf.format(comment.getCommentTime());
+		if(comment.getLastEdit() != null)
+			timeLabel += " (last edit - " + editDtf.format(comment.getLastEdit()) + ")";
+		
+		return timeLabel;
 	}
 
 	@Override

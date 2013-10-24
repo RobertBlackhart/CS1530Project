@@ -57,6 +57,7 @@ import com.google.appengine.api.search.QueryOptions;
 import com.google.appengine.api.search.Results;
 import com.google.appengine.api.search.ScoredDocument;
 import com.google.appengine.api.search.SearchServiceFactory;
+import com.google.appengine.api.utils.SystemProperty;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
@@ -79,8 +80,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 		if(userEntity != null)
 		{
-			//if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
-				//return user;
+			
+			//only test for valid email in production because the dev server doesn't handle email properly
+			if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
+			{
+				if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
+				return user;
+			}
 			
 			if(userEntity.hasProperty("password"))
 			{

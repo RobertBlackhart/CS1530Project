@@ -17,18 +17,21 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
 	int upDownVotes;
-	FlowPanel commentPanel;
+	VerticalPanel commentPanel;
+	ScrollPanel scroll;
 	Image menu;
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
@@ -263,11 +266,13 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		HTML separator = new HTML("<hr  style=\"width:100%;\" />");
 		postPanel.add(separator);
 
-		commentPanel = new FlowPanel();
+		scroll = new ScrollPanel();
+		commentPanel = new VerticalPanel();
 		commentPanel.setWidth("100%");
 		if(post.getComments().size() > 0)
 			commentPanel.setStyleName("CommentPanelbackcolor");
-		postPanel.add(commentPanel);
+		scroll.add(commentPanel);
+		postPanel.add(scroll);
 		
 		if(post.getComments() != null)
 		{
@@ -328,6 +333,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					commentPanel.add(hidePanel);
 					for(Comment comment : post.getComments())
 						commentPanel.add(new PostComment(main,comment,profile,userPost));
+					adjustCommentScroll();
 				}
 			};
 			expandComments.addClickHandler(expandHandler);
@@ -341,6 +347,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					commentPanel.clear();
 					commentPanel.add(expandPanel);
 					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
+					adjustCommentScroll();
 				}
 			};
 			hideComments.addClickHandler(hideHandler);
@@ -363,6 +370,16 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			for(Comment comment : post.getComments())
 				commentPanel.add(new PostComment(main,comment,profile,userPost));
 		}
+		
+		adjustCommentScroll();
+	}
+	
+	private void adjustCommentScroll()
+	{
+		if(commentPanel.getOffsetHeight() > 150)
+			scroll.setHeight("150px");
+		else
+			scroll.setHeight("100%");
 	}
 	
 	public void showCommentBox(Comment comment)
@@ -405,6 +422,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		}
 		commentPanel.add(new PostComment(main,comment,profile,userPost));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
+		adjustCommentScroll();
 		post.getComments().add(comment);
 	}
 
