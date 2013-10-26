@@ -50,4 +50,5 @@ public interface UserServiceAsync
 	void resetPassword(String username, AsyncCallback<Boolean> callback);
 	void changePassword(String username, String newPassword, AsyncCallback<User> callback);
 	void plusOne(String commentKey, String requestingUser, AsyncCallback<Boolean> callback);
+	void removeCourse(String course, String user, AsyncCallback<User> callback);
 }

@@ -67,7 +67,7 @@ public class NewPasswordDialog extends DialogBox
 							Cookies.setCookie("loggedIn", username);
 							Storage localStorage = Storage.getLocalStorageIfSupported();
 							localStorage.setItem("loggedIn", result.serialize());
-							main.setContent(new Stream(main,result), "profile-"+username);
+							main.setContent(new Stream(main), "profile-"+username);
 						}
 						else
 							Window.alert("There was a problem changing your password.");

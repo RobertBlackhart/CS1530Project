@@ -89,14 +89,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			if(loggedUser == null)
 				content = new Login(main);
 			else
-			{
-				Storage localStorage = Storage.getLocalStorageIfSupported();
-				User user = new User(Cookies.getCookie("loggedIn"));
-				if(localStorage.getItem("loggedIn") != null)
-					user = User.deserialize(localStorage.getItem("loggedIn"));
-				
-				content = new Stream(main, user);
-			}
+				content = new Stream(main);
 		}
 		else if(historyToken[0].equals("adminPanel"))
 			content = new AdminPanel(main);
@@ -106,14 +99,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			if(username == null)
 				content = new Login(main);
 			else
-			{
-				Storage localStorage = Storage.getLocalStorageIfSupported();
-				User user = new User(Cookies.getCookie("loggedIn"));
-				if(localStorage.getItem("loggedIn") != null)
-					user = User.deserialize(localStorage.getItem("loggedIn"));
-				
-				content = new Stream(main, user);
-			}
+				content = new Stream(main);
 		}
 		
 		contentPanel.clear();

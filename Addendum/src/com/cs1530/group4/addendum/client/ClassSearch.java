@@ -35,7 +35,6 @@ public class ClassSearch extends DialogBox
 
 	public ClassSearch(final MainView main)
 	{
-		setStyleName("");
 		VerticalPanel verticalPanel = new VerticalPanel();
 		
 		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -204,20 +203,14 @@ public class ClassSearch extends DialogBox
 							}
 							localStorage.setItem("loggedIn", user.serialize());
 						}
-						main.setContent(new Stream(main, user), "profile-" + Cookies.getCookie("loggedIn"));
+						main.setContent(new Stream(main), "profile-" + Cookies.getCookie("loggedIn"));
 					}
 				};
 
 				if(courses.size() > 0)
 					userService.userAddCourse(Cookies.getCookie("loggedIn"), courses, callback);
 				else
-				{
-					Storage localStorage = Storage.getLocalStorageIfSupported();
-					User user = new User(Cookies.getCookie("loggedIn"));
-					if(localStorage.getItem("loggedIn") != null)
-						user = User.deserialize(localStorage.getItem("loggedIn"));
-					main.setContent(new Stream(main, user), "profile-" + Cookies.getCookie("loggedIn"));
-				}
+					dialog.hide();
 			}
 		});
 

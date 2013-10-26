@@ -80,14 +80,14 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 		if(userEntity != null)
 		{
-			
+
 			//only test for valid email in production because the dev server doesn't handle email properly
 			if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
 			{
-				if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
-				return user;
+				if(userEntity.hasProperty("emailValid") && !(Boolean) userEntity.getProperty("emailValid"))
+					return user;
 			}
-			
+
 			if(userEntity.hasProperty("password"))
 			{
 				if(userEntity.getProperty("password").toString().equals(password))
@@ -95,13 +95,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 					user = new User(username);
 					if(userEntity.hasProperty("courseList"))
 					{
-						ArrayList<String> courseList = (ArrayList<String>)userEntity.getProperty("courseList");
+						ArrayList<String> courseList = (ArrayList<String>) userEntity.getProperty("courseList");
 						if(courseList.remove("No"))
 						{
 							user.setCourseList(courseList);
 							userEntity.setProperty("courseList", courseList);
 							datastore.put(userEntity);
-							memcache.put("user_"+user.getUsername(), userEntity);
+							memcache.put("user_" + user.getUsername(), userEntity);
 						}
 						user.setCourseList(courseList);
 					}
@@ -110,7 +110,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				}
 			}
 		}
-		
+
 		return user;
 	}
 
@@ -123,7 +123,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			return "user_exists";
 		if(!validateEmail(email))
 			return "email_exists";
-		
+
 		else
 		{
 			String uuid = UUID.randomUUID().toString();
@@ -131,36 +131,34 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			user.setProperty("username", username);
 			user.setProperty("password", password);
 			user.setProperty("email", email);
-			user.setProperty("emailValid",false);
+			user.setProperty("emailValid", false);
 			user.setProperty("uuid", uuid);
 			user.setProperty("firstName", firstName);
 			user.setProperty("lastName", lastName);
-			
+
 			sendEmail(email, uuid, username);
-			
+
 			memcache.put("user_" + username, user);
 			datastore.put(user);
 			return "success";
 		}
 	}
-	
+
 	private void sendEmail(String email, String uuid, String username)
 	{
-        String msgBody = "Welcome to Addendum!\n\n" +
-        		"In order to validate your account, please click on the link below or copy and paste it into" +
-        		"your browser's address bar:\n\n" +
-        		"http://studentclassnet.appspot.com/addendum/validate?username="+username+"&uuid="+uuid;
-        
-        try 
-        {
-        	Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
-            msg.setFrom(new InternetAddress("addendumapp@gmail.com", "Addendum"));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-            msg.setSubject("Welcome to Addendum");
-            msg.setText(msgBody);
-            Transport.send(msg);
+		String msgBody = "Welcome to Addendum!\n\n" + "In order to validate your account, please click on the link below or copy and paste it into" + "your browser's address bar:\n\n" + "http://studentclassnet.appspot.com/addendum/validate?username=" + username + "&uuid=" + uuid;
 
-        } catch(Exception e)
+		try
+		{
+			Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+			msg.setFrom(new InternetAddress("addendumapp@gmail.com", "Addendum"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			msg.setSubject("Welcome to Addendum");
+			msg.setText(msgBody);
+			Transport.send(msg);
+
+		}
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -172,7 +170,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		q.setFilter(new FilterPredicate("email", FilterOperator.EQUAL, email));
 		for(Entity entity : datastore.prepare(q).asIterable())
 			return false;
-		
+
 		return true;
 	}
 
@@ -284,7 +282,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		String code = entity.getProperty("subjectCode").toString();
 		int num = Integer.parseInt(entity.getProperty("catalogueNumber").toString());
 		String name = entity.getProperty("courseName").toString();
-		String desc = entity.getProperty("courseDescription").toString();
+		String desc = ((Text)entity.getProperty("courseDescription")).getValue();
 		Course course = new Course(code, num, name, desc);
 		course.setCourseRequestKey(String.valueOf(entity.getKey().getId()));
 		return course;
@@ -293,7 +291,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription)
 	{
-		System.out.println("here");
 		Entity courseEntity = new Entity("CourseRequest", subjectCode + catalogueNumber);
 		courseEntity.setProperty("subjectCode", subjectCode.toUpperCase()); //always upper case for search purposes
 		courseEntity.setProperty("catalogueNumber", catalogueNumber);
@@ -313,7 +310,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for(Entity entity : datastore.prepare(q).asIterable())
 		{
 			if(memcache.contains(entity.getKey()))
-				courseRequests.add(getCourse((Entity)memcache.get(entity.getKey())));
+				courseRequests.add(getCourse((Entity) memcache.get(entity.getKey())));
 			else
 				keys.add(entity.getKey());
 		}
@@ -323,7 +320,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 		return courseRequests;
 	}
-	
+
 	@Override
 	public void removeCourseRequest(Course course, boolean add)
 	{
@@ -331,7 +328,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		{
 			adminAddCourse(course.getSubjectCode(), course.getCourseNumber(), course.getCourseName(), course.getCourseDescription());
 		}
-		Key key = KeyFactory.createKey("CourseRequest",Long.valueOf(course.getCourseRequestKey()));
+		Key key = KeyFactory.createKey("CourseRequest", course.getSubjectCode()+course.getCourseNumber());
 		datastore.delete(key);
 		memcache.delete(key);
 	}
@@ -342,14 +339,14 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		ArrayList<Post> reportedPosts = new ArrayList<Post>();
 
 		Query q = new Query("Post");
-		q.setFilter(new FilterPredicate("reported",FilterOperator.EQUAL,"true"));
+		q.setFilter(new FilterPredicate("reported", FilterOperator.EQUAL, "true"));
 		for(Entity entity : datastore.prepare(q).asIterable())
 		{
-			reportedPosts.add(postFromEntity(entity,"Administrator"));
+			reportedPosts.add(postFromEntity(entity, "Administrator"));
 		}
 		return reportedPosts;
 	}
-	
+
 	@Override
 	public void flagPost(String postKey, String reason, boolean setFlagged)
 	{
@@ -421,7 +418,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			{
 				user = datastore.get(KeyFactory.createKey("User", username));
 			}
-			catch(EntityNotFoundException ex){}
+			catch(EntityNotFoundException ex)
+			{}
 		}
 		return user;
 	}
@@ -446,11 +444,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put(post.getKey(), post); //when looking up posts, do a key only query and check if they are in memcache first
 
 		//for text search within posts
-		Document doc = Document.newBuilder().setId(String.valueOf(post.getKey().getId()))
-				.addField(Field.newBuilder().setName("username").setText(username))
-				.addField(Field.newBuilder().setName("content").setText(postPlain))
-				.addField(Field.newBuilder().setName("time").setDate(time))
-				.addField(Field.newBuilder().setName("level").setText(streamLevel)).build();
+		Document doc = Document.newBuilder().setId(String.valueOf(post.getKey().getId())).addField(Field.newBuilder().setName("username").setText(username)).addField(Field.newBuilder().setName("content").setText(postPlain)).addField(Field.newBuilder().setName("time").setDate(time)).addField(Field.newBuilder().setName("level").setText(streamLevel)).build();
 		postIndex.put(doc);
 	}
 
@@ -471,13 +465,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	{
 		ArrayList<Post> results = new ArrayList<Post>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
-		
+
 		try
 		{
-			QueryOptions options = QueryOptions.newBuilder()
-		            .setLimit(11)  
-		            .setOffset(startIndex)
-		            .build();
+			QueryOptions options = QueryOptions.newBuilder().setLimit(11).setOffset(startIndex).build();
 			com.google.appengine.api.search.Query query = com.google.appengine.api.search.Query.newBuilder().setOptions(options).build(searchText);
 			Results<ScoredDocument> docs = postIndex.search(query);
 			for(ScoredDocument document : docs)
@@ -497,8 +488,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			}
 		}
 		catch(Exception ex)
-		{
-		}
+		{}
 
 		return results;
 	}
@@ -554,16 +544,16 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			posts.add(postFromEntity(entity, requestingUser));
 			memcache.put(entity.getKey(), entity);
 		}
-		
+
 		if(sort.equals("Popular"))
 			Collections.sort(posts, Post.PostScoreComparator);
 		if(sort.equals("New"))
 			Collections.sort(posts, Post.PostTimeComparator);
-		
+
 		ArrayList<Post> returnPosts = new ArrayList<Post>();
-		for(int i=startIndex; i<Math.min(startIndex+11, posts.size()); i++)
+		for(int i = startIndex; i < Math.min(startIndex + 11, posts.size()); i++)
 			returnPosts.add(posts.get(i));
-		
+
 		return returnPosts;
 	}
 
@@ -600,7 +590,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		else
 			post.setReported(false);
 		if(entity.hasProperty("reportReason"))
-			post.setReportReason((String)entity.getProperty("reportReason"));
+			post.setReportReason((String) entity.getProperty("reportReason"));
 
 		return post;
 	}
@@ -683,12 +673,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				downUsers = (ArrayList<String>) post.getProperty("usersVotedDown");
 			if(property.equals("upvotes") && upUsers.contains(user))
 			{
-				post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString())-1);
+				post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString()) - 1);
 				upUsers.remove(user);
 			}
 			else if(property.equals("downvotes") && downUsers.contains(user))
 			{
-				post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString())-1);
+				post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString()) - 1);
 				downUsers.remove(user);
 			}
 			else if(property.equals("upvotes"))
@@ -843,27 +833,25 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		Entity user = getUserEntity(username);
 		if(user != null && user.hasProperty("uuid") && user.hasProperty("email"))
 		{
-			String msgBody = "To reset your password, please click on the link below or copy and paste it into" +
-	        		"your browser's address bar:\n\n" +
-	        		"http://studentclassnet.appspot.com/addendum/passwordReset?username="+username+"&uuid="+user.getProperty("uuid").toString();
-	        
-	        try 
-	        {
-	        	Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
-	            msg.setFrom(new InternetAddress("addendumapp@gmail.com", "Addendum"));
-	            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getProperty("email").toString()));
-	            msg.setSubject("Password Reset");
-	            msg.setText(msgBody);
-	            Transport.send(msg);
-	            return true;
-	        } 
-	        catch(Exception e)
+			String msgBody = "To reset your password, please click on the link below or copy and paste it into" + "your browser's address bar:\n\n" + "http://studentclassnet.appspot.com/addendum/passwordReset?username=" + username + "&uuid=" + user.getProperty("uuid").toString();
+
+			try
+			{
+				Message msg = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+				msg.setFrom(new InternetAddress("addendumapp@gmail.com", "Addendum"));
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getProperty("email").toString()));
+				msg.setSubject("Password Reset");
+				msg.setText(msgBody);
+				Transport.send(msg);
+				return true;
+			}
+			catch(Exception e)
 			{
 				e.printStackTrace();
 			}
 		}
-        
-        return false;
+
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -874,13 +862,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		if(entity != null)
 		{
 			entity.setProperty("password", newPassword);
-			memcache.put("user_"+username, entity);
+			memcache.put("user_" + username, entity);
 			datastore.put(entity);
-			
+
 			User user = new User(username);
 			if(entity.hasProperty("courseList"))
-				user.setCourseList((ArrayList<String>)entity.getProperty("courseList"));
-			
+				user.setCourseList((ArrayList<String>) entity.getProperty("courseList"));
+
 			return user;
 		}
 		else
@@ -891,7 +879,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public void flagComment(String commentKey, String reason, boolean setFlagged)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -904,12 +892,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		{
 			ArrayList<String> plusOneUsers = new ArrayList<String>();
 			int plusOnes = 0;
-			
+
 			if(comment.hasProperty("usersPlusOne") && comment.getProperty("usersPlusOne") != null)
 				plusOneUsers = (ArrayList<String>) comment.getProperty("usersPlusOne");
 			if(comment.hasProperty("plusOne"))
 				plusOnes = Integer.valueOf(comment.getProperty("plusOne").toString());
-			
+
 			if(plusOneUsers.remove(requestingUser))
 			{
 				plusOnes--;
@@ -921,14 +909,40 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				plusOnes++;
 				success = true;
 			}
-			
+
 			comment.setProperty("usersPlusOne", plusOneUsers);
 			comment.setProperty("plusOne", plusOnes);
-			
+
 			memcache.put(comment.getKey(), comment);
 			datastore.put(comment);
 		}
 
 		return success;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private User userFromEntity(Entity userEntity)
+	{
+		User user = new User();
+		user.setUsername(userEntity.getProperty("username").toString());
+		user.setCourseList((ArrayList<String>)userEntity.getProperty("courseList"));
+		
+		return user;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public User removeCourse(String course, String username)
+	{
+		Entity userEntity = getUserEntity(username);
+		ArrayList<String> courseList = new ArrayList<String>();
+		if(userEntity.hasProperty("courseList"))
+			courseList = (ArrayList<String>)userEntity.getProperty("courseList");
+		courseList.remove(course);
+		userEntity.setProperty("courseList", courseList);
+		datastore.put(userEntity);
+		memcache.put("user_"+username, userEntity);
+		
+		return userFromEntity(userEntity);
 	}
 }

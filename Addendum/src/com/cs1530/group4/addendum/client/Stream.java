@@ -2,7 +2,6 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
@@ -19,6 +18,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -39,17 +40,20 @@ public class Stream extends Composite
 	String username, streamLevel = "all", sortMethod = "Popular";
 	User user;
 	UserServiceAsync userService = UserService.Util.getInstance();
-	VerticalPanel vPanel, currentTab;
+	VerticalPanel vPanel, currentTab, classPanel;
 	int startIndex = 0, searchStart = 0;
-	Anchor nextPage, prevPage;
+	Anchor nextPage, prevPage, allAnchor;
 	ArrayList<String> userCourses;
 	TabPanel tabPanel;
 	VerticalPanel searchPanel;
 	Stream profile = this;
+	Button addRemove;
 
-	public Stream(MainView m, User u)
+	public Stream(MainView m)
 	{
 		main = m;
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		User u = User.deserialize(localStorage.getItem("loggedIn"));
 		username = u.getUsername();
 		user = u;
 		userCourses = u.getCourseList();
@@ -172,13 +176,13 @@ public class Stream extends Composite
 			}
 		});
 
-		VerticalPanel classPanel = new VerticalPanel();
+		classPanel = new VerticalPanel();
 		classPanel.setStyleName("Anchor");
 		classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
-		Button addRemove = new Button("Add/Remove Classes");
+		addRemove = new Button("Add/Remove Classes");
 		addRemove.setStyleName("ADCButton-addRemoveClasses");
 		addRemove.addClickHandler(new ClickHandler()
 		{
@@ -188,7 +192,7 @@ public class Stream extends Composite
 				new ClassSearch(main);
 			}
 		});
-		Anchor allAnchor = new Anchor("All Classes");
+		allAnchor = new Anchor("All Classes");
 		allAnchor.setText("ALL CLASSES");
 		allAnchor.setStyleName("courseAnchor");
 		allAnchor.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -204,7 +208,7 @@ public class Stream extends Composite
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
-		
+
 		HorizontalPanel nextPrevPanel = new HorizontalPanel();
 		nextPage = new Anchor("Next 10 Posts");
 		nextPage.setStyleName("courseAnchor");
@@ -251,7 +255,7 @@ public class Stream extends Composite
 		nextPrevPanel.add(prevPage);
 		nextPrevPanel.add(nextPage);
 		vPanel.add(nextPrevPanel);
-		
+
 		tabPanel = new TabPanel();
 		tabPanel.setSize("800px", "89");
 
@@ -274,7 +278,7 @@ public class Stream extends Composite
 						prevPage.setVisible(true);
 					return;
 				}
-				
+
 				if(startIndex < 10)
 					prevPage.setVisible(false);
 				else
@@ -288,38 +292,37 @@ public class Stream extends Composite
 					streamLevels.add(streamLevel);
 					if(streamLevel.equals("all"))
 						streamLevels.addAll(userCourses);
-					
+
 					getPosts(currentTab, streamLevels, sortMethod);
 				}
 			}
 		});
 		popularUpdatesPanel.setSpacing(15);
 		newUpdatesPanel.setSpacing(15);
-		
+
 		currentTab = (VerticalPanel) tabPanel.getWidget(0);
-		
-		getClasses(classPanel, addRemove, allAnchor);
+
+		getClasses();
 		tabPanel.selectTab(0);
-		
+
 		hPanel.add(tabPanel);
 		setStyleName("profilePanel");
 	}
 
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
-	{		
+	{
 		updatesPanel.clear();
 		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
 		{
 			@Override
 			public void onFailure(Throwable caught)
-			{
-			}
+			{}
 
 			@Override
 			public void onSuccess(ArrayList<Post> posts)
 			{
 				int count = 0;
-				
+
 				for(Post post : posts)
 				{
 					count++;
@@ -328,16 +331,16 @@ public class Stream extends Composite
 						nextPage.setVisible(true);
 						break;
 					}
-					
+
 					nextPage.setVisible(false);
 					updatesPanel.add(new UserPost(main, profile, post));
 				}
 			}
 		};
-		userService.getPosts(startIndex, streamLevels, username, sortMethod,callback);
+		userService.getPosts(startIndex, streamLevels, username, sortMethod, callback);
 	}
 
-	private void getClasses(final VerticalPanel classPanel, final Button addRemove, final Anchor allAnchor)
+	private void getClasses()
 	{
 		userCourses = user.getCourseList();
 		classPanel.clear();
@@ -359,9 +362,48 @@ public class Stream extends Composite
 					getPosts(currentTab, streamLevels, sortMethod);
 				}
 			});
-			classPanel.add(courseAnchor);
+
+			Image removeCourse = new Image("/images/delete.png");
+			removeCourse.setSize("24px", "24px");
+			removeCourse.setAltText(course);
+			removeCourse.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					if(Window.confirm("Are you sure you want to permanently remove this class?"))
+						removeCourse(((Image) event.getSource()).getAltText());
+				}
+			});
+			HorizontalPanel classRow = new HorizontalPanel();
+			classRow.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+			classRow.add(courseAnchor);
+			classRow.add(removeCourse);
+			classPanel.add(classRow);
 		}
 		classPanel.add(addRemove);
+	}
+
+	private void removeCourse(String course)
+	{
+		AsyncCallback<User> callback = new AsyncCallback<User>()
+		{
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				Window.alert("There was a problem deleting this class.  Please check your connection and try again.");
+			}
+
+			@Override
+			public void onSuccess(User u)
+			{
+				user = u;
+				Storage localStorage = Storage.getLocalStorageIfSupported();
+				localStorage.setItem("loggedIn", u.serialize());
+				getClasses();
+			}
+		};
+		
+		userService.removeCourse(course, Cookies.getCookie("loggedIn"), callback);
 	}
 
 	public void postSearch(final String searchString)
@@ -370,8 +412,7 @@ public class Stream extends Composite
 		{
 			@Override
 			public void onFailure(Throwable caught)
-			{
-			}
+			{}
 
 			@Override
 			public void onSuccess(ArrayList<Post> posts)
@@ -402,12 +443,12 @@ public class Stream extends Composite
 						nextPage.setVisible(true);
 						break;
 					}
-					
+
 					nextPage.setVisible(false);
 					searchPanel.add(new UserPost(main, profile, post));
 				}
 			}
 		};
-		userService.postSearch(searchStart,searchString, username, callback);
+		userService.postSearch(searchStart, searchString, username, callback);
 	}
 }

@@ -3,14 +3,12 @@ package com.cs1530.group4.addendum.client;
 import java.util.ArrayList;
 
 import com.cs1530.group4.addendum.shared.Post;
-import com.cs1530.group4.addendum.shared.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -67,11 +65,8 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 							@Override
 							public void onSuccess(Void v)
 							{
-								Storage localStorage = Storage.getLocalStorageIfSupported();
-								User user = new User(Cookies.getCookie("loggedIn"));
-								if(localStorage.getItem("loggedIn") != null)
-									user = User.deserialize(localStorage.getItem("loggedIn"));
-								main.setContent(new Stream(main, user), "profile-" + user);
+								String user = Cookies.getCookie("loggedIn");
+								main.setContent(new Stream(main), "profile-" + user);
 							}
 						};
 						userService.deletePost(post.getPostKey(), callback);

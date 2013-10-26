@@ -44,15 +44,6 @@ public class Login extends Composite
 		initWidget(verticalPanel);
 		verticalPanel.setSize("843px", "657px");
 
-		if(Cookies.getCookie("loggedIn") != null)
-		{
-			Storage localStorage = Storage.getLocalStorageIfSupported();
-			User user = new User(Cookies.getCookie("loggedIn"));
-			if(localStorage.getItem("loggedIn") != null)
-				user = User.deserialize(localStorage.getItem("loggedIn"));
-			m.setContent(new Stream(m, user), "profile-" + Cookies.getCookie("loggedIn"));
-		}
-
 		Image image = new Image("image001.jpg");
 		image.setStyleName("LoginTitle");
 		verticalPanel.add(image);
@@ -224,7 +215,7 @@ public class Login extends Composite
 		if(usernameTextBox.getText().equals("Administrator"))
 			main.setContent(new AdminPanel(main), "adminPanel");
 		else
-			main.setContent(new Stream(main, user), "profile-" + usernameTextBox.getText());
+			main.setContent(new Stream(main), "profile-" + usernameTextBox.getText());
 	}
 
 	private void rejectLogin()
