@@ -182,7 +182,7 @@ public class Stream extends Composite
 		classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
-		addRemove = new Button("Add/Remove Classes");
+		addRemove = new Button("Add A Class");
 		addRemove.setStyleName("ADCButton-addRemoveClasses");
 		addRemove.addClickHandler(new ClickHandler()
 		{
