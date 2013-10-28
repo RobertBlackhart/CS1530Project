@@ -16,7 +16,6 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
@@ -73,4 +72,5 @@ public interface UserService extends RemoteService
 	Boolean plusOne(String commentKey, String requestingUser);
 	User removeCourse(String course, String user);
 	String getUploadUrl();
+	void deleteAttachment(String key);
 }

@@ -970,4 +970,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	{
 		return blobstoreService.createUploadUrl("/addendum/uploadSuccess");
 	}
+
+	@Override
+	public void deleteAttachment(String key)
+	{
+		blobstoreService.delete(new BlobKey(key));
+	}
 }

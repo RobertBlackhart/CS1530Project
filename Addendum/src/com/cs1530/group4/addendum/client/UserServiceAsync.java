@@ -16,7 +16,6 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
@@ -53,4 +52,5 @@ public interface UserServiceAsync
 	void plusOne(String commentKey, String requestingUser, AsyncCallback<Boolean> callback);
 	void removeCourse(String course, String user, AsyncCallback<User> callback);
 	void getUploadUrl(AsyncCallback<String> callback);
+	void deleteAttachment(String key, AsyncCallback<Void> callback);
 }

@@ -50,15 +50,16 @@ public class NewPost extends DialogBox
 	ListBox streamLevelBox;
 	MainView main;
 	Label errorLabel;
-	ArrayList<String> attachmentKeys = new ArrayList<String>();
-	ArrayList<String> attachmentNames = new ArrayList<String>();
+	ArrayList<String> attachmentKeys = new ArrayList<String>(), attachmentNames = new ArrayList<String>(), deleteList = new ArrayList<String>();
 	UserServiceAsync userService = UserService.Util.getInstance();
 	private VerticalPanel vPanel_1;
+	Post post;
 
-	public NewPost(MainView m, ArrayList<String> streams, final Post post)
+	public NewPost(MainView m, ArrayList<String> streams, Post p)
 	{
 		setStyleName("NewPostBackground");
 		main = m;
+		post = p;
 
 		vPanel_1 = new VerticalPanel();
 		vPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -267,7 +268,7 @@ public class NewPost extends DialogBox
 			}
 		});
 		
-		VerticalPanel attachmentsPanel = new VerticalPanel();
+		final VerticalPanel attachmentsPanel = new VerticalPanel();
 		vPanel_1.add(attachmentsPanel);
 		attachmentsPanel.setWidth("100%");
 		
@@ -277,10 +278,27 @@ public class NewPost extends DialogBox
 		
 		for(int i=0; i<attachmentKeys.size(); i++)
 		{
-			String key = attachmentKeys.get(i);
+			final HorizontalPanel attachmentLine = new HorizontalPanel();
+			attachmentLine.setSpacing(5);
+			attachmentLine.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+			
+			final String key = attachmentKeys.get(i);
 			String name = attachmentNames.get(i);
 			Anchor anchor = new Anchor(name, "/addendum/getImage?key="+key,"_blank");
-			attachmentsPanel.add(anchor);
+			Image delete = new Image("/images/delete.png");
+			delete.setSize("16px", "16px");
+			delete.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					deleteList.add(key);
+					attachmentsPanel.remove(attachmentLine);
+				}
+			});
+			
+			attachmentLine.add(anchor);
+			attachmentLine.add(delete);
+			attachmentsPanel.add(attachmentLine);
 		}
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
@@ -294,6 +312,26 @@ public class NewPost extends DialogBox
 		vPanel.add(horizontalPanel);
 	}
 
+	private void deleteAttachment(String key)
+	{
+		AsyncCallback<Void> callback = new AsyncCallback<Void>()
+		{
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				
+			}
+
+			@Override
+			public void onSuccess(Void v)
+			{
+				
+			}
+		};
+		
+		userService.deleteAttachment(key,callback);
+	}
+	
 	private void setUploadUrl(final Uploader form)
 	{
 		AsyncCallback<String> callback = new AsyncCallback<String>()
@@ -349,7 +387,17 @@ public class NewPost extends DialogBox
 		if(post == null)
 			userService.uploadPost(Cookies.getCookie("loggedIn"), editor.getHTML(), editor.getText(), stream, new Date(), attachmentKeys, attachmentNames, callback);
 		else
+		{
+			for(String key : deleteList)
+			{
+				deleteAttachment(key);
+				attachmentNames.remove(attachmentKeys.indexOf(key));
+				attachmentKeys.remove(key);
+			}
+			post.setAttachmentNames(attachmentNames);
+			post.setAttachmentKeys(attachmentKeys);
 			userService.editPost(post.getPostKey(), editor.getHTML(), editor.getText(), attachmentKeys, attachmentNames, callback);
+		}
 	}
 
 	protected class CancelProgressBarTextFormatter extends ProgressBar.TextFormatter
