@@ -87,6 +87,17 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			{
 				if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
 					return user;
+				else if(userEntity.hasProperty("password"))
+				{
+					if(userEntity.getProperty("password").toString().equals(password))
+					{
+						user = new User(username);
+						if(userEntity.hasProperty("courseList"))
+							user.setCourseList(((ArrayList<String>)userEntity.getProperty("courseList")));
+						else
+							user.setCourseList(new ArrayList<String>());
+					}
+				}
 			}
 
 			if(userEntity.hasProperty("password"))
@@ -418,6 +429,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			try
 			{
 				user = datastore.get(KeyFactory.createKey("User", username));
+				memcache.put("user_"+username, user);
 			}
 			catch(EntityNotFoundException ex)
 			{}

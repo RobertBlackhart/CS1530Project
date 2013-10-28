@@ -49,6 +49,17 @@ public class LoginServlet extends HttpServlet
 			{
 				if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
 					user = null;
+				else if(userEntity.hasProperty("password"))
+				{
+					if(userEntity.getProperty("password").toString().equals(password))
+					{
+						user = new User(username);
+						if(userEntity.hasProperty("courseList"))
+							user.setCourseList(((ArrayList<String>)userEntity.getProperty("courseList")));
+						else
+							user.setCourseList(new ArrayList<String>());
+					}
+				}
 			}
 			else if(userEntity.hasProperty("password"))
 			{
@@ -79,6 +90,7 @@ public class LoginServlet extends HttpServlet
 			try
 			{
 				user = datastore.get(KeyFactory.createKey("User", username));
+				memcache.put("user_"+username, user);
 			}
 			catch(EntityNotFoundException ex)
 			{
