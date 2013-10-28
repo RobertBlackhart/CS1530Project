@@ -813,7 +813,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		
 		if(post != null)
 		{
-			if(post.hasProperty("attachments") && post.getProperty("attachments") != null)
+			if(post.hasProperty("attachmentKeys") && post.getProperty("attachmentKeys") != null)
 			{
 				for(String key : (ArrayList<String>)post.getProperty("attachmentKeys"))
 				{

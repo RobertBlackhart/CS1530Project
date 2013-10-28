@@ -1,6 +1,7 @@
 package com.cs1530.group4.addendum.server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -54,11 +55,11 @@ public class DeletePostServlet extends HttpServlet
 		
 		if(post != null)
 		{
-			if(post.hasProperty("attachments") && post.getProperty("attachments") != null)
+			if(post.hasProperty("attachmentKeys") && post.getProperty("attachmentKeys") != null)
 			{
-				for(Entry<String,String> entry : ((HashMap<String,String>)post.getProperty("attachments")).entrySet())
+				for(String key : (ArrayList<String>)post.getProperty("attachmentKeys"))
 				{
-					blobstoreService.delete(new BlobKey(entry.getKey()));
+					blobstoreService.delete(new BlobKey(key));
 				}
 			}
 			
