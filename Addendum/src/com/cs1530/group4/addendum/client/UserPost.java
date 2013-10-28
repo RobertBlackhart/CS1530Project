@@ -300,8 +300,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 				attachmentsPanel.add(anchor);
 			}
 			
-			HTML s = new HTML("<hr  style=\"width:100%;\" />");
-			postPanel.add(s);
+			postPanel.add(new HTML("<hr  style=\"width:100%;\" />"));
 		}
 		
 		scroll.add(commentPanel);

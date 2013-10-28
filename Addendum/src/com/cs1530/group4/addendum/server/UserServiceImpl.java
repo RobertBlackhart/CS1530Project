@@ -85,7 +85,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			//only test for valid email in production because the dev server doesn't handle email properly
 			if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
 			{
-				if(userEntity.hasProperty("emailValid") && (Boolean)userEntity.getProperty("emailValid"))
+				if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
 					return user;
 			}
 
