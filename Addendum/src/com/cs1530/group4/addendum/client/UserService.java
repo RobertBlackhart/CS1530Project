@@ -16,6 +16,7 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
@@ -53,11 +54,11 @@ public interface UserService extends RemoteService
 	void userAddCourse(String username, ArrayList<String> courseIds);
 	ArrayList<String> getUserCourses(String username);
 	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort);
-	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time);
+	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames);
 	String uploadComment(String postKey, Comment comment);
 	Boolean upvotePost(String postKey, String user);
 	Boolean downvotePost(String postKey, String user);
-	void editPost(String postKey, String postHtml, String postPlain);
+	void editPost(String postKey, String postHtml, String postPlain, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames);
 	String editComment(String commentKey, String commentText);
 	void deletePost(String postKey);
 	void flagPost(String postKey, String reason, boolean setFlagged);
@@ -71,4 +72,5 @@ public interface UserService extends RemoteService
 	User changePassword(String username, String newPassword);
 	Boolean plusOne(String commentKey, String requestingUser);
 	User removeCourse(String course, String user);
+	String getUploadUrl();
 }

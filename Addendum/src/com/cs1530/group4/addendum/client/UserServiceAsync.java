@@ -16,6 +16,7 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
@@ -33,11 +34,11 @@ public interface UserServiceAsync
 	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
 	void getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort, AsyncCallback<ArrayList<Post>> callback);
-	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, AsyncCallback<Void> callback);
+	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames, AsyncCallback<Void> callback);
 	void uploadComment(String postKey, Comment comment, AsyncCallback<String> callback);
 	void upvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	void downvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
-	void editPost(String postKey, String postHtml, String postPlain, AsyncCallback<Void> callback);
+	void editPost(String postKey, String postHtml, String postPlain, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames, AsyncCallback<Void> callback);
 	void editComment(String commentKey, String commentText, AsyncCallback<String> callback);
 	void deletePost(String postKey, AsyncCallback<Void> callback);
 	void flagPost(String postKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);
@@ -51,4 +52,5 @@ public interface UserServiceAsync
 	void changePassword(String username, String newPassword, AsyncCallback<User> callback);
 	void plusOne(String commentKey, String requestingUser, AsyncCallback<Boolean> callback);
 	void removeCourse(String course, String user, AsyncCallback<User> callback);
+	void getUploadUrl(AsyncCallback<String> callback);
 }

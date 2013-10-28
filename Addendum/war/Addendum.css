@@ -430,6 +430,7 @@ a:visited {
 .NewPostBackLabel {
 	font-size: 13px;
 	font-family: Arial Black;
+	color: black;
 }
 .NewUserDialogTitle {
 	color: White;
@@ -532,6 +533,7 @@ padding: 0px 0px 6px 6px;
 }
 .USername {
 	color: Black;
+	margin-left: 10px;
 	margin-right: 10px;
 	margin-bottom: 30px;
 	font-size: 14px;

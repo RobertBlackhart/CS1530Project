@@ -29,7 +29,7 @@ public class UploadSuccessServlet extends HttpServlet
 			List<BlobKey> keyList = itr.next();
 			BlobKey blobKey = keyList.get(0);
 					
-			resp.setContentType("text/plain");
+			resp.setContentType("text/html");
 			resp.getWriter().print(blobKey.getKeyString());
 		}
 	}

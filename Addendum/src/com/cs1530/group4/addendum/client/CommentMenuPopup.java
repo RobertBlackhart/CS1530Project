@@ -72,7 +72,7 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 								}
 								userPost.commentPanel.clear();
 								for(Comment comment : comments)
-									userPost.commentPanel.add(new PostComment(main,comment,userPost.profile,userPost));
+									userPost.commentPanel.add(new PostComment(main,comment,userPost.stream,userPost));
 							}
 						};
 						userService.deleteComment(comment.getCommentKey(), callback);

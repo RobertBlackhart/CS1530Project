@@ -169,6 +169,10 @@ public class GetPostsServlet extends HttpServlet
 			post.setReported(false);
 		if(entity.hasProperty("reportReason"))
 			post.setReportReason((String)entity.getProperty("reportReason"));
+		if(entity.hasProperty("attachmentKeys"))
+			post.setAttachmentKeys((ArrayList<String>)entity.getProperty("attachmentKeys"));
+		if(entity.hasProperty("attachmentNames"))
+			post.setAttachmentNames((ArrayList<String>)entity.getProperty("attachmentNames"));
 
 		return post;
 	}

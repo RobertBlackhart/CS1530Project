@@ -26,6 +26,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * UserPost visually represents a post by a user of Addendum.  It contains their uploaded content as well as any comments associated with this post.
+ */
 public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
 	UserServiceAsync userService = UserService.Util.getInstance();
@@ -35,7 +39,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	Image menu;
 	MenuPopup popup = null;
 	String loggedInUser = Cookies.getCookie("loggedIn");
-	Stream profile;
+	Stream stream;
 	MainView main;
 	PromptedTextBox addAComment;
 	CommentBox commentBox;
@@ -43,9 +47,16 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	Post post;
 	boolean isExpanded = false;
 
-	public UserPost(MainView m, final Stream profile, Post p)
+	/**
+	 * Instantiates a new user post.
+	 *
+	 * @param m The MainView of the application
+	 * @param stream A reference to the stream class that this post is attached to.
+	 * @param p The post object that this UserPost represents.
+	 */
+	public UserPost(MainView m, final Stream stream, Post p)
 	{
-		this.profile = profile;
+		this.stream = stream;
 		main = m;
 		post = p;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
@@ -200,13 +211,13 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		horizontalPanel_2.add(verticalPanel);
 
 		Anchor usernameLabel = new Anchor(post.getUsername());
-		if(profile != null)
+		if(stream != null)
 		{
 			usernameLabel.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
 				{
-					profile.postSearch("username:"+post.getUsername());
+					stream.postSearch("username:"+post.getUsername());
 				}
 			});
 		}
@@ -271,6 +282,28 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		commentPanel.setWidth("100%");
 		if(post.getComments().size() > 0)
 			commentPanel.setStyleName("CommentPanelbackcolor");
+		
+		VerticalPanel attachmentsPanel = new VerticalPanel();
+		postPanel.add(attachmentsPanel);
+		
+		if(post.getAttachmentKeys().size() > 0)
+		{
+			Label lblAttachments = new Label("Attachments:");
+			lblAttachments.setStyleName("NewPostBackLabel");
+			attachmentsPanel.add(lblAttachments);
+			
+			for(int i=0; i<post.getAttachmentKeys().size(); i++)
+			{
+				String key = post.getAttachmentKeys().get(i);
+				String name = post.getAttachmentNames().get(i);
+				Anchor anchor = new Anchor(name, "/addendum/getImage?key="+key,"_blank");
+				attachmentsPanel.add(anchor);
+			}
+			
+			HTML s = new HTML("<hr  style=\"width:100%;\" />");
+			postPanel.add(s);
+		}
+		
 		scroll.add(commentPanel);
 		postPanel.add(scroll);
 		
@@ -300,6 +333,11 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		addCommentPanel.add(addAComment);
 	}
 	
+	/**
+	 * This method handles the logic for displaying the comments associated with this UserPost.
+	 * If there are more than 2 comments, the comments will be collapsed into an expandable structure.
+	 * Additionally, if the comments physical height is greater than 300px, they will be placed into a scrollable panel.
+	 */
 	public void displayComments()
 	{
 		commentPanel.clear();
@@ -332,7 +370,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					commentPanel.clear();
 					commentPanel.add(hidePanel);
 					for(Comment comment : post.getComments())
-						commentPanel.add(new PostComment(main,comment,profile,userPost));
+						commentPanel.add(new PostComment(main,comment,stream,userPost));
 					adjustCommentScroll();
 				}
 			};
@@ -346,7 +384,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					isExpanded = false;
 					commentPanel.clear();
 					commentPanel.add(expandPanel);
-					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
+					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),stream,userPost));
 					adjustCommentScroll();
 				}
 			};
@@ -357,31 +395,39 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			{
 				commentPanel.add(hidePanel);
 				for(Comment comment : post.getComments())
-					commentPanel.add(new PostComment(main,comment,profile,userPost));
+					commentPanel.add(new PostComment(main,comment,stream,userPost));
 			}
 			else
 			{
 				commentPanel.add(expandPanel);
-				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),profile,userPost));
+				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),stream,userPost));
 			}
 		}
 		else
 		{
 			for(Comment comment : post.getComments())
-				commentPanel.add(new PostComment(main,comment,profile,userPost));
+				commentPanel.add(new PostComment(main,comment,stream,userPost));
 		}
 		
 		adjustCommentScroll();
 	}
 	
+	/**
+	 * This method determines the height of the scroll panel for the comments.  If the comments total height is > 300px, the ScrollPanel will show it's scrollbar.
+	 */
 	private void adjustCommentScroll()
 	{
-		if(commentPanel.getOffsetHeight() > 150)
-			scroll.setHeight("150px");
+		if(commentPanel.getOffsetHeight() > 300)
+			scroll.setHeight("300px");
 		else
 			scroll.setHeight("100%");
 	}
 	
+	/**
+	 * Display the comment editing box below the existing post and comments.
+	 *
+	 * @param comment The comment to be edited or null to start a new comment.
+	 */
 	public void showCommentBox(Comment comment)
 	{
 		addAComment.setVisible(false);
@@ -401,6 +447,12 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		}
 	}
 
+	/**
+	 * Adds the submitted comment to the list of comments for the post.
+	 *
+	 * @param comment The comment to be added.
+	 * @param isEdit A flag to say if this was an edit or a new comment.
+	 */
 	public void addSubmittedComment(Comment comment, boolean isEdit)
 	{
 		if(isEdit)
@@ -420,18 +472,24 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			
 			return;
 		}
-		commentPanel.add(new PostComment(main,comment,profile,userPost));
+		commentPanel.add(new PostComment(main,comment,stream,userPost));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 		adjustCommentScroll();
 		post.getComments().add(comment);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOutHandler#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
+	 */
 	@Override
 	public void onMouseOut(MouseOutEvent event)
 	{
 		menu.setVisible(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOverHandler#onMouseOver(com.google.gwt.event.dom.client.MouseOverEvent)
+	 */
 	@Override
 	public void onMouseOver(MouseOverEvent event)
 	{

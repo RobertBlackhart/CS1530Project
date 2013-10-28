@@ -30,7 +30,7 @@ public class ImageServlet extends HttpServlet
 	{
 		if(req.getParameter("key") != null)
 		{
-			resp.setContentType("image/png");
+			//the mime type is set automatically if known, otherwise it's set as application/octet-stream
 			BlobKey blobKey = new BlobKey(req.getParameter("key"));
 	        blobstoreService.serve(blobKey, resp);
 	        return;

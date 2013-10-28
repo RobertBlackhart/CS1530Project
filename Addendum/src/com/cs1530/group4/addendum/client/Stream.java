@@ -34,6 +34,10 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Stream class is the main view for the users of Addendum.  It allows them to interact with other user's content and post content of their own.
+ */
 public class Stream extends Composite
 {
 	MainView main;
@@ -49,6 +53,11 @@ public class Stream extends Composite
 	Stream profile = this;
 	Button addRemove;
 
+	/**
+	 * Instantiates a new stream.
+	 *
+	 * @param m the MainView of the application
+	 */
 	public Stream(MainView m)
 	{
 		main = m;
@@ -103,7 +112,6 @@ public class Stream extends Composite
 		vPanel.add(hPanel);
 
 		VerticalPanel userPanel = new VerticalPanel();
-		userPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
 		hPanel.add(userPanel);
 
@@ -177,8 +185,8 @@ public class Stream extends Composite
 		});
 
 		classPanel = new VerticalPanel();
-		classPanel.setStyleName("Anchor");
 		classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		classPanel.setStyleName("Anchor");
 		classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
@@ -309,6 +317,14 @@ public class Stream extends Composite
 		setStyleName("profilePanel");
 	}
 
+	/**
+	 * Fetches the posts from the datastore that have a streamLevel == any of the streamLevels in the ArrayList provided.
+	 * After fetching - sorts, creates and adds the posts to the updatesPanel provided.
+	 *
+	 * @param updatesPanel The panel in which to display a list of posts returned by the server
+	 * @param streamLevels A list of stream levels (aka course names) which to filter the posts by
+	 * @param sortMethod A string signifying in which order to sort the posts (by date, by score, etc)
+	 */
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
 		updatesPanel.clear();
@@ -340,6 +356,10 @@ public class Stream extends Composite
 		userService.getPosts(startIndex, streamLevels, username, sortMethod, callback);
 	}
 
+	/**
+	 * Populate the user's class panel with the classes they belong to.  Call after adding or removing a class or to initialize the stream.
+	 *
+	 */
 	private void getClasses()
 	{
 		userCourses = user.getCourseList();
@@ -383,6 +403,11 @@ public class Stream extends Composite
 		classPanel.add(addRemove);
 	}
 
+	/**
+	 * Removes the specified course from the users list of courses.
+	 *
+	 * @param course The course name to be removed (in the format 'CourseName+CourseNumber')
+	 */
 	private void removeCourse(String course)
 	{
 		AsyncCallback<User> callback = new AsyncCallback<User>()
@@ -406,6 +431,11 @@ public class Stream extends Composite
 		userService.removeCourse(course, Cookies.getCookie("loggedIn"), callback);
 	}
 
+	/**
+	 * Searches the database for posts which match the given query.  It will then display all results in a new panel.
+	 *
+	 * @param searchString the search string
+	 */
 	public void postSearch(final String searchString)
 	{
 		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()

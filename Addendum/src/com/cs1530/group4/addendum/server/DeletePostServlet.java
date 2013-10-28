@@ -1,11 +1,16 @@
 package com.cs1530.group4.addendum.server;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -28,6 +33,7 @@ public class DeletePostServlet extends HttpServlet
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
 	IndexSpec postIndexSpec = IndexSpec.newBuilder().setName("postsIndex").build();
 	Index postIndex = SearchServiceFactory.getSearchService().getIndex(postIndexSpec);
+	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
@@ -39,13 +45,23 @@ public class DeletePostServlet extends HttpServlet
 		performActions(req, resp);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void performActions(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
 		resp.setContentType("text/plain");
 		String postKey = req.getParameter("postKey");
 		Entity post = getPost(postKey);
+		
 		if(post != null)
 		{
+			if(post.hasProperty("attachments") && post.getProperty("attachments") != null)
+			{
+				for(Entry<String,String> entry : ((HashMap<String,String>)post.getProperty("attachments")).entrySet())
+				{
+					blobstoreService.delete(new BlobKey(entry.getKey()));
+				}
+			}
+			
 			memcache.delete(post.getKey());
 			datastore.delete(post.getKey());
 			postIndex.delete(String.valueOf(post.getKey().getId()));

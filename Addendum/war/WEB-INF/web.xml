@@ -73,6 +73,10 @@
 		<servlet-name>PlusOneServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.PlusOneServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CreateUserServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.CreateUserServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -132,6 +136,10 @@
 	<servlet-mapping>
 		<servlet-name>PlusOneServlet</servlet-name>
 		<url-pattern>/addendum/plusOne</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CreateUserServlet</servlet-name>
+		<url-pattern>/addendum/createUser</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>

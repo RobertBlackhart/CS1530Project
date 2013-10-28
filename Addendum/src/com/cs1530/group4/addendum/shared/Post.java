@@ -12,7 +12,9 @@ public class Post implements Serializable
 	private Date postTime, lastEdit;
 	private int upvotes, downvotes;
 	private double score;
-	private ArrayList<Comment> comments;
+	private ArrayList<Comment> comments = new ArrayList<Comment>();
+	private ArrayList<String> attachmentKeys = new ArrayList<String>();
+	private ArrayList<String> attachmentNames = new ArrayList<String>();
 	private boolean upvoted, downvoted, reported;
 
 	public boolean isUpvoted()
@@ -170,5 +172,25 @@ public class Post implements Serializable
 	public void setReported(boolean reported)
 	{
 		this.reported = reported;
+	}
+
+	public ArrayList<String> getAttachmentKeys()
+	{
+		return attachmentKeys;
+	}
+
+	public void setAttachmentKeys(ArrayList<String> attachmentKeys)
+	{
+		this.attachmentKeys = attachmentKeys;
+	}
+
+	public ArrayList<String> getAttachmentNames()
+	{
+		return attachmentNames;
+	}
+
+	public void setAttachmentNames(ArrayList<String> attachmentNames)
+	{
+		this.attachmentNames = attachmentNames;
 	}
 }

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.cs1530.group4.addendum.shared.Comment;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -58,6 +57,8 @@ public class UploadPostServlet extends HttpServlet
 		post.setProperty("time", now);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
+		post.setProperty("attachmentKeys", new ArrayList<String>());
+		post.setProperty("attachmentNames", new ArrayList<String>());
 		post.setProperty("usersVotedUp", new ArrayList<String>());
 		post.setProperty("usersVotedDown", new ArrayList<String>());
 		datastore.put(post);

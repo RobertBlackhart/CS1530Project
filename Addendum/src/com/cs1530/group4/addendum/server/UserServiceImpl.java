@@ -32,6 +32,7 @@ import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
+import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -84,7 +85,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			//only test for valid email in production because the dev server doesn't handle email properly
 			if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
 			{
-				if(userEntity.hasProperty("emailValid") && !(Boolean) userEntity.getProperty("emailValid"))
+				if(userEntity.hasProperty("emailValid") && (Boolean)userEntity.getProperty("emailValid"))
 					return user;
 			}
 
@@ -425,7 +426,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time)
+	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames)
 	{
 		double secondsSinceRedditEpoch = System.currentTimeMillis() / 1000 - 1134028003;
 		double score = secondsSinceRedditEpoch / 45000;
@@ -438,6 +439,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		post.setProperty("time", time);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
+		post.setProperty("attachmentKeys", attachmentKeys);
+		post.setProperty("attachmentNames", attachmentNames);
 		post.setProperty("usersVotedUp", new ArrayList<String>());
 		post.setProperty("usersVotedDown", new ArrayList<String>());
 		datastore.put(post);
@@ -494,13 +497,15 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@Override
-	public void editPost(String postKey, String postHtml, String postPlain)
+	public void editPost(String postKey, String postHtml, String postPlain, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames)
 	{
 		Entity post = getPost(postKey);
 		if(post != null)
 		{
 			post.setProperty("postContent", new Text(formatCode(postHtml)));
 			post.setProperty("edited", new Date());
+			post.setProperty("attachmentKeys", attachmentKeys);
+			post.setProperty("attachmentNames", attachmentNames);
 			Document doc = Document.newBuilder() //you can't update a document once its in the index, but you can replace it with a new one
 			.setId(String.valueOf(post.getKey().getId())).addField(Field.newBuilder().setName("username").setText((String) post.getProperty("username"))).addField(Field.newBuilder().setName("content").setText(postPlain)).addField(Field.newBuilder().setName("time").setDate((Date) post.getProperty("time"))).build();
 			postIndex.put(doc);
@@ -591,6 +596,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			post.setReported(false);
 		if(entity.hasProperty("reportReason"))
 			post.setReportReason((String) entity.getProperty("reportReason"));
+		if(entity.hasProperty("attachmentKeys"))
+			post.setAttachmentKeys((ArrayList<String>)entity.getProperty("attachmentKeys"));
+		if(entity.hasProperty("attachmentNames"))
+			post.setAttachmentNames((ArrayList<String>)entity.getProperty("attachmentNames"));
 
 		return post;
 	}
@@ -796,12 +805,22 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return comment;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void deletePost(String postKey)
 	{
 		Entity post = getPost(postKey);
+		
 		if(post != null)
 		{
+			if(post.hasProperty("attachments") && post.getProperty("attachments") != null)
+			{
+				for(String key : (ArrayList<String>)post.getProperty("attachmentKeys"))
+				{
+					blobstoreService.delete(new BlobKey(key));
+				}
+			}
+			
 			memcache.delete(post.getKey());
 			datastore.delete(post.getKey());
 			postIndex.delete(String.valueOf(post.getKey().getId()));
@@ -944,5 +963,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put("user_"+username, userEntity);
 		
 		return userFromEntity(userEntity);
+	}
+
+	@Override
+	public String getUploadUrl()
+	{
+		return blobstoreService.createUploadUrl("/addendum/uploadSuccess");
 	}
 }

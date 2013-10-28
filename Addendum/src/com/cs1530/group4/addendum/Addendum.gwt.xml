@@ -10,6 +10,10 @@
 	<!-- Load dinamically predefined styles in the library when the application starts -->
 	<stylesheet src="Upload.css"/>
 	
+	<inherits name="org.moxieapps.gwt.uploader.Uploader"/>
+	<inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
+   	<inherits name='com.google.gwt.libideas.LibIdeas' />
+	
 	<entry-point class="com.cs1530.group4.addendum.client.MainView"/>
 	<source path="client"/>
 	<source path="server"/>
