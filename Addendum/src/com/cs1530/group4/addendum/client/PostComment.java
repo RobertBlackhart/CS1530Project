@@ -23,13 +23,36 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * This represents the UI for a comment that is associated with a {@link UserPost}'s {@link com.cs1530.group4.addendum.shared.Post}
+ */
 public class PostComment extends Composite implements MouseOverHandler, MouseOutHandler
 {
-	Image menu, plusOneButton;
+	/** The menu button. */
+	Image menu;
+	
+	/** The plus one button */
+	Image plusOneButton;
+	
+	/** The popup. */
 	CommentMenuPopup popup;
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 
-	public PostComment(final MainView main, final Comment comment, final Stream profile, final UserPost userPost)
+	/**
+	 * Instantiates a new PostComment.
+	 *
+	 * @param main the application's {@link MainView}
+	 * @param comment the {@link Comment} associated with this PostComment
+	 * @param stream the {@link Stream} object that is displaying this PostComment
+	 * @param userPost the {@link UserPost} associated with this PostComment
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #getFormattedTime(Comment)}
+	 */
+	public PostComment(final MainView main, final Comment comment, final Stream stream, final UserPost userPost)
 	{
 		VerticalPanel rowPanel = new VerticalPanel();
 		rowPanel.setStyleName("CommentPanelbackcolor");
@@ -84,7 +107,6 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 					@Override
 					public void onFailure(Throwable caught)
 					{
-						// TODO Auto-generated method stub
 					}
 
 					@Override
@@ -132,13 +154,13 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		timePanel.add(plusOneButton);
 		verticalPanel.add(timePanel);
 
-		if(profile != null)
+		if(stream != null)
 		{
 			usernameLabel.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
 				{
-					profile.postSearch("username:" + comment.getUsername());
+					stream.postSearch("username:" + comment.getUsername());
 				}
 			});
 		}
@@ -147,7 +169,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		menu.setSize("24px", "24px");
 		menu.setVisible(false);
 		menu.getElement().getStyle().setProperty("marginRight", "5px");
-		popup = new CommentMenuPopup(main, menu, comment, comment.getUsername().equals(Cookies.getCookie("loggedIn")), userPost);
+		popup = new CommentMenuPopup(main, menu, comment, userPost);
 		menu.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -169,6 +191,16 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		rowPanel.add(content);
 	}
 	
+	/**
+	 * This will return a {@link Date} object formatted as "h:mm a" if it is the same day or "MMM d, yyyy" if is is not.
+	 *
+	 * @param comment the {@link Comment} object to get the {@link Date} from
+	 * @return the formatted time string
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	private String getFormattedTime(Comment comment)
 	{
 		String timeFormatString = "h:mm a";
@@ -191,6 +223,9 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		return timeLabel;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOutHandler#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
+	 */
 	@Override
 	public void onMouseOut(MouseOutEvent event)
 	{
@@ -198,6 +233,9 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		plusOneButton.setVisible(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOverHandler#onMouseOver(com.google.gwt.event.dom.client.MouseOverEvent)
+	 */
 	@Override
 	public void onMouseOver(MouseOverEvent event)
 	{

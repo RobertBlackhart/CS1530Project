@@ -17,11 +17,26 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * This represents a dialog box allowing a user to select an image file to use as their profile picture.
+ */
 public class ProfilePictureUpload extends DialogBox
 {
+	/** The panel to show the uploaded image. */
 	private FlowPanel panelImages = new FlowPanel();
-	DialogBox dialog = this;
+	
+	/** A reference to this ProfilePictureUpload object. */
+	ProfilePictureUpload dialog = this;
 
+	/**
+	 * Instantiates a new ProfilePictureUpload.
+	 *
+	 * @param username the user's username
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public ProfilePictureUpload(String username)
 	{
 		//TODO: make dialog not look sucky
@@ -55,6 +70,7 @@ public class ProfilePictureUpload extends DialogBox
 		center();
 	}
 
+	/** The on finish uploader handler. */
 	private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler()
 	{
 		public void onFinish(IUploader uploader)
@@ -71,6 +87,7 @@ public class ProfilePictureUpload extends DialogBox
 		}
 	};
 
+	/** The on load preloaded image handler. */
 	private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler()
 	{
 		public void onLoad(PreloadedImage image)

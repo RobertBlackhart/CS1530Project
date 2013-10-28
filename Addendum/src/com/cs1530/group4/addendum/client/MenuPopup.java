@@ -17,13 +17,33 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * This represents the UI for actions to be done on a {@link UserPost}
+ */
 public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutHandler
 {
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
+	
+	/** A reference to this MenuPopup object. */
 	MenuPopup popup = this;
+	
+	/** The widget to display this relative to. */
 	Widget relativeWidget;
 
-	public MenuPopup(final MainView main, Widget w, final Post post, boolean isUser)
+	/**
+	 * Instantiates a new MenuPopup.
+	 *
+	 * @param main the applicatin's {@link MainView}
+	 * @param w the widget to display this relative to
+	 * @param post the {@link Post} that will be acted on
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
+	public MenuPopup(final MainView main, Widget w, final Post post)
 	{
 		super(true);
 		setStyleName("MenuPopUp");
@@ -31,7 +51,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 		addAutoHidePartner(w.getElement());
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
-		if(isUser)
+		if(post.getUsername().equals(Cookies.getCookie("loggedIn")))
 		{
 			Label editPost = new Label("Edit Post");
 			editPost.setStyleName("menuitem");
@@ -97,12 +117,18 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 		add(vPanel);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOutHandler#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
+	 */
 	@Override
 	public void onMouseOut(MouseOutEvent event)
 	{
 		relativeWidget.setVisible(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOverHandler#onMouseOver(com.google.gwt.event.dom.client.MouseOverEvent)
+	 */
 	@Override
 	public void onMouseOver(MouseOverEvent event)
 	{

@@ -15,15 +15,41 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Label;
 
+/**
+ * A class representing the UI for a user to compose and edit comments
+ */
 public class CommentBox extends Composite
 {
+	
+	/** A reference to this CommentBox object */
 	CommentBox commentBox = this;
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
+	
+	/** The text area. */
 	RichTextArea textArea;
+	
+	/** The error label. */
 	Label errorLabel;
+	
+	/** A flag used to indicate if this is an edit or a new comment. */
 	boolean isEdit = false;
+	
+	/** The comment object to be edited. */
 	Comment editComment;
 	
+	/**
+	 * Instantiates a new comment box.
+	 *
+	 * @param addComment the {@link PromptedTextBox} to hide when showing this CommentBox
+	 * @param post the {@link Post} object that this comment will be associated with
+	 * @param userPost the {@link UserPost} object that will contain this CommentBox
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();

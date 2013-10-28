@@ -23,16 +23,42 @@ import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
+/**
+ * This represents a UI to search for and add new classes to a {@link User}'s courseList
+ */
 public class ClassSearch extends DialogBox
 {
+	
+	/** A reference to this ClassSearch object */
 	ClassSearch dialog = this;
+	
+	/** The subject text box. */
 	private TextBox subjectTextBox;
+	
+	/** The course number text box. */
 	private IntegerBox numberTextBox;
+	
+	/** The course name text box. */
 	private TextBox nameTextBox;
+	
+	/** The course description text box. */
 	private TextBox descriptionTextBox;
+	
+	/** The results box. */
 	private ListBox resultsBox;
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 
+	/**
+	 * Instantiates a new ClassSearch dialog.
+	 *
+	 * @param main the applications {@link MainView}
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public ClassSearch(final MainView main)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();

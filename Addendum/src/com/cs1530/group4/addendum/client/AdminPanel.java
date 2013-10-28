@@ -20,10 +20,24 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * This represents the UI for the application's administration page.  This is only available to the site's administrator(s)
+ */
 public class AdminPanel extends Composite
 {
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 
+	/**
+	 * Instantiates a new AdminPanel.
+	 *
+	 * @param main a reference to the application's {@link MainView}
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public AdminPanel(final MainView main)
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();
@@ -63,18 +77,40 @@ public class AdminPanel extends Composite
 		tabPanel.selectTab(0);
 	}
 
+	/**
+	 * Gets the reported posts and displays them in the page's UI
+	 *
+	 * @param reportedPosts the {@link VerticalPanel} in which to display the posts
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getFlaggedPosts()}
+	 */
 	private void getReportedPosts(VerticalPanel reportedPosts)
 	{
 		userService.getFlaggedPosts(new ReportedPostsCallback(reportedPosts));
 	}
 	
+	/**
+	 * Gets the course add requests and displays them in the page's UI.
+	 *
+	 * @param courseRequests the {@link VerticalPanel} in which to display the requests
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourseRequests()}
+	 */
 	private void getCourseAddRequests(VerticalPanel courseRequests)
 	{
 		userService.getCourseRequests(new CourseRequestCallback(courseRequests));
 	}
 
+	/**
+	 * A class encapsulating asynchronous callback methods for the {@link com.cs1530.group4.addendum.server.UserServiceImpl#getFlaggedPosts()} method
+	 */
 	private class ReportedPostsCallback implements AsyncCallback<ArrayList<Post>>
 	{
+		
 		VerticalPanel postsPanel;
 		Button approve, delete;
 
@@ -136,8 +172,11 @@ public class AdminPanel extends Composite
 		}
 	}
 
-	private class CourseRequestCallback implements AsyncCallback<ArrayList<Course>>
+	/**
+	 * A class encapsulating asynchronous callback methods for the {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourseRequests()} method
+	 */private class CourseRequestCallback implements AsyncCallback<ArrayList<Course>>
 	{
+		
 		VerticalPanel requestsPanel;
 		Button approve, delete;
 

@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -16,13 +17,34 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * This class represents a popup menu that contains actions to be performed on a comment
+ */
 public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, MouseOutHandler
 {
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
+	
+	/** A reference to this CommentMenuPopup object. */
 	CommentMenuPopup popup = this;
+	
+	/** The widget to display this popup relative to. */
 	Widget relativeWidget;
 
-	public CommentMenuPopup(final MainView main, Widget w, final Comment comment, boolean isUser, final UserPost userPost)
+	/**
+	 * Instantiates a new comment menu popup.
+	 *
+	 * @param main the application's {@link MainView}
+	 * @param w the {@link Widget} to show this popup relative to
+	 * @param comment the {@link Comment} that this popup will act on
+	 * @param userPost the {@link UserPost} that this is displayed as a part of
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
+	public CommentMenuPopup(final MainView main, Widget w, final Comment comment, final UserPost userPost)
 	{
 		super(true);
 		setStyleName("MenuPopUp");
@@ -30,7 +52,7 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 		addAutoHidePartner(w.getElement());
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
-		if(isUser)
+		if(comment.getUsername().equals(Cookies.getCookie("loggedIn")))
 		{
 			Label editComment = new Label("Edit Comment");
 			editComment.setStyleName("menuitem");
@@ -103,12 +125,18 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 		add(vPanel);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOutHandler#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
+	 */
 	@Override
 	public void onMouseOut(MouseOutEvent event)
 	{
 		relativeWidget.setVisible(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.MouseOverHandler#onMouseOver(com.google.gwt.event.dom.client.MouseOverEvent)
+	 */
 	@Override
 	public void onMouseOver(MouseOverEvent event)
 	{

@@ -19,7 +19,7 @@ public class ValidateEmailServlet extends HttpServlet
 {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
-
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
 		performActions(req, resp);

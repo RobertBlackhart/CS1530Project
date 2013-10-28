@@ -14,11 +14,28 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 
+/**
+ * This represents the UI for a user to change their password
+ */
 public class NewPasswordDialog extends DialogBox
 {
+	
+	/** A reference to this NewPassworDialog object. */
 	NewPasswordDialog dialog = this;
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 
+	/**
+	 * Instantiates a new new password dialog.
+	 *
+	 * @param username the user's username
+	 * @param main the appliation's {@link MainView}
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public NewPasswordDialog(final String username, final MainView main)
 	{
 		FlexTable flexTable = new FlexTable();

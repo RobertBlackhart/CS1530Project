@@ -14,14 +14,36 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * A dialog that gives the user a UI to flag a post or comment for an administrator's review
+ */
 public class FlagForm extends DialogBox
 {
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
+	
+	/** Indicates this is referring to a post. */
 	public static int POST = 0;
+	
+	/** Indicates this is referring to a comment. */
 	public static int COMMENT = 1;
+	
+	/** A reference to this FlagForm object. */
 	FlagForm form = this;
+	
+	/** The list of flaggable options. */
 	String[] options = {"Unwanted commercial content or spam","Pornography or sexually explicit material","Hate speech or graphic violence","Harassment or bullying","This account might be compromised or hacked","Other"};
 	
+	/**
+	 * Instantiates a new flag form.
+	 *
+	 * @param key the postKey or commentKey to flag
+	 * @param postOrComment one of either {@link #POST} or {@link #COMMENT}
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public FlagForm(final String key, final int postOrComment)
 	{
 		final ArrayList<RadioButton> radios = new ArrayList<RadioButton>();

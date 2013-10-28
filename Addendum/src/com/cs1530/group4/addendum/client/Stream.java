@@ -34,39 +34,75 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Stream class is the main view for the users of Addendum.  It allows them to interact with other user's content and post content of their own.
  */
 public class Stream extends Composite
 {
+	/** The application's MainView. */
 	MainView main;
-	String username, streamLevel = "all", sortMethod = "Popular";
+	
+	/** The stream level that we are currently filtering by. */
+	String streamLevel = "all";
+	
+	/** The current sort method. */
+	String sortMethod = "Popular";
+	
+	/** An object representing the currently logged in user. */
 	User user;
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
-	VerticalPanel vPanel, currentTab, classPanel;
-	int startIndex = 0, searchStart = 0;
-	Anchor nextPage, prevPage, allAnchor;
-	ArrayList<String> userCourses;
+	
+	/** The current tab. */
+	VerticalPanel currentTab;
+	
+	/** The class panel. */
+	VerticalPanel classPanel;
+	
+	/** The offset of post results to fetch from. */
+	int startIndex = 0;
+	
+	/** The offset of the search results to fetch from. */
+	int searchStart = 0;
+	
+	/** The nextPage anchor. */
+	Anchor nextPage;
+	
+	/** The prevPage anchor. */
+	Anchor prevPage;
+	
+	/** The all classes anchor. */
+	Anchor allAnchor;
+	
+	/** The tab panel. */
 	TabPanel tabPanel;
+	
+	/** The search panel. */
 	VerticalPanel searchPanel;
-	Stream profile = this;
-	Button addRemove;
+	
+	/** A reference to this Stream object. */
+	Stream stream = this;
+	
+	/** The addClass button. */
+	Button addClassButton;
 
 	/**
-	 * Instantiates a new stream.
+	 * The Stream class is responsible for displaying posts to the user as well as all of the other UI associated with creating posts and comments.
 	 *
 	 * @param m the MainView of the application
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPosts(int, ArrayList, String, String)}
 	 */
 	public Stream(MainView m)
 	{
 		main = m;
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		User u = User.deserialize(localStorage.getItem("loggedIn"));
-		username = u.getUsername();
 		user = u;
-		userCourses = u.getCourseList();
-		vPanel = new VerticalPanel();
+		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
 
@@ -85,7 +121,7 @@ public class Stream extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				NewPost editor = new NewPost(main, userCourses, null);
+				NewPost editor = new NewPost(main, user.getCourseList(), null);
 				editor.show();
 			}
 		});
@@ -120,7 +156,7 @@ public class Stream extends Composite
 		absolutePanel.setSize("128px", "128px");
 		userPanel.add(absolutePanel);
 
-		Image image = new Image("/addendum/getImage?username=" + username);
+		Image image = new Image("/addendum/getImage?username=" + user.getUsername());
 		final Label changeImageLabel = new Label("Change Image");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
 		changeImageLabel.setSize("128px", "28px");
@@ -145,7 +181,7 @@ public class Stream extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				ProfilePictureUpload profilePic = new ProfilePictureUpload(username);
+				ProfilePictureUpload profilePic = new ProfilePictureUpload(user.getUsername());
 				profilePic.show();
 			}
 		};
@@ -165,7 +201,7 @@ public class Stream extends Composite
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		userPanel.add(horizontalPanel);
 
-		Label usernameLabel = new Label(username);
+		Label usernameLabel = new Label(user.getUsername());
 		usernameLabel.setStyleName("USername");
 		horizontalPanel.add(usernameLabel);
 
@@ -190,9 +226,9 @@ public class Stream extends Composite
 		classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
-		addRemove = new Button("Add A Class");
-		addRemove.setStyleName("ADCButton-addRemoveClasses");
-		addRemove.addClickHandler(new ClickHandler()
+		addClassButton = new Button("Add A Class");
+		addClassButton.setStyleName("ADCButton-addRemoveClasses");
+		addClassButton.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
@@ -212,7 +248,7 @@ public class Stream extends Composite
 				streamLevel = "all";
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
-				streamLevels.addAll(userCourses);
+				streamLevels.addAll(user.getCourseList());
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
@@ -234,7 +270,7 @@ public class Stream extends Composite
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
 				if(streamLevel.equals("all"))
-					streamLevels.addAll(userCourses);
+					streamLevels.addAll(user.getCourseList());
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
@@ -256,7 +292,7 @@ public class Stream extends Composite
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
 				if(streamLevel.equals("all"))
-					streamLevels.addAll(userCourses);
+					streamLevels.addAll(user.getCourseList());
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
@@ -264,7 +300,7 @@ public class Stream extends Composite
 		nextPrevPanel.add(nextPage);
 		vPanel.add(nextPrevPanel);
 
-		tabPanel = new TabPanel();
+		final TabPanel tabPanel = new TabPanel();
 		tabPanel.setSize("800px", "89");
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();
@@ -294,12 +330,12 @@ public class Stream extends Composite
 
 				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
 				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
-				if(userCourses != null)
+				if(user.getCourseList() != null)
 				{
 					ArrayList<String> streamLevels = new ArrayList<String>();
 					streamLevels.add(streamLevel);
 					if(streamLevel.equals("all"))
-						streamLevels.addAll(userCourses);
+						streamLevels.addAll(user.getCourseList());
 
 					getPosts(currentTab, streamLevels, sortMethod);
 				}
@@ -324,6 +360,10 @@ public class Stream extends Composite
 	 * @param updatesPanel The panel in which to display a list of posts returned by the server
 	 * @param streamLevels A list of stream levels (aka course names) which to filter the posts by
 	 * @param sortMethod A string signifying in which order to sort the posts (by date, by score, etc)
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPosts(int, ArrayList, String, String)}
 	 */
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
@@ -349,23 +389,25 @@ public class Stream extends Composite
 					}
 
 					nextPage.setVisible(false);
-					updatesPanel.add(new UserPost(main, profile, post));
+					updatesPanel.add(new UserPost(main, stream, post));
 				}
 			}
 		};
-		userService.getPosts(startIndex, streamLevels, username, sortMethod, callback);
+		userService.getPosts(startIndex, streamLevels, user.getUsername(), sortMethod, callback);
 	}
 
 	/**
 	 * Populate the user's class panel with the classes they belong to.  Call after adding or removing a class or to initialize the stream.
 	 *
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
 	 */
 	private void getClasses()
 	{
-		userCourses = user.getCourseList();
 		classPanel.clear();
 		classPanel.add(allAnchor);
-		for(final String course : userCourses)
+		for(final String course : user.getCourseList())
 		{
 			Anchor courseAnchor = new Anchor(course);
 			courseAnchor.setStyleName("courseAnchor");
@@ -400,13 +442,17 @@ public class Stream extends Composite
 			classRow.add(removeCourse);
 			classPanel.add(classRow);
 		}
-		classPanel.add(addRemove);
+		classPanel.add(addClassButton);
 	}
 
 	/**
 	 * Removes the specified course from the users list of courses.
 	 *
 	 * @param course The course name to be removed (in the format 'CourseName+CourseNumber')
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#removeCourse(String, String)}
 	 */
 	private void removeCourse(String course)
 	{
@@ -435,6 +481,10 @@ public class Stream extends Composite
 	 * Searches the database for posts which match the given query.  It will then display all results in a new panel.
 	 *
 	 * @param searchString the search string
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postSearch(int, String, String)}
 	 */
 	public void postSearch(final String searchString)
 	{
@@ -475,10 +525,10 @@ public class Stream extends Composite
 					}
 
 					nextPage.setVisible(false);
-					searchPanel.add(new UserPost(main, profile, post));
+					searchPanel.add(new UserPost(main, stream, post));
 				}
 			}
 		};
-		userService.postSearch(searchStart, searchString, username, callback);
+		userService.postSearch(searchStart, searchString, user.getUsername(), callback);
 	}
 }

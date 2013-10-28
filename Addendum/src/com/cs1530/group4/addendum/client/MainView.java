@@ -1,17 +1,3 @@
-/*******************************************************************************
- * Copyright 2011 Google Inc. All Rights Reserved.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.cs1530.group4.addendum.client;
 
 import com.cs1530.group4.addendum.shared.User;
@@ -26,19 +12,36 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * This is the {@link EntryPoint} for the application.  It will display any UI needed by the application as well as manage it's history stack.
  */
 public class MainView implements EntryPoint, ValueChangeHandler<String>
 {
+	
+	/** The content panel. */
 	private VerticalPanel contentPanel;
+	
+	/** A reference to this MainView object. */
 	private MainView main = this;
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
+	 */
 	public void onModuleLoad()
 	{
 		initialize();
 		History.fireCurrentHistoryState();
 	}
 
+	/**
+	 * Clears the current content and sets the content of the UI.  Also adds the previous screen to the applications history stack.
+	 *
+	 * @param content the content
+	 * @param historyToken the history token
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public void setContent(Widget content, String historyToken)
 	{
 		History.newItem(historyToken);
@@ -46,6 +49,13 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		contentPanel.add(content);
 	}
 
+	/**
+	 * Initialize the application's UI.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	private void initialize()
 	{
 		RootPanel rootPanel = RootPanel.get("container");
@@ -55,6 +65,9 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		History.addValueChangeHandler(this);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.logical.shared.ValueChangeHandler#onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent)
+	 */
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event)
 	{

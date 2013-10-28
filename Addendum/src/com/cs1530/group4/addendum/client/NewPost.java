@@ -43,26 +43,61 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.widgetideas.client.ProgressBar;
 
+/**
+ * The Class NewPost represents a dialog for the user to create a new post with.  It will take the text and attachments and upload them to the server.
+ */
 public class NewPost extends DialogBox
 {
-	DialogBox postBox = this;
+	
+	/** A reference to this NewPost object. */
+	NewPost postBox = this;
+	
+	/** The editor area. */
 	RichTextArea editor;
+	
+	/** The stream level box. */
 	ListBox streamLevelBox;
+	
+	/** The application's MainView. */
 	MainView main;
+	
+	/** The error label. */
 	Label errorLabel;
-	ArrayList<String> attachmentKeys = new ArrayList<String>(), attachmentNames = new ArrayList<String>(), deleteList = new ArrayList<String>();
+	
+	/** A list of blobKeys for attachments */
+	ArrayList<String> attachmentKeys = new ArrayList<String>();
+	
+	/** A list of file names for attachments */
+	ArrayList<String> attachmentNames = new ArrayList<String>();
+	
+	/** A list of blobKeys for attachments to delete*/
+	ArrayList<String> deleteList = new ArrayList<String>();
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
-	private VerticalPanel vPanel_1;
+	
+	/** The post represented by this NewPost object.  It will be null if this is a new post and !null if this is an edit. */
 	Post post;
 
+	/**
+	 * Instantiates a new NewPost object.
+	 *
+	 * @param m the {@link MainView} of the application
+	 * @param streams a list of streamLevels, or classes, that the user is a member of
+	 * @param p a {@link Post} object to load from or null to start a new post
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #setupFileUploader(VerticalPanel)}
+	 */
 	public NewPost(MainView m, ArrayList<String> streams, Post p)
 	{
 		setStyleName("NewPostBackground");
 		main = m;
 		post = p;
 
-		vPanel_1 = new VerticalPanel();
-		vPanel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		editor = new RichTextArea();
 		editor.setSize("600px", "400px");
 		RichTextToolbar toolbar = new RichTextToolbar(editor);
@@ -83,11 +118,11 @@ public class NewPost extends DialogBox
 		Label lblNewLabel = new Label("NEW POST");
 		lblNewLabel.setStyleName("NewPostBackLabel");
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		vPanel_1.add(lblNewLabel);
+		vPanel.add(lblNewLabel);
 
-		vPanel_1.add(toolbar);
+		vPanel.add(toolbar);
 		toolbar.setWidth("100%");
-		vPanel_1.add(editor);
+		vPanel.add(editor);
 
 		HorizontalPanel streamPanel = new HorizontalPanel();
 		streamPanel.getElement().getStyle().setProperty("marginBottom", "5px");
@@ -104,13 +139,13 @@ public class NewPost extends DialogBox
 			}
 		});
 
-		setupFileUploader(vPanel_1);
+		setupFileUploader(vPanel);
 
 		HTML html = new HTML("<hr width=100%/>", true);
-		vPanel_1.add(html);
+		vPanel.add(html);
 		streamPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		streamPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		vPanel_1.add(streamPanel);
+		vPanel.add(streamPanel);
 
 		Label lblMakeThisPost = new Label("MAKE THIS POST VISIBLE TO: ");
 		lblMakeThisPost.setStyleName("NewPostBackLabel");
@@ -147,14 +182,23 @@ public class NewPost extends DialogBox
 		buttonPanel.add(discardButton);
 		buttonPanel.add(submitButton);
 
-		vPanel_1.add(errorLabel);
-		vPanel_1.add(buttonPanel);
-		add(vPanel_1);
+		vPanel.add(errorLabel);
+		vPanel.add(buttonPanel);
+		add(vPanel);
 
 		setGlassEnabled(true);
 		center();
 	}
 
+	/**
+	 * Sets the up file uploader.
+	 *
+	 * @param vPanel a {@link VerticalPanel} object to attach the newly created {@link Uploader} object to
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	private void setupFileUploader(VerticalPanel vPanel)
 	{
 		final VerticalPanel progressBarPanel = new VerticalPanel();
@@ -269,7 +313,7 @@ public class NewPost extends DialogBox
 		});
 		
 		final VerticalPanel attachmentsPanel = new VerticalPanel();
-		vPanel_1.add(attachmentsPanel);
+		vPanel.add(attachmentsPanel);
 		attachmentsPanel.setWidth("100%");
 		
 		Label lblAttachments = new Label("Attachments:");
@@ -312,6 +356,15 @@ public class NewPost extends DialogBox
 		vPanel.add(horizontalPanel);
 	}
 
+	/**
+	 * Delete attachment.
+	 *
+	 * @param key the BlobKey string to delete
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#deleteAttachment(String)}
+	 */
 	private void deleteAttachment(String key)
 	{
 		AsyncCallback<Void> callback = new AsyncCallback<Void>()
@@ -332,7 +385,12 @@ public class NewPost extends DialogBox
 		userService.deleteAttachment(key,callback);
 	}
 	
-	private void setUploadUrl(final Uploader form)
+	/**
+	 * Sets the upload url to submit an attachment to.  This is created dynamically for each attachment by {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
+	 *
+	 * @param uploader the {@link Uploader} on which to set the upload url
+	 */
+	private void setUploadUrl(final Uploader uploader)
 	{
 		AsyncCallback<String> callback = new AsyncCallback<String>()
 		{
@@ -345,13 +403,23 @@ public class NewPost extends DialogBox
 			@Override
 			public void onSuccess(String result)
 			{
-				form.setUploadURL(result);
+				uploader.setUploadURL(result);
 			}
 		};
 
 		userService.getUploadUrl(callback);
 	}
 
+	/**
+	 * Submit this post to the server.  After a successful submission this will refresh the page.
+	 *
+	 * @param submitButton the submit button
+	 * @param post the post
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #deleteAttachment(String)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#editPost(String, String, String, ArrayList, ArrayList)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#uploadPost(String, String, String, String, Date, ArrayList, ArrayList)}
+	 */
 	private void submitPost(final Button submitButton, final Post post)
 	{
 		if(editor.getHTML().length() == 0)
@@ -400,8 +468,15 @@ public class NewPost extends DialogBox
 		}
 	}
 
+	/**
+	 * A convienence class to format text for attachment upload progress bars.
+	 */
 	protected class CancelProgressBarTextFormatter extends ProgressBar.TextFormatter
 	{
+		
+		/* (non-Javadoc)
+		 * @see com.google.gwt.widgetideas.client.ProgressBar.TextFormatter#getText(com.google.gwt.widgetideas.client.ProgressBar, double)
+		 */
 		@Override
 		protected String getText(ProgressBar bar, double curProgress)
 		{

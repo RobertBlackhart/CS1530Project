@@ -28,14 +28,36 @@ import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Grid;
 
+/**
+ * This represents the UI for the user to login.
+ */
 public class Login extends Composite
 {
+	
+	/** The username text box. */
 	private TextBox usernameTextBox;
+	
+	/** The password text box. */
 	private PasswordTextBox passwordTextBox;
+	
+	/** The error label. */
 	private Label errorLabel;
+	
+	/** A reference to the application's {@link MainView}. */
 	private MainView main;
+	
+	/** Indicates if the browser should set a cookie to remember this user's login. */
 	private CheckBox rememberMeCheckBox;
 
+	/**
+	 * Instantiates a new Login.
+	 *
+	 * @param m the applicatin's {@link MainView}
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public Login(MainView m)
 	{
 		main = m;
@@ -55,10 +77,10 @@ public class Login extends Composite
 		verticalPanel.add(grid);
 		verticalPanel.setCellHorizontalAlignment(grid, HasHorizontalAlignment.ALIGN_CENTER);
 		
-				errorLabel = new Label("Could not login.  Invalid username or password.");
-				grid.setWidget(0, 0, errorLabel);
-				errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-				errorLabel.setVisible(false);
+		errorLabel = new Label("Could not login.  Invalid username or password.");
+		grid.setWidget(0, 0, errorLabel);
+		errorLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		errorLabel.setVisible(false);
 		errorLabel.setStyleName("gwt-Label-Error");
 		errorLabel.setWidth("315px");
 
@@ -163,6 +185,13 @@ public class Login extends Composite
 		setStyleName("Login");
 	}
 
+	/**
+	 * Attempts to use the entered credentials to validate this user with the database.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#doLogin(String, String)}
+	 */
 	protected void login()
 	{
 		String username = usernameTextBox.getText();
@@ -198,6 +227,15 @@ public class Login extends Composite
 		}
 	}
 
+	/**
+	 * Accept the user's login and redirect them to the {@link Stream} page.  Optionally set a cookie to remember the user.
+	 *
+	 * @param user the user
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link MainView#setContent(com.google.gwt.user.client.ui.Widget, String)}
+	 */
 	private void acceptLogin(User user)
 	{
 		if(rememberMeCheckBox.getValue())
@@ -218,6 +256,13 @@ public class Login extends Composite
 			main.setContent(new Stream(main), "profile-" + usernameTextBox.getText());
 	}
 
+	/**
+	 * Reject the user's login and display an error.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	private void rejectLogin()
 	{
 		errorLabel.setVisible(true);

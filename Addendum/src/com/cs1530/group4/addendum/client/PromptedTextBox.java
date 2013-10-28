@@ -11,11 +11,28 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.TextBox;
 
+/**
+ * This extends GWT's default {@link TextBox} to hint text when not focused
+ */
 public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHandler, BlurHandler, ClickHandler
 {
+	
+	/** The prompt text. */
 	private String promptText;
+	
+	/** The prompt style. */
 	private String promptStyle;
 
+	/**
+	 * Instantiates a new prompted text box.
+	 *
+	 * @param promptText the prompt text
+	 * @param promptStyleName the prompt style name
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #showPrompt()}
+	 */
 	public PromptedTextBox(String promptText, String promptStyleName)
 	{
 		this.promptText = promptText;
@@ -27,18 +44,35 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 		showPrompt();
 	}
 
+	/**
+	 * Show prompt.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public void showPrompt()
 	{
 		this.addStyleName(promptStyle);
 		this.setText(this.promptText);
 	}
 
+	/**
+	 * Hide prompt.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public void hidePrompt()
 	{
 		this.setText(null);
 		this.removeStyleName(promptStyle);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.KeyPressHandler#onKeyPress(com.google.gwt.event.dom.client.KeyPressEvent)
+	 */
 	@Override
 	public void onKeyPress(KeyPressEvent event)
 	{
@@ -48,12 +82,18 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.FocusHandler#onFocus(com.google.gwt.event.dom.client.FocusEvent)
+	 */
 	@Override
 	public void onFocus(FocusEvent event)
 	{
 		this.setCursorPos(0);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
+	 */
 	@Override
 	public void onClick(ClickEvent event)
 	{
@@ -61,6 +101,9 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 			hidePrompt();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.event.dom.client.BlurHandler#onBlur(com.google.gwt.event.dom.client.BlurEvent)
+	 */
 	@Override
 	public void onBlur(BlurEvent event)
 	{

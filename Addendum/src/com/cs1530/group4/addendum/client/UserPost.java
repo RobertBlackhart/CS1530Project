@@ -26,33 +26,64 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-// TODO: Auto-generated Javadoc
 /**
  * UserPost visually represents a post by a user of Addendum.  It contains their uploaded content as well as any comments associated with this post.
  */
 public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
+	
+	/** An integer representing {@link Post#getUpvotes()} - {@link Post#getDownvotes()} */
 	int upDownVotes;
+	
+	/** The comment panel. */
 	VerticalPanel commentPanel;
+	
+	/** The scroll panel that encloses the {@link #commentPanel}. */
 	ScrollPanel scroll;
+	
+	/** The icon for the dropdown menu allowing access to post actions. */
 	Image menu;
+	
+	/** The popup shown by clicking {@link #menu}. */
 	MenuPopup popup = null;
+	
+	/** The logged in user. */
 	String loggedInUser = Cookies.getCookie("loggedIn");
+	
+	/** The stream. */
 	Stream stream;
+	
+	/** The application's MainView. */
 	MainView main;
+	
+	/** A textbox which when clicked opens into a {@link #commentBox}. */
 	PromptedTextBox addAComment;
+	
+	/** The interface for entering new comments. */
 	CommentBox commentBox;
+	
+	/** A reference to this {@link UserPost} object. */
 	UserPost userPost = this;
+	
+	/** The {@link Post} associated with this object. */
 	Post post;
+	
+	/** A flag representing the expanded state of the comments. */
 	boolean isExpanded = false;
 
 	/**
-	 * Instantiates a new user post.
+	 * Instantiates a new UserPost.
 	 *
 	 * @param m The MainView of the application
 	 * @param stream A reference to the stream class that this post is attached to.
 	 * @param p The post object that this UserPost represents.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #displayComments()}
 	 */
 	public UserPost(MainView m, final Stream stream, Post p)
 	{
@@ -211,16 +242,14 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		horizontalPanel_2.add(verticalPanel);
 
 		Anchor usernameLabel = new Anchor(post.getUsername());
-		if(stream != null)
+		usernameLabel.addClickHandler(new ClickHandler()
 		{
-			usernameLabel.addClickHandler(new ClickHandler()
+			public void onClick(ClickEvent event)
 			{
-				public void onClick(ClickEvent event)
-				{
-					stream.postSearch("username:"+post.getUsername());
-				}
-			});
-		}
+				stream.postSearch("username:"+post.getUsername());
+			}
+		});
+		
 		usernameLabel.setStyleName("gwt-Label-bold");
 		verticalPanel.add(usernameLabel);
 
@@ -263,7 +292,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					popup.showRelativeTo(menu);
 			}
 		});
-		popup = new MenuPopup(main,menu,post,post.getUsername().equals(loggedInUser));
+		popup = new MenuPopup(main,menu,post);
 		
 		menuPanel.add(menu);
 		
@@ -336,6 +365,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 * This method handles the logic for displaying the comments associated with this UserPost.
 	 * If there are more than 2 comments, the comments will be collapsed into an expandable structure.
 	 * Additionally, if the comments physical height is greater than 300px, they will be placed into a scrollable panel.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #adjustCommentScroll()}
 	 */
 	public void displayComments()
 	{
@@ -413,6 +446,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	
 	/**
 	 * This method determines the height of the scroll panel for the comments.  If the comments total height is > 300px, the ScrollPanel will show it's scrollbar.
+	 *
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
 	 */
 	private void adjustCommentScroll()
 	{
@@ -426,6 +463,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 * Display the comment editing box below the existing post and comments.
 	 *
 	 * @param comment The comment to be edited or null to start a new comment.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
 	 */
 	public void showCommentBox(Comment comment)
 	{
@@ -451,6 +492,10 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 *
 	 * @param comment The comment to be added.
 	 * @param isEdit A flag to say if this was an edit or a new comment.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link #displayComments()}, {@link #adjustCommentScroll()}
 	 */
 	public void addSubmittedComment(Comment comment, boolean isEdit)
 	{

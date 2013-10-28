@@ -11,11 +11,25 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * This gives the user a UI to reset their password.
+ */
 public class ResetPasswordDialog extends DialogBox
 {
+	
+	/** A reference to this ResetPasswordDialog object. */
 	ResetPasswordDialog dialog = this;
+	
+	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 
+	/**
+	 * Instantiates a new reset password dialog.
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public ResetPasswordDialog()
 	{
 		VerticalPanel verticalPanel = new VerticalPanel();

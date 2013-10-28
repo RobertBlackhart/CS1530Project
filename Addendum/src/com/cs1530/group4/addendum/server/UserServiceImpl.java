@@ -1,17 +1,3 @@
-/*******************************************************************************
- * Copyright 2011 Google Inc. All Rights Reserved.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.cs1530.group4.addendum.server;
 
 import java.util.ArrayList;
@@ -61,17 +47,36 @@ import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+/**
+ * This is the server-side implimentation of {@link com.cs1530.group4.addendum.client.UserService}
+ */
 @SuppressWarnings("serial")
 public class UserServiceImpl extends RemoteServiceServlet implements UserService
 {
+	/** The datastore. */
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	
+	/** The memcache. */
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
+	
+	/** The blobstore service. */
 	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+	
+	/** The {@link Post} index spec. */
 	IndexSpec postIndexSpec = IndexSpec.newBuilder().setName("postsIndex").build();
+	
+	/** The {@link Post} index. */
 	Index postIndex = SearchServiceFactory.getSearchService().getIndex(postIndexSpec);
+	
+	/** The {@link Course} index spec. */
 	IndexSpec courseIndexSpec = IndexSpec.newBuilder().setName("coursesIndex").build();
+	
+	/** The {@link Course} index. */
 	Index courseIndex = SearchServiceFactory.getSearchService().getIndex(courseIndexSpec);
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#doLogin(java.lang.String, java.lang.String)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public User doLogin(String username, String password)
@@ -81,7 +86,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 		if(userEntity != null)
 		{
-
 			//only test for valid email in production because the dev server doesn't handle email properly
 			if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
 			{
@@ -126,6 +130,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return user;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#createUser(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String createUser(String username, String password, String email, String firstName, String lastName)
 	{
@@ -156,6 +163,17 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 	}
 
+	/**
+	 * Send welcome email with account activation link.
+	 *
+	 * @param email the email address of the user
+	 * @param uuid the uuid of the user
+	 * @param username the username of the user
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	private void sendEmail(String email, String uuid, String username)
 	{
 		String msgBody = "Welcome to Addendum!\n\n" + "In order to validate your account, please click on the link below or copy and paste it into" + "your browser's address bar:\n\n" + "http://studentclassnet.appspot.com/addendum/validate?username=" + username + "&uuid=" + uuid;
@@ -176,6 +194,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 	}
 
+	/**
+	 * Test the datastore to see if it contains the given email address
+	 *
+	 * @param email the email
+	 * @return true, if the email does not already exist. false otherwise
+	 */
 	private boolean validateEmail(String email)
 	{
 		Query q = new Query("User");
@@ -186,6 +210,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#courseSearch(java.lang.String, int, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ArrayList<Course> courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription)
 	{
@@ -274,6 +301,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return courses;
 	}
 
+	/**
+	 * Gets the course entity from datastore.
+	 *
+	 * @param subjectCode the subject code
+	 * @param catalogueNumber the catalogue number
+	 * @return the entity from datastore
+	 */
 	private Entity getEntityFromDatastore(String subjectCode, int catalogueNumber)
 	{
 		Entity courseEntity = null;
@@ -289,6 +323,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return courseEntity;
 	}
 
+	/**
+	 * Gets the course.
+	 *
+	 * @param entity the entity
+	 * @return the {@link Course}
+	 */
 	private Course getCourse(Entity entity)
 	{
 		String code = entity.getProperty("subjectCode").toString();
@@ -300,6 +340,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return course;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#newCourseRequest(java.lang.String, int, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription)
 	{
@@ -312,6 +355,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put(courseEntity.getKey(), courseEntity);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#getCourseRequests()
+	 */
 	@Override
 	public ArrayList<Course> getCourseRequests()
 	{
@@ -333,6 +379,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return courseRequests;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#removeCourseRequest(com.cs1530.group4.addendum.shared.Course, boolean)
+	 */
 	@Override
 	public void removeCourseRequest(Course course, boolean add)
 	{
@@ -345,6 +394,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.delete(key);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#getFlaggedPosts()
+	 */
 	@Override
 	public ArrayList<Post> getFlaggedPosts()
 	{
@@ -359,6 +411,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return reportedPosts;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#flagPost(java.lang.String, java.lang.String, boolean)
+	 */
 	@Override
 	public void flagPost(String postKey, String reason, boolean setFlagged)
 	{
@@ -372,6 +427,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#adminAddCourse(java.lang.String, int, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void adminAddCourse(String subjectCode, int catalogueNumber, String courseName, String courseDescription)
 	{
@@ -387,6 +445,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		datastore.put(courseEntity);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#userAddCourse(java.lang.String, java.util.ArrayList)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void userAddCourse(String username, ArrayList<String> courseIds)
@@ -406,6 +467,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put("user_" + username, user);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#getUserCourses(java.lang.String)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<String> getUserCourses(String username)
@@ -419,6 +483,16 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return courseList;
 	}
 
+	/**
+	 * Gets the user entity.
+	 *
+	 * @param username the username
+	 * @return the user entity
+	 * 
+	 * @.accessed User
+	 * @.changed None
+	 * @.called None
+	 */
 	private Entity getUserEntity(String username)
 	{
 		Entity user = null;
@@ -437,6 +511,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return user;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#uploadPost(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Date, java.util.ArrayList, java.util.ArrayList)
+	 */
 	@Override
 	public void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames)
 	{
@@ -463,6 +540,16 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		postIndex.put(doc);
 	}
 
+	/**
+	 * Format [CODE] tags in a post.
+	 *
+	 * @param postHtml the post html
+	 * @return the formatted html string
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	private String formatCode(String postHtml)
 	{
 		int begin = postHtml.indexOf("[CODE]");
@@ -475,6 +562,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return postHtml;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#postSearch(int, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ArrayList<Post> postSearch(int startIndex, String searchText, String requestingUser)
 	{
@@ -508,6 +598,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return results;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#editPost(java.lang.String, java.lang.String, java.lang.String, java.util.ArrayList, java.util.ArrayList)
+	 */
 	@Override
 	public void editPost(String postKey, String postHtml, String postPlain, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames)
 	{
@@ -526,6 +619,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#getPosts(int, java.util.ArrayList, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUser, String sort)
 	{
@@ -574,6 +670,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return returnPosts;
 	}
 
+	/**
+	 * Post from entity.
+	 *
+	 * @param entity the entity
+	 * @param requestingUser the requesting user
+	 * @return the post
+	 */
 	@SuppressWarnings("unchecked")
 	private Post postFromEntity(Entity entity, String requestingUser)
 	{
@@ -616,6 +719,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return post;
 	}
 
+	/**
+	 * Gets the comments.
+	 *
+	 * @param postKey the post key
+	 * @param requestingUser the requesting user
+	 * @return the comments
+	 */
 	private ArrayList<Comment> getComments(String postKey, String requestingUser)
 	{
 		ArrayList<Comment> comments = new ArrayList<Comment>();
@@ -641,6 +751,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return comments;
 	}
 
+	/**
+	 * Comment from entity.
+	 *
+	 * @param entity the entity
+	 * @param requestingUser the requesting user
+	 * @return the comment
+	 */
 	@SuppressWarnings("unchecked")
 	private Comment commentFromEntity(Entity entity, String requestingUser)
 	{
@@ -667,18 +784,36 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return comment;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#upvotePost(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Boolean upvotePost(String postKey, String user)
 	{
 		return changeScore(postKey, "upvotes", user);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#downvotePost(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Boolean downvotePost(String postKey, String user)
 	{
 		return changeScore(postKey, "downvotes", user);
 	}
 
+	/**
+	 * Change score.
+	 *
+	 * @param postKey the post key
+	 * @param property the property
+	 * @param user the user
+	 * @return the boolean
+	 * 
+	 * @.accessed None
+	 * @.changed Post
+	 * @.called {@link #getPost(String)}, {@link #updateScore(Entity, String)}
+	 */
 	@SuppressWarnings("unchecked")
 	private Boolean changeScore(String postKey, String property, String user)
 	{
@@ -730,6 +865,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return success;
 	}
 
+	/**
+	 * Gets the post.
+	 *
+	 * @param postKey the post key
+	 * @return the post
+	 */
 	private Entity getPost(String postKey)
 	{
 		Entity post = null;
@@ -751,6 +892,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return post;
 	}
 
+	/**
+	 * Update score.
+	 *
+	 * @param entity the entity
+	 * @param user the user
+	 */
 	private void updateScore(Entity entity, String user)
 	{
 		Post post = postFromEntity(entity, user);
@@ -768,6 +915,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		datastore.put(entity);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#uploadComment(java.lang.String, com.cs1530.group4.addendum.shared.Comment)
+	 */
 	@Override
 	public String uploadComment(String postKey, Comment comment)
 	{
@@ -782,6 +932,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return String.valueOf(commentEntity.getKey().getId());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#editComment(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String editComment(String commentKey, String commentText)
 	{
@@ -796,6 +949,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return commentKey;
 	}
 
+	/**
+	 * Gets the comment.
+	 *
+	 * @param commentKey the comment key
+	 * @return the comment
+	 */
 	private Entity getComment(String commentKey)
 	{
 		Entity comment = null;
@@ -817,6 +976,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return comment;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#deletePost(java.lang.String)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void deletePost(String postKey)
@@ -847,6 +1009,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#deleteComment(java.lang.String)
+	 */
 	@Override
 	public void deleteComment(String commentKey)
 	{
@@ -858,6 +1023,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#resetPassword(java.lang.String)
+	 */
 	@Override
 	public Boolean resetPassword(String username)
 	{
@@ -885,6 +1053,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#changePassword(java.lang.String, java.lang.String)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public User changePassword(String username, String newPassword)
@@ -906,6 +1077,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#flagComment(java.lang.String, java.lang.String, boolean)
+	 */
 	@Override
 	public void flagComment(String commentKey, String reason, boolean setFlagged)
 	{
@@ -913,6 +1087,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#plusOne(java.lang.String, java.lang.String)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean plusOne(String commentKey, String requestingUser)
@@ -951,6 +1128,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return success;
 	}
 	
+	/**
+	 * User from entity.
+	 *
+	 * @param userEntity the user entity
+	 * @return the user
+	 */
 	@SuppressWarnings("unchecked")
 	private User userFromEntity(Entity userEntity)
 	{
@@ -961,6 +1144,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return user;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#removeCourse(java.lang.String, java.lang.String)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public User removeCourse(String course, String username)
@@ -977,12 +1163,18 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return userFromEntity(userEntity);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#getUploadUrl()
+	 */
 	@Override
 	public String getUploadUrl()
 	{
 		return blobstoreService.createUploadUrl("/addendum/uploadSuccess");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cs1530.group4.addendum.client.UserService#deleteAttachment(java.lang.String)
+	 */
 	@Override
 	public void deleteAttachment(String key)
 	{

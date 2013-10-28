@@ -3,33 +3,82 @@ package com.cs1530.group4.addendum.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class User.
+ */
 public class User implements Serializable
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3724822216046123105L;
+	
+	/** The username. */
 	private String username;
+	
+	/** The course list. */
 	private ArrayList<String> courseList = new ArrayList<String>();
 	
+	/**
+	 * Instantiates a new user.
+	 */
 	public User(){}
+	
+	/**
+	 * Instantiates a new user.
+	 *
+	 * @param u the u
+	 */
 	public User(String u)
 	{
 		setUsername(u);
 	}
+	
+	/**
+	 * Gets the username.
+	 *
+	 * @return the username
+	 */
 	public String getUsername()
 	{
 		return username;
 	}
+	
+	/**
+	 * Sets the username.
+	 *
+	 * @param username the new username
+	 */
 	public void setUsername(String username)
 	{
 		this.username = username;
 	}
+	
+	/**
+	 * Gets the course list.
+	 *
+	 * @return the course list
+	 */
 	public ArrayList<String> getCourseList()
 	{
 		return courseList;
 	}
+	
+	/**
+	 * Sets the course list.
+	 *
+	 * @param courseList the new course list
+	 */
 	public void setCourseList(ArrayList<String> courseList)
 	{
 		this.courseList = courseList;
 	}
+	
+	/**
+	 * Serialize.
+	 *
+	 * @return the string
+	 */
 	public String serialize()
 	{
 		String serialString = username+"+";
@@ -40,6 +89,13 @@ public class User implements Serializable
 		
 		return serialString;
 	}
+	
+	/**
+	 * Deserialize.
+	 *
+	 * @param serialString the serial string
+	 * @return the user
+	 */
 	public static User deserialize(String serialString)
 	{
 		User user = new User();

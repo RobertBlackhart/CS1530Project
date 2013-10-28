@@ -20,15 +20,50 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
+/**
+ * This represents a dialog for the creation of a new user account.
+ */
 public class NewUserDialog extends DialogBox
 {
+	/** The application's {@link MainView}. */
 	MainView main;
-	Label errorLabel, invalidEmailLabel;
-	TextBox firstNameTextBox, lastNameTextBox, usernameTextBox, emailTextBox;
+	
+	/** This label is used to display error messages from the server. */
+	Label errorLabel;
+	
+	/** This label is shown if the {@link #EMAIL_PATTERN} is not matched by the entered email address. */
+	Label invalidEmailLabel;
+	
+	/** The email text box. */
+	TextBox firstNameTextBox;
+	
+	/** The last name text box. */
+	TextBox lastNameTextBox;
+	
+	/** The username text box. */
+	TextBox usernameTextBox;
+	
+	/** The email text box. */
+	TextBox emailTextBox;
+	
+	/** The password text box. */
 	PasswordTextBox passwordTextBox;
-	DialogBox dialog = this;
+	
+	/** A reference to this NewUserDialog. */
+	NewUserDialog dialog = this;
+	
+	/** The regex to determine a valid email. */
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+	/**
+	 * Instantiates a new NewUserDialog.
+	 *
+	 * @param m the application's {@link MainView}
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called None
+	 */
 	public NewUserDialog(MainView m)
 	{
 		main = m;
@@ -174,7 +209,20 @@ public class NewUserDialog extends DialogBox
 		center();
 	}
 
-	protected void createUser(String firstName, String lastName, String email, final String username, String password)
+	/**
+	 * Validates the user's entered data.  Displays any error messages.
+	 *
+	 * @param firstName the first name
+	 * @param lastName the last name
+	 * @param email the email
+	 * @param username the username
+	 * @param password the password
+	 * 
+	 * @.accessed None
+	 * @.changed None
+	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#createUser(String, String, String, String, String)}
+	 */
+	private void createUser(String firstName, String lastName, String email, final String username, String password)
 	{
 		if(firstName.length() == 0 || lastName.length() == 0 || email.length() == 0 || username.length() == 0 || password.length() == 0)
 		{
