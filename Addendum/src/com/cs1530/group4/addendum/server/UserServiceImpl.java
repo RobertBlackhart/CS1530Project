@@ -346,7 +346,15 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		String code = entity.getProperty("subjectCode").toString();
 		int num = Integer.parseInt(entity.getProperty("catalogueNumber").toString());
 		String name = entity.getProperty("courseName").toString();
-		String desc = ((Text)entity.getProperty("courseDescription")).getValue();
+		String desc = "";
+		try
+		{
+			desc = ((Text)entity.getProperty("courseDescription")).getValue();
+		}
+		catch(ClassCastException ex) //earlier implementation stored the description as a String instead of Text
+		{
+			desc = (String) entity.getProperty("courseDescription");
+		}
 		Course course = new Course(code, num, name, desc);
 		course.setCourseRequestKey(String.valueOf(entity.getKey().getId()));
 		return course;
@@ -679,6 +687,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for(int i = startIndex; i < Math.min(startIndex + 11, posts.size()); i++)
 			returnPosts.add(posts.get(i));
 
+		System.out.println("size: " + returnPosts.size());
 		return returnPosts;
 	}
 
