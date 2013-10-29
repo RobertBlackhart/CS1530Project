@@ -48,9 +48,9 @@ public interface UserService extends RemoteService
 	 * @param password the user's password
 	 * @return A {@link User} object representing the logged in user or null if there was an error
 	 * 
-	 * @.accessed User
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed User
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	User doLogin(String username, String password);
 	
@@ -64,9 +64,9 @@ public interface UserService extends RemoteService
 	 * @param lastName the last name
 	 * @return the status of the transaction
 	 * 
-	 * @.accessed User
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed User
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	String createUser(String username, String password, String email, String firstName, String lastName);
 	
@@ -79,9 +79,9 @@ public interface UserService extends RemoteService
 	 * @param courseDescription the course description
 	 * @return the list of {@link Course}s that match the given search terms
 	 * 
-	 * @.accessed Course
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getEntityFromDatastore(String subjectCode, int catalogueNumber)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
+	 * @custom.accessed Course
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getEntityFromDatastore(String subjectCode, int catalogueNumber)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
 	 */
 	ArrayList<Course> courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	
@@ -93,9 +93,9 @@ public interface UserService extends RemoteService
 	 * @param courseName the course name
 	 * @param courseDescription the course description
 	 * 
-	 * @.accessed None
-	 * @.changed CourseRequest
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed CourseRequest
+	 * @custom.called None
 	 */
 	void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription);
 	
@@ -107,9 +107,9 @@ public interface UserService extends RemoteService
 	 * @param courseName the course name
 	 * @param courseDescription the course description
 	 * 
-	 * @.accessed Course
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed Course
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	void adminAddCourse(String subjectCode, int catalogNumber, String courseName, String courseDescription);
 	
@@ -119,9 +119,9 @@ public interface UserService extends RemoteService
 	 * @param username the username
 	 * @param courseIds the course ids
 	 * 
-	 * @.accessed User
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed User
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void userAddCourse(String username, ArrayList<String> courseIds);
 	
@@ -131,9 +131,9 @@ public interface UserService extends RemoteService
 	 * @param username the username
 	 * @return the user courses
 	 * 
-	 * @.accessed User
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed User
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	ArrayList<String> getUserCourses(String username);
 	
@@ -146,9 +146,9 @@ public interface UserService extends RemoteService
 	 * @param sort the sort
 	 * @return the posts
 	 * 
-	 * @.accessed Post
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed Post
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	ArrayList<Post> getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort);
 	
@@ -163,9 +163,9 @@ public interface UserService extends RemoteService
 	 * @param attachmentKeys the attachment keys
 	 * @param attachmentNames the attachment names
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called None
 	 */
 	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames);
 	
@@ -176,9 +176,9 @@ public interface UserService extends RemoteService
 	 * @param comment the comment
 	 * @return the string
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called None
 	 */
 	String uploadComment(String postKey, Comment comment);
 	
@@ -189,9 +189,9 @@ public interface UserService extends RemoteService
 	 * @param user the user
 	 * @return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
 	 */
 	Boolean upvotePost(String postKey, String user);
 	
@@ -202,9 +202,9 @@ public interface UserService extends RemoteService
 	 * @param user the user
 	 * @return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
 	 */
 	Boolean downvotePost(String postKey, String user);
 	
@@ -217,9 +217,9 @@ public interface UserService extends RemoteService
 	 * @param attachmentKeys the attachment keys
 	 * @param attachmentNames the attachment names
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
 	 */
 	void editPost(String postKey, String postHtml, String postPlain, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames);
 	
@@ -230,9 +230,9 @@ public interface UserService extends RemoteService
 	 * @param commentText the comment text
 	 * @return the string
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	String editComment(String commentKey, String commentText);
 	
@@ -241,9 +241,9 @@ public interface UserService extends RemoteService
 	 *
 	 * @param postKey the post key
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
 	 */
 	void deletePost(String postKey);
 	
@@ -254,9 +254,9 @@ public interface UserService extends RemoteService
 	 * @param reason the reason
 	 * @param setFlagged the set flagged
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
 	 */
 	void flagPost(String postKey, String reason, boolean setFlagged);
 	
@@ -267,9 +267,9 @@ public interface UserService extends RemoteService
 	 * @param reason the reason
 	 * @param setFlagged the set flagged
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	void flagComment(String commentKey, String reason, boolean setFlagged);
 	
@@ -278,9 +278,9 @@ public interface UserService extends RemoteService
 	 *
 	 * @param commentKey the comment key
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	void deleteComment(String commentKey);
 	
@@ -292,9 +292,9 @@ public interface UserService extends RemoteService
 	 * @param requestingUser the requesting user
 	 * @return the array list
 	 * 
-	 * @.accessed Post
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
+	 * @custom.accessed Post
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
 	 */
 	ArrayList<Post> postSearch(int startIndex, String searchText, String requestingUser);
 	
@@ -303,9 +303,9 @@ public interface UserService extends RemoteService
 	 *
 	 * @return the course requests
 	 * 
-	 * @.accessed CourseRequest
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
+	 * @custom.accessed CourseRequest
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
 	 */
 	ArrayList<Course> getCourseRequests();
 	
@@ -315,9 +315,9 @@ public interface UserService extends RemoteService
 	 * @param course the course
 	 * @param add the add
 	 * 
-	 * @.accessed None
-	 * @.changed CourseRequest
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#adminAddCourse(String, int, String, String)}
+	 * @custom.accessed None
+	 * @custom.changed CourseRequest
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#adminAddCourse(String, int, String, String)}
 	 */
 	void removeCourseRequest(Course course, boolean add);
 	
@@ -326,9 +326,9 @@ public interface UserService extends RemoteService
 	 *
 	 * @return the flagged posts
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
 	 */
 	ArrayList<Post> getFlaggedPosts();
 	
@@ -338,9 +338,9 @@ public interface UserService extends RemoteService
 	 * @param username the username
 	 * @return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	Boolean resetPassword(String username);
 	
@@ -351,9 +351,9 @@ public interface UserService extends RemoteService
 	 * @param newPassword the new password
 	 * @return the user
 	 * 
-	 * @.accessed None
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed None
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	User changePassword(String username, String newPassword);
 	
@@ -364,9 +364,9 @@ public interface UserService extends RemoteService
 	 * @param requestingUser the requesting user
 	 * @return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	Boolean plusOne(String commentKey, String requestingUser);
 	
@@ -377,9 +377,9 @@ public interface UserService extends RemoteService
 	 * @param user the user
 	 * @return the user
 	 * 
-	 * @.accessed None
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed None
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	User removeCourse(String course, String user);
 	
@@ -388,9 +388,9 @@ public interface UserService extends RemoteService
 	 *
 	 * @return the upload url
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
 	 */
 	String getUploadUrl();
 	
@@ -399,9 +399,9 @@ public interface UserService extends RemoteService
 	 *
 	 * @param key the key
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.google.appengine.api.blobstore.BlobstoreService#delete(com.google.appengine.api.blobstore.BlobKey...)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#delete(com.google.appengine.api.blobstore.BlobKey...)}
 	 */
 	void deleteAttachment(String key);
 }

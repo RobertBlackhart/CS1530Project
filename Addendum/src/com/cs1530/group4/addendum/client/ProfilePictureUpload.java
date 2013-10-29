@@ -33,9 +33,9 @@ public class ProfilePictureUpload extends DialogBox
 	 *
 	 * @param username the user's username
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public ProfilePictureUpload(String username)
 	{

@@ -86,9 +86,9 @@ public class NewPost extends DialogBox
 	 * @param streams a list of streamLevels, or classes, that the user is a member of
 	 * @param p a {@link Post} object to load from or null to start a new post
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #setupFileUploader(VerticalPanel)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #setupFileUploader(VerticalPanel)}
 	 */
 	public NewPost(MainView m, ArrayList<String> streams, Post p)
 	{
@@ -195,9 +195,9 @@ public class NewPost extends DialogBox
 	 *
 	 * @param vPanel a {@link VerticalPanel} object to attach the newly created {@link Uploader} object to
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private void setupFileUploader(VerticalPanel vPanel)
 	{
@@ -361,9 +361,9 @@ public class NewPost extends DialogBox
 	 *
 	 * @param key the BlobKey string to delete
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#deleteAttachment(String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#deleteAttachment(String)}
 	 */
 	private void deleteAttachment(String key)
 	{
@@ -389,6 +389,10 @@ public class NewPost extends DialogBox
 	 * Sets the upload url to submit an attachment to.  This is created dynamically for each attachment by {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
 	 *
 	 * @param uploader the {@link Uploader} on which to set the upload url
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUploadUrl()}
 	 */
 	private void setUploadUrl(final Uploader uploader)
 	{
@@ -416,9 +420,9 @@ public class NewPost extends DialogBox
 	 * @param submitButton the submit button
 	 * @param post the post
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #deleteAttachment(String)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#editPost(String, String, String, ArrayList, ArrayList)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#uploadPost(String, String, String, String, Date, ArrayList, ArrayList)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #deleteAttachment(String)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#editPost(String, String, String, ArrayList, ArrayList)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#uploadPost(String, String, String, String, Date, ArrayList, ArrayList)}
 	 */
 	private void submitPost(final Button submitButton, final Post post)
 	{

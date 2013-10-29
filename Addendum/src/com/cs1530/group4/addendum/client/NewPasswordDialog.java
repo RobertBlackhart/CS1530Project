@@ -32,9 +32,9 @@ public class NewPasswordDialog extends DialogBox
 	 * @param username the user's username
 	 * @param main the appliation's {@link MainView}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public NewPasswordDialog(final String username, final MainView main)
 	{

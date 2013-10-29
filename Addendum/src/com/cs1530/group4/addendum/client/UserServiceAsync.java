@@ -21,9 +21,9 @@ public interface UserServiceAsync
 	 * @param password the user's password
 	 * @param callback the callback to return A {@link User} object representing the logged in user or null if there was an error
 	 * 
-	 * @.accessed User
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed User
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	void doLogin(String username, String password, AsyncCallback<User> callback);
 	
@@ -37,9 +37,9 @@ public interface UserServiceAsync
 	 * @param lastName the last name
 	 * @param callback the callback to return the status of the transaction
 	 * 
-	 * @.accessed User
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed User
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void createUser(String username, String password, String email, String firstName, String lastName, AsyncCallback<String> callback);
 	
@@ -52,9 +52,9 @@ public interface UserServiceAsync
 	 * @param courseDescription the course description
 	 * @param callback the callback to return the list of {@link Course}s that match the given search terms
 	 * 
-	 * @.accessed Course
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getEntityFromDatastore(String subjectCode, int catalogueNumber)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
+	 * @custom.accessed Course
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getEntityFromDatastore(String subjectCode, int catalogueNumber)}, {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
 	 */
 	void courseSearch(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<ArrayList<Course>> callback);
 	
@@ -66,9 +66,9 @@ public interface UserServiceAsync
 	 * @param courseName the course name
 	 * @param courseDescription the course description
 	 * 
-	 * @.accessed None
-	 * @.changed CourseRequest
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed CourseRequest
+	 * @custom.called None
 	 */
 	void newCourseRequest(String subjectCode, int catalogueNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	
@@ -80,9 +80,9 @@ public interface UserServiceAsync
 	 * @param courseName the course name
 	 * @param courseDescription the course description
 	 * 
-	 * @.accessed Course
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed Course
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	void adminAddCourse(String subjectCode, int catalogNumber, String courseName, String courseDescription, AsyncCallback<Void> callback);
 	
@@ -92,9 +92,9 @@ public interface UserServiceAsync
 	 * @param username the username
 	 * @param courseIds the course ids
 	 * 
-	 * @.accessed User
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed User
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void userAddCourse(String username, ArrayList<String> courseIds, AsyncCallback<Void> callback);
 	
@@ -104,9 +104,9 @@ public interface UserServiceAsync
 	 * @param username the username
 	 * @param callback the callback to return the user courses
 	 * 
-	 * @.accessed User
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed User
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void getUserCourses(String username, AsyncCallback<ArrayList<String>> callback);
 	
@@ -119,9 +119,9 @@ public interface UserServiceAsync
 	 * @param sort the sort
 	 * @param callback the callback to return the posts
 	 * 
-	 * @.accessed Post
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed Post
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	void getPosts(int startIndex, ArrayList<String> streamLevels, String requestingUsers, String sort, AsyncCallback<ArrayList<Post>> callback);
 	
@@ -136,9 +136,9 @@ public interface UserServiceAsync
 	 * @param attachmentKeys the attachment keys
 	 * @param attachmentNames the attachment names
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called None
 	 */
 	void uploadPost(String username, String postHtml, String postPlain, String streamLevel, Date time, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames, AsyncCallback<Void> callback);
 	
@@ -149,9 +149,9 @@ public interface UserServiceAsync
 	 * @param comment the comment
 	 * @param callback the callback to return the string
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called None
 	 */
 	void uploadComment(String postKey, Comment comment, AsyncCallback<String> callback);
 	
@@ -162,9 +162,9 @@ public interface UserServiceAsync
 	 * @param user the user
 	 * @param callback the callback to return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
 	 */
 	void upvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	
@@ -175,9 +175,9 @@ public interface UserServiceAsync
 	 * @param user the user
 	 * @param callback the callback to return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#changeScore(String postKey, String property, String user)}
 	 */
 	void downvotePost(String postKey, String user, AsyncCallback<Boolean> callback);
 	
@@ -190,9 +190,9 @@ public interface UserServiceAsync
 	 * @param attachmentKeys the attachment keys
 	 * @param attachmentNames the attachment names
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
 	 */
 	void editPost(String postKey, String postHtml, String postPlain, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames, AsyncCallback<Void> callback);
 	
@@ -203,9 +203,9 @@ public interface UserServiceAsync
 	 * @param commentText the comment text
 	 * @param callback the callback to return the string
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	void editComment(String commentKey, String commentText, AsyncCallback<String> callback);
 	
@@ -214,9 +214,9 @@ public interface UserServiceAsync
 	 *
 	 * @param postKey the post key
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
 	 */
 	void deletePost(String postKey, AsyncCallback<Void> callback);
 	
@@ -227,9 +227,9 @@ public interface UserServiceAsync
 	 * @param reason the reason
 	 * @param setFlagged the set flagged
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPost(String postKey)}
 	 */
 	void flagPost(String postKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);
 	
@@ -240,9 +240,9 @@ public interface UserServiceAsync
 	 * @param reason the reason
 	 * @param setFlagged the set flagged
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	void flagComment(String commentKey, String reason, boolean setFlagged, AsyncCallback<Void> callback);
 	
@@ -251,9 +251,9 @@ public interface UserServiceAsync
 	 *
 	 * @param commentKey the comment key
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	void deleteComment(String commentKey, AsyncCallback<Void> callback);
 	
@@ -265,9 +265,9 @@ public interface UserServiceAsync
 	 * @param requestingUser the requesting user
 	 * @param callback the callback to return the array list
 	 * 
-	 * @.accessed Post
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
+	 * @custom.accessed Post
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
 	 */
 	void postSearch(int startIndex, String searchText, String requestingUser, AsyncCallback<ArrayList<Post>> callback);
 	
@@ -276,9 +276,9 @@ public interface UserServiceAsync
 	 *
 	 * @param callback the callback to return the course requests
 	 * 
-	 * @.accessed CourseRequest
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
+	 * @custom.accessed CourseRequest
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourse(Entity entity)}
 	 */
 	void getCourseRequests(AsyncCallback<ArrayList<Course>> callback);
 	
@@ -288,9 +288,9 @@ public interface UserServiceAsync
 	 * @param course the course
 	 * @param add the add
 	 * 
-	 * @.accessed None
-	 * @.changed CourseRequest
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#adminAddCourse(String, int, String, String)}
+	 * @custom.accessed None
+	 * @custom.changed CourseRequest
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#adminAddCourse(String, int, String, String)}
 	 */
 	void removeCourseRequest(Course course, boolean add, AsyncCallback<Void> callback);
 	
@@ -299,9 +299,9 @@ public interface UserServiceAsync
 	 *
 	 * @param callback the callback to return the flagged posts
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postFromEntity(Entity entity, String requestingUser)}
 	 */
 	void getFlaggedPosts(AsyncCallback<ArrayList<Post>> callback);
 	
@@ -311,9 +311,9 @@ public interface UserServiceAsync
 	 * @param username the username
 	 * @param callback the callback to return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void resetPassword(String username, AsyncCallback<Boolean> callback);
 	
@@ -324,9 +324,9 @@ public interface UserServiceAsync
 	 * @param newPassword the new password
 	 * @param callback the callback to return the user
 	 * 
-	 * @.accessed None
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed None
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void changePassword(String username, String newPassword, AsyncCallback<User> callback);
 	
@@ -337,9 +337,9 @@ public interface UserServiceAsync
 	 * @param requestingUser the requesting user
 	 * @param callback the callback to return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed Comment
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
+	 * @custom.accessed None
+	 * @custom.changed Comment
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
 	void plusOne(String commentKey, String requestingUser, AsyncCallback<Boolean> callback);
 	
@@ -350,9 +350,9 @@ public interface UserServiceAsync
 	 * @param user the user
 	 * @param callback the callback to return the user
 	 * 
-	 * @.accessed None
-	 * @.changed User
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
+	 * @custom.accessed None
+	 * @custom.changed User
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getUserEntity(String username)}
 	 */
 	void removeCourse(String course, String user, AsyncCallback<User> callback);
 	
@@ -361,9 +361,9 @@ public interface UserServiceAsync
 	 *
 	 * @param callback the callback to return the upload url
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
 	 */
 	void getUploadUrl(AsyncCallback<String> callback);
 	
@@ -372,9 +372,9 @@ public interface UserServiceAsync
 	 *
 	 * @param key the key
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.google.appengine.api.blobstore.BlobstoreService#delete(com.google.appengine.api.blobstore.BlobKey...)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#delete(com.google.appengine.api.blobstore.BlobKey...)}
 	 */
 	void deleteAttachment(String key, AsyncCallback<Void> callback);
 }

@@ -40,9 +40,9 @@ public class CommentMenuPopup extends PopupPanel implements MouseOverHandler, Mo
 	 * @param comment the {@link Comment} that this popup will act on
 	 * @param userPost the {@link UserPost} that this is displayed as a part of
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public CommentMenuPopup(final MainView main, Widget w, final Comment comment, final UserPost userPost)
 	{

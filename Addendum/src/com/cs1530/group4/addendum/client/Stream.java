@@ -92,9 +92,9 @@ public class Stream extends Composite
 	 *
 	 * @param m the MainView of the application
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPosts(int, ArrayList, String, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #getClasses()}
 	 */
 	public Stream(MainView m)
 	{
@@ -361,9 +361,9 @@ public class Stream extends Composite
 	 * @param streamLevels A list of stream levels (aka course names) which to filter the posts by
 	 * @param sortMethod A string signifying in which order to sort the posts (by date, by score, etc)
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPosts(int, ArrayList, String, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPosts(int, ArrayList, String, String)}
 	 */
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
@@ -399,9 +399,9 @@ public class Stream extends Composite
 	/**
 	 * Populate the user's class panel with the classes they belong to.  Call after adding or removing a class or to initialize the stream.
 	 *
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private void getClasses()
 	{
@@ -450,9 +450,9 @@ public class Stream extends Composite
 	 *
 	 * @param course The course name to be removed (in the format 'CourseName+CourseNumber')
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#removeCourse(String, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#removeCourse(String, String)}
 	 */
 	private void removeCourse(String course)
 	{
@@ -482,9 +482,9 @@ public class Stream extends Composite
 	 *
 	 * @param searchString the search string
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postSearch(int, String, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#postSearch(int, String, String)}
 	 */
 	public void postSearch(final String searchString)
 	{

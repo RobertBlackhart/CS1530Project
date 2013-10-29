@@ -46,9 +46,9 @@ public class CommentBox extends Composite
 	 * @param post the {@link Post} object that this comment will be associated with
 	 * @param userPost the {@link UserPost} object that will contain this CommentBox
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public CommentBox(final PromptedTextBox addComment, final Post post, final UserPost userPost)
 	{

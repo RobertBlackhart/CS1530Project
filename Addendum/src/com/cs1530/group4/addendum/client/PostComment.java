@@ -48,9 +48,9 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	 * @param stream the {@link Stream} object that is displaying this PostComment
 	 * @param userPost the {@link UserPost} associated with this PostComment
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #getFormattedTime(Comment)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #getFormattedTime(Comment)}
 	 */
 	public PostComment(final MainView main, final Comment comment, final Stream stream, final UserPost userPost)
 	{
@@ -197,9 +197,9 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	 * @param comment the {@link Comment} object to get the {@link Date} from
 	 * @return the formatted time string
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private String getFormattedTime(Comment comment)
 	{

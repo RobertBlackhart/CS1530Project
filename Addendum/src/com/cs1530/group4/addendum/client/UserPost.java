@@ -31,7 +31,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class UserPost extends Composite implements MouseOverHandler, MouseOutHandler
 {
-	
 	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 	
@@ -81,9 +80,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 * @param stream A reference to the stream class that this post is attached to.
 	 * @param p The post object that this UserPost represents.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #displayComments()}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #displayComments()}
 	 */
 	public UserPost(MainView m, final Stream stream, Post p)
 	{
@@ -366,9 +365,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 * If there are more than 2 comments, the comments will be collapsed into an expandable structure.
 	 * Additionally, if the comments physical height is greater than 300px, they will be placed into a scrollable panel.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #adjustCommentScroll()}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #adjustCommentScroll()}
 	 */
 	public void displayComments()
 	{
@@ -447,9 +446,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	/**
 	 * This method determines the height of the scroll panel for the comments.  If the comments total height is > 300px, the ScrollPanel will show it's scrollbar.
 	 *
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private void adjustCommentScroll()
 	{
@@ -464,9 +463,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 *
 	 * @param comment The comment to be edited or null to start a new comment.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public void showCommentBox(Comment comment)
 	{
@@ -493,9 +492,9 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 * @param comment The comment to be added.
 	 * @param isEdit A flag to say if this was an edit or a new comment.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #displayComments()}, {@link #adjustCommentScroll()}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #displayComments()}, {@link #adjustCommentScroll()}
 	 */
 	public void addSubmittedComment(Comment comment, boolean isEdit)
 	{

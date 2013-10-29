@@ -29,9 +29,9 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	 * @param promptText the prompt text
 	 * @param promptStyleName the prompt style name
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link #showPrompt()}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link #showPrompt()}
 	 */
 	public PromptedTextBox(String promptText, String promptStyleName)
 	{
@@ -47,9 +47,9 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	/**
 	 * Show prompt.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public void showPrompt()
 	{
@@ -60,9 +60,9 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	/**
 	 * Hide prompt.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public void hidePrompt()
 	{

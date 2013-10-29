@@ -38,9 +38,9 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 	 * @param content the content
 	 * @param historyToken the history token
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public void setContent(Widget content, String historyToken)
 	{
@@ -52,9 +52,9 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 	/**
 	 * Initialize the application's UI.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private void initialize()
 	{

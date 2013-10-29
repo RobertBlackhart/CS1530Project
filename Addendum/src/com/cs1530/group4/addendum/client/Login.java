@@ -54,9 +54,9 @@ public class Login extends Composite
 	 *
 	 * @param m the applicatin's {@link MainView}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public Login(MainView m)
 	{
@@ -188,9 +188,9 @@ public class Login extends Composite
 	/**
 	 * Attempts to use the entered credentials to validate this user with the database.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#doLogin(String, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#doLogin(String, String)}
 	 */
 	protected void login()
 	{
@@ -232,9 +232,9 @@ public class Login extends Composite
 	 *
 	 * @param user the user
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link MainView#setContent(com.google.gwt.user.client.ui.Widget, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link MainView#setContent(com.google.gwt.user.client.ui.Widget, String)}
 	 */
 	private void acceptLogin(User user)
 	{
@@ -259,9 +259,9 @@ public class Login extends Composite
 	/**
 	 * Reject the user's login and display an error.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private void rejectLogin()
 	{

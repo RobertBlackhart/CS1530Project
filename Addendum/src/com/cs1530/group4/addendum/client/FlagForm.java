@@ -40,9 +40,9 @@ public class FlagForm extends DialogBox
 	 * @param key the postKey or commentKey to flag
 	 * @param postOrComment one of either {@link #POST} or {@link #COMMENT}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public FlagForm(final String key, final int postOrComment)
 	{

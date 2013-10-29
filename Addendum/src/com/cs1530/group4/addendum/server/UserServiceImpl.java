@@ -48,7 +48,7 @@ import com.google.appengine.api.utils.SystemProperty;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * This is the server-side implimentation of {@link com.cs1530.group4.addendum.client.UserService}
+ * This is the server-side implementation of {@link com.cs1530.group4.addendum.client.UserService}
  */
 @SuppressWarnings("serial")
 public class UserServiceImpl extends RemoteServiceServlet implements UserService
@@ -170,9 +170,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param uuid the uuid of the user
 	 * @param username the username of the user
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private void sendEmail(String email, String uuid, String username)
 	{
@@ -199,6 +199,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 *
 	 * @param email the email
 	 * @return true, if the email does not already exist. false otherwise
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private boolean validateEmail(String email)
 	{
@@ -307,6 +311,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param subjectCode the subject code
 	 * @param catalogueNumber the catalogue number
 	 * @return the entity from datastore
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private Entity getEntityFromDatastore(String subjectCode, int catalogueNumber)
 	{
@@ -328,6 +336,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 *
 	 * @param entity the entity
 	 * @return the {@link Course}
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private Course getCourse(Entity entity)
 	{
@@ -489,9 +501,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param username the username
 	 * @return the user entity
 	 * 
-	 * @.accessed User
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed User
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private Entity getUserEntity(String username)
 	{
@@ -546,9 +558,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param postHtml the post html
 	 * @return the formatted html string
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private String formatCode(String postHtml)
 	{
@@ -676,6 +688,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param entity the entity
 	 * @param requestingUser the requesting user
 	 * @return the post
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	@SuppressWarnings("unchecked")
 	private Post postFromEntity(Entity entity, String requestingUser)
@@ -725,6 +741,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param postKey the post key
 	 * @param requestingUser the requesting user
 	 * @return the comments
+	 * 
+	 * @custom.accessed Comment
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private ArrayList<Comment> getComments(String postKey, String requestingUser)
 	{
@@ -757,6 +777,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param entity the entity
 	 * @param requestingUser the requesting user
 	 * @return the comment
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	@SuppressWarnings("unchecked")
 	private Comment commentFromEntity(Entity entity, String requestingUser)
@@ -810,9 +834,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @param user the user
 	 * @return the boolean
 	 * 
-	 * @.accessed None
-	 * @.changed Post
-	 * @.called {@link #getPost(String)}, {@link #updateScore(Entity, String)}
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link #getPost(String)}, {@link #updateScore(Entity, String)}
 	 */
 	@SuppressWarnings("unchecked")
 	private Boolean changeScore(String postKey, String property, String user)
@@ -870,6 +894,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 *
 	 * @param postKey the post key
 	 * @return the post
+	 * 
+	 * @custom.accessed Post
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private Entity getPost(String postKey)
 	{
@@ -897,6 +925,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 *
 	 * @param entity the entity
 	 * @param user the user
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed Post
+	 * @custom.called {@link #postFromEntity(Entity, String)}
 	 */
 	private void updateScore(Entity entity, String user)
 	{
@@ -954,6 +986,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 *
 	 * @param commentKey the comment key
 	 * @return the comment
+	 * 
+	 * @custom.accessed Comment
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	private Entity getComment(String commentKey)
 	{
@@ -1133,6 +1169,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 *
 	 * @param userEntity the user entity
 	 * @return the user
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	@SuppressWarnings("unchecked")
 	private User userFromEntity(Entity userEntity)

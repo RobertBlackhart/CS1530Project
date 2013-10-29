@@ -60,9 +60,9 @@ public class NewUserDialog extends DialogBox
 	 *
 	 * @param m the application's {@link MainView}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public NewUserDialog(MainView m)
 	{
@@ -218,9 +218,9 @@ public class NewUserDialog extends DialogBox
 	 * @param username the username
 	 * @param password the password
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#createUser(String, String, String, String, String)}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#createUser(String, String, String, String, String)}
 	 */
 	private void createUser(String firstName, String lastName, String email, final String username, String password)
 	{

@@ -34,9 +34,9 @@ public class AdminPanel extends Composite
 	 *
 	 * @param main a reference to the application's {@link MainView}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public AdminPanel(final MainView main)
 	{
@@ -82,9 +82,9 @@ public class AdminPanel extends Composite
 	 *
 	 * @param reportedPosts the {@link VerticalPanel} in which to display the posts
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getFlaggedPosts()}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getFlaggedPosts()}
 	 */
 	private void getReportedPosts(VerticalPanel reportedPosts)
 	{
@@ -96,9 +96,9 @@ public class AdminPanel extends Composite
 	 *
 	 * @param courseRequests the {@link VerticalPanel} in which to display the requests
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourseRequests()}
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getCourseRequests()}
 	 */
 	private void getCourseAddRequests(VerticalPanel courseRequests)
 	{

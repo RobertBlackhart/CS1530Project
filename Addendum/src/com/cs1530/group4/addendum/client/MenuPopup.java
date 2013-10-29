@@ -39,9 +39,9 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 	 * @param w the widget to display this relative to
 	 * @param post the {@link Post} that will be acted on
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public MenuPopup(final MainView main, Widget w, final Post post)
 	{

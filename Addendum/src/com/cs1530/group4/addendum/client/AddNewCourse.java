@@ -38,9 +38,9 @@ public class AddNewCourse extends DialogBox
 	 * 
 	 * @param main a reference to the application's {@link MainView}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public AddNewCourse(final MainView main)
 	{
@@ -153,5 +153,4 @@ public class AddNewCourse extends DialogBox
 		setGlassEnabled(true);
 		center();
 	}
-
 }

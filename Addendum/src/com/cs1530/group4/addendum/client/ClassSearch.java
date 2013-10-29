@@ -55,9 +55,9 @@ public class ClassSearch extends DialogBox
 	 *
 	 * @param main the applications {@link MainView}
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public ClassSearch(final MainView main)
 	{

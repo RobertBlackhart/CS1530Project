@@ -26,9 +26,9 @@ public class ResetPasswordDialog extends DialogBox
 	/**
 	 * Instantiates a new reset password dialog.
 	 * 
-	 * @.accessed None
-	 * @.changed None
-	 * @.called None
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
 	 */
 	public ResetPasswordDialog()
 	{
