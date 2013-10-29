@@ -687,7 +687,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for(int i = startIndex; i < Math.min(startIndex + 11, posts.size()); i++)
 			returnPosts.add(posts.get(i));
 
-		System.out.println("size: " + returnPosts.size());
 		return returnPosts;
 	}
 

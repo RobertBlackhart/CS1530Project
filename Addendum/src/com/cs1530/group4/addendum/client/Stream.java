@@ -300,7 +300,7 @@ public class Stream extends Composite
 		nextPrevPanel.add(nextPage);
 		vPanel.add(nextPrevPanel);
 
-		final TabPanel tabPanel = new TabPanel();
+		tabPanel = new TabPanel();
 		tabPanel.setSize("800px", "89");
 
 		VerticalPanel popularUpdatesPanel = new VerticalPanel();

@@ -314,7 +314,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		VerticalPanel attachmentsPanel = new VerticalPanel();
 		postPanel.add(attachmentsPanel);
 		
-		if(post.getAttachmentKeys().size() > 0)
+		if(post.getAttachmentKeys()!= null && post.getAttachmentKeys().size() > 0)
 		{
 			Label lblAttachments = new Label("Attachments:");
 			lblAttachments.setStyleName("NewPostBackLabel");
