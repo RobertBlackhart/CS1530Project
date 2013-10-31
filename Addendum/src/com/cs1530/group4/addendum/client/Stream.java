@@ -284,11 +284,17 @@ public class Stream extends Composite
 			{
 				nextPage.setVisible(true);
 				if(tabPanel.getTabBar().getTabHTML(tabPanel.getTabBar().getSelectedTab()).equals("Search Results"))
+				{
 					searchStart -= 10;
+					if(searchStart < 10)
+						prevPage.setVisible(false);
+				}
 				else
+				{
 					startIndex -= 10;
-				if(startIndex < 10 || searchStart < 10)
-					prevPage.setVisible(false);
+					if(startIndex < 10)
+						prevPage.setVisible(false);
+				}
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
 				if(streamLevel.equals("all"))
