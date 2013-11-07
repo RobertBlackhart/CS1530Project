@@ -76,8 +76,8 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 
 		Widget content = null;			
 		String[] historyToken;
-		if(event.getValue().equals("")) //fixes bug that happens when using ssl
-			historyToken = "profile".split("-");
+		if(event.getValue() == null || event.getValue().equals("")) //fixes bug that happens when using ssl
+			historyToken = "stream".split("-");
 		else
 			historyToken = event.getValue().split("-");
 		
@@ -89,7 +89,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			Storage localStorage = Storage.getLocalStorageIfSupported();
 			localStorage.setItem("loggedIn", new User(username).serialize());
 			
-			History.newItem("profile-"+username);
+			History.newItem("stream");
 			return;
 		}
 		else if(historyToken[0].equals("passwordReset"))
@@ -97,9 +97,13 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 			new NewPasswordDialog(historyToken[1],this);
 			return;
 		}
+		else if(historyToken[0].equals("profile"))
+		{
+			content = new Profile(main,historyToken[1]);
+		}
 		else if(historyToken[0].equals("login"))
 			content = new Login(main);
-		else if(historyToken[0].equals("profile"))
+		else if(historyToken[0].equals("stream"))
 		{
 			String loggedUser = Cookies.getCookie("loggedIn");
 			if(loggedUser == null)

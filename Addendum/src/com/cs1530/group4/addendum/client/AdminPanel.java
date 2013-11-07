@@ -166,7 +166,7 @@ public class AdminPanel extends Composite
 				});
 				row.add(approve);
 				row.add(delete);
-				row.add(new UserPost(null,null,post));
+				row.add(new UserPost(null,post));
 				postsPanel.add(row);
 			}
 		}

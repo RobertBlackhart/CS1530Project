@@ -52,9 +52,6 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	/** The logged in user. */
 	String loggedInUser = Cookies.getCookie("loggedIn");
 	
-	/** The stream. */
-	Stream stream;
-	
 	/** The application's MainView. */
 	MainView main;
 	
@@ -77,16 +74,14 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 * Instantiates a new UserPost.
 	 *
 	 * @param m The MainView of the application
-	 * @param stream A reference to the stream class that this post is attached to.
 	 * @param p The post object that this UserPost represents.
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
 	 * @custom.called {@link #displayComments()}
 	 */
-	public UserPost(MainView m, final Stream stream, Post p)
+	public UserPost(MainView m, Post p)
 	{
-		this.stream = stream;
 		main = m;
 		post = p;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
@@ -245,7 +240,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		{
 			public void onClick(ClickEvent event)
 			{
-				stream.postSearch("username:"+post.getUsername());
+				main.setContent(new Profile(main,post.getUsername()),"profile-"+post.getUsername());
 			}
 		});
 		
@@ -403,7 +398,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					commentPanel.clear();
 					commentPanel.add(hidePanel);
 					for(Comment comment : post.getComments())
-						commentPanel.add(new PostComment(main,comment,stream,userPost));
+						commentPanel.add(new PostComment(main,comment,userPost));
 					adjustCommentScroll();
 				}
 			};
@@ -417,7 +412,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					isExpanded = false;
 					commentPanel.clear();
 					commentPanel.add(expandPanel);
-					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),stream,userPost));
+					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),userPost));
 					adjustCommentScroll();
 				}
 			};
@@ -428,18 +423,18 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			{
 				commentPanel.add(hidePanel);
 				for(Comment comment : post.getComments())
-					commentPanel.add(new PostComment(main,comment,stream,userPost));
+					commentPanel.add(new PostComment(main,comment,userPost));
 			}
 			else
 			{
 				commentPanel.add(expandPanel);
-				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),stream,userPost));
+				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),userPost));
 			}
 		}
 		else
 		{
 			for(Comment comment : post.getComments())
-				commentPanel.add(new PostComment(main,comment,stream,userPost));
+				commentPanel.add(new PostComment(main,comment,userPost));
 		}
 		
 		adjustCommentScroll();
@@ -517,7 +512,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			
 			return;
 		}
-		commentPanel.add(new PostComment(main,comment,stream,userPost));
+		commentPanel.add(new PostComment(main,comment,userPost));
 		commentPanel.setStyleName("gwt-DecoratorPanel-newComment");
 		adjustCommentScroll();
 		post.getComments().add(comment);

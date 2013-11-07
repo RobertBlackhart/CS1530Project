@@ -158,7 +158,7 @@ public class Stream extends Composite
 		userPanel.add(absolutePanel);
 
 		Image image = new Image("/addendum/getImage?username=" + user.getUsername());
-		final Label changeImageLabel = new Label("------Change Image------");
+		final Label changeImageLabel = new Label("Change Image");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
 		changeImageLabel.setSize("128px", "28px");
 		MouseOverHandler mouseOver = new MouseOverHandler()
@@ -397,7 +397,7 @@ public class Stream extends Composite
 					}
 
 					nextPage.setVisible(false);
-					updatesPanel.add(new UserPost(main, stream, post));
+					updatesPanel.add(new UserPost(main, post));
 				}
 				System.out.println("time elapsed: " + (System.currentTimeMillis()-start.getTime()));
 			}
@@ -534,7 +534,7 @@ public class Stream extends Composite
 					}
 
 					nextPage.setVisible(false);
-					searchPanel.add(new UserPost(main, stream, post));
+					searchPanel.add(new UserPost(main, post));
 				}
 			}
 		};

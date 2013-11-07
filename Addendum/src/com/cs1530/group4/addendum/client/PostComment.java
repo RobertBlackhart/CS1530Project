@@ -45,14 +45,13 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	 *
 	 * @param main the application's {@link MainView}
 	 * @param comment the {@link Comment} associated with this PostComment
-	 * @param stream the {@link Stream} object that is displaying this PostComment
 	 * @param userPost the {@link UserPost} associated with this PostComment
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
 	 * @custom.called {@link #getFormattedTime(Comment)}
 	 */
-	public PostComment(final MainView main, final Comment comment, final Stream stream, final UserPost userPost)
+	public PostComment(final MainView main, final Comment comment, final UserPost userPost)
 	{
 		VerticalPanel rowPanel = new VerticalPanel();
 		rowPanel.setStyleName("CommentPanelbackcolor");
@@ -154,17 +153,14 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		timePanel.add(plusOneButton);
 		verticalPanel.add(timePanel);
 
-		if(stream != null)
+		usernameLabel.addClickHandler(new ClickHandler()
 		{
-			usernameLabel.addClickHandler(new ClickHandler()
+			public void onClick(ClickEvent event)
 			{
-				public void onClick(ClickEvent event)
-				{
-					stream.postSearch("username:" + comment.getUsername());
-				}
-			});
-		}
-
+				main.setContent(new Profile(main,comment.getUsername()), "profile-"+comment.getUsername());
+			}
+		});
+		
 		menu = new Image("images/menu.png");
 		menu.setSize("24px", "24px");
 		menu.setVisible(false);
