@@ -47,20 +47,26 @@ public class ImageServlet extends HttpServlet
 		if(user == null)
 			user = getUserEntity("default");
 		
-		Blob imageBlob = null;
-		if(user.hasProperty("profileImage"))
-			imageBlob = (Blob) user.getProperty("profileImage");
-		else
+		try
 		{
-			user = getUserEntity("default");
-			imageBlob = (Blob) user.getProperty("profileImage");
+			Blob imageBlob = null;
+			if(user.hasProperty("profileImage"))
+				imageBlob = (Blob) user.getProperty("profileImage");
+			else
+			{
+				user = getUserEntity("default");
+				imageBlob = (Blob) user.getProperty("profileImage");
+			}
+			
+			OutputStream out = resp.getOutputStream();
+			out.write(imageBlob.getBytes());
+			out.close();
 		}
-
-		resp.setContentType("image/jpeg");
-		resp.addHeader("Cache-Control", "public, must-revalidate, max-age=1440"); //cache image for 1 day
-		OutputStream out = resp.getOutputStream();
-		out.write(imageBlob.getBytes());
-		out.close();
+		catch(ClassCastException ex)
+		{
+			BlobKey blobKey = new BlobKey(user.getProperty("profileImage").toString());
+	        blobstoreService.serve(blobKey, resp);
+		}
 	}
 
 	private Entity getUserEntity(String username)

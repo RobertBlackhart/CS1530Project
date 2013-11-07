@@ -46,7 +46,7 @@ public class RichTextToolbar extends Composite
 	
 	/** Local CONSTANTS *. */
 	//ImageMap and CSS related
-	private static final String HTTP_STATIC_ICONS_GIF = "http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
+	private static final String HTTP_STATIC_ICONS_GIF = "images/icons.gif";
 	
 	/** The Constant CSS_ROOT_NAME. */
 	private static final String CSS_ROOT_NAME = "RichTextToolbar";

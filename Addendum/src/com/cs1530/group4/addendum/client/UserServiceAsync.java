@@ -359,13 +359,14 @@ public interface UserServiceAsync
 	/**
 	 * Gets the upload url.
 	 *
+	 * @param username Optional argument used to specify the user this upload will be associated with (i.e. in the case of a profile image).  Can be null
 	 * @param callback the callback to return the upload url
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
 	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
 	 */
-	void getUploadUrl(AsyncCallback<String> callback);
+	void getUploadUrl(String username, AsyncCallback<String> callback);
 	
 	/**
 	 * Delete attachment.

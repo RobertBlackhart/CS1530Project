@@ -386,13 +386,14 @@ public interface UserService extends RemoteService
 	/**
 	 * Gets the upload url.
 	 *
+	 * @param username Optional argument used to specify the user this upload will be associated with (i.e. in the case of a profile image).  Can be null
 	 * @return the upload url
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
 	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#createUploadUrl(String)}
 	 */
-	String getUploadUrl();
+	String getUploadUrl(String username);
 	
 	/**
 	 * Delete attachment.

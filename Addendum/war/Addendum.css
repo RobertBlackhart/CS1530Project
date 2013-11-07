@@ -364,8 +364,8 @@ a:visited {
 }
 .ADCButton {
 	color: White;
-	border-radius:15px;
 	font-size: 14px;
+	border-radius:15px;
 	font-family: Arial Black;
 	background-color: #BF5B30;
 }

@@ -2,6 +2,7 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
@@ -181,7 +182,7 @@ public class Stream extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				ProfilePictureUpload profilePic = new ProfilePictureUpload(user.getUsername());
+				ProfilePictureUpload profilePic = new ProfilePictureUpload(main,user.getUsername());
 				profilePic.show();
 			}
 		};
@@ -373,6 +374,7 @@ public class Stream extends Composite
 	 */
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
+		final Date start = new Date(System.currentTimeMillis());
 		updatesPanel.clear();
 		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
 		{
@@ -397,6 +399,7 @@ public class Stream extends Composite
 					nextPage.setVisible(false);
 					updatesPanel.add(new UserPost(main, stream, post));
 				}
+				System.out.println("time elapsed: " + (System.currentTimeMillis()-start.getTime()));
 			}
 		};
 		userService.getPosts(startIndex, streamLevels, user.getUsername(), sortMethod, callback);

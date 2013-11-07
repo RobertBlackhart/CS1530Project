@@ -74,9 +74,12 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		if(contentPanel == null)
 			initialize();
 
-		Widget content = null;
-
-		String[] historyToken = event.getValue().split("-");
+		Widget content = null;			
+		String[] historyToken;
+		if(event.getValue().equals("")) //fixes bug that happens when using ssl
+			historyToken = "profile".split("-");
+		else
+			historyToken = event.getValue().split("-");
 		
 		// Parse the history token
 		if(historyToken[0].equals("setCookie"))

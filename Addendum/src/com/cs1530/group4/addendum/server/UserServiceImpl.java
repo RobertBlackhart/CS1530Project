@@ -1215,9 +1215,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @see com.cs1530.group4.addendum.client.UserService#getUploadUrl()
 	 */
 	@Override
-	public String getUploadUrl()
+	public String getUploadUrl(String username)
 	{
-		return blobstoreService.createUploadUrl("/addendum/uploadSuccess");
+		String url = "/addendum/uploadSuccess";
+		if(username != null)
+			url += "?username="+username;
+		return blobstoreService.createUploadUrl(url);
 	}
 
 	/* (non-Javadoc)

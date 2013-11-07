@@ -22,7 +22,13 @@ public class ImageUploadServlet extends HttpServlet
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException 
 	{
-		String postUrl = blobstoreService.createUploadUrl("/addendum/uploadSuccess");
+		String username = req.getParameter("username");
+		String url = "/addendum/uploadSuccess";
+		
+		if(username != null)
+			url += "?username="+username;
+		
+		String postUrl = blobstoreService.createUploadUrl(url);
 			
 		resp.setContentType("text/plain");
 		resp.getWriter().println(postUrl);

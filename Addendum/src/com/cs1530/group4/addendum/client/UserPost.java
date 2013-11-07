@@ -339,22 +339,24 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			displayComments();
 		}
 
-		FlowPanel addCommentPanel = new FlowPanel();
+		final FlowPanel addCommentPanel = new FlowPanel();
 		postPanel.add(addCommentPanel);
 		addCommentPanel.setWidth("100%");
 
 		addAComment = new PromptedTextBox("Add a comment...", "promptText");
 		addAComment.getElement().getStyle().setProperty("margin", "10px");
-		commentBox = new CommentBox(addAComment, post, this);
-		commentBox.setVisible(false);
-		addCommentPanel.add(commentBox);
-		commentBox.setWidth("100%");
 		addAComment.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				Date now = new Date(System.currentTimeMillis());
+				commentBox = new CommentBox(addAComment, post, userPost);
+				commentBox.setVisible(false);
+				addCommentPanel.add(commentBox);
+				commentBox.setWidth("100%");
 				showCommentBox(null);
+				System.out.println("commentBox creation time: " + (System.currentTimeMillis()-now.getTime()));
 			}
 		});
 		addCommentPanel.add(addAComment);

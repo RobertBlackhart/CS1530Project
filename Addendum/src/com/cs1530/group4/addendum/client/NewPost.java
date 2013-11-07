@@ -411,7 +411,7 @@ public class NewPost extends DialogBox
 			}
 		};
 
-		userService.getUploadUrl(callback);
+		userService.getUploadUrl(null,callback);
 	}
 
 	/**
