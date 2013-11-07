@@ -616,3 +616,11 @@ padding: 0px 0px 6px 6px;
 	height: 13px;
 	width: 21px;
 }
+.dialog-padding {
+	padding: 10px;
+}
+.change-profile-image {
+	font-weight: bold;
+	text-align: center;
+	background-color: White;
+}

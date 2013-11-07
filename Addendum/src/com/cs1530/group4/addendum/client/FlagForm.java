@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -48,6 +49,7 @@ public class FlagForm extends DialogBox
 	{
 		final ArrayList<RadioButton> radios = new ArrayList<RadioButton>();
 		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.setStyleName("dialog-padding");
 		vPanel.add(new Label("What kind of abuse are you reporting?"));
 		for(String option : options)
 		{
@@ -57,9 +59,19 @@ public class FlagForm extends DialogBox
 		}
 		vPanel.add(new Label("Any additional remarks?"));
 		final TextBox otherBox = new TextBox();
+		otherBox.setStyleName("ADCTextbox");
 		vPanel.add(otherBox);
+		otherBox.setWidth("100%");
+		
+		VerticalPanel vertPanel = new VerticalPanel();
+		vertPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		vPanel.add(vertPanel);
+		vertPanel.setWidth("100%");
 		HorizontalPanel buttonPanel = new HorizontalPanel();
+		vertPanel.add(buttonPanel);
+		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		Button cancelButton = new Button("Cancel");
+		cancelButton.setStyleName("ADCButton");
 		buttonPanel.add(cancelButton);
 		cancelButton.addClickHandler(new ClickHandler()
 		{
@@ -69,6 +81,7 @@ public class FlagForm extends DialogBox
 			}
 		});
 		Button okButton = new Button("OK");
+		okButton.setStyleName("ADCButton");
 		buttonPanel.add(okButton);
 		okButton.addClickHandler(new ClickHandler()
 		{
@@ -87,7 +100,7 @@ public class FlagForm extends DialogBox
 					if(button.getValue())
 						reason = button.getText();
 				}
-				if(reason.equals("Other"))
+				if(reason.equals("Other") || reason.length() == 0)
 				{
 					if(otherBox.getText().length() == 0)
 					{
@@ -102,7 +115,6 @@ public class FlagForm extends DialogBox
 					userService.flagComment(key, reason, true, callback);
 			}
 		});
-		vPanel.add(buttonPanel);
 		add(vPanel);
 		
 		setStyleName("ADCBasic");

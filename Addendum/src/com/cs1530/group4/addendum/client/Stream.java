@@ -158,7 +158,7 @@ public class Stream extends Composite
 		userPanel.add(absolutePanel);
 
 		Image image = new Image("/addendum/getImage?username=" + user.getUsername());
-		final Label changeImageLabel = new Label("Change Image");
+		final Label changeImageLabel = new Label("------Change Image------");
 		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
 		changeImageLabel.setSize("128px", "28px");
 		MouseOverHandler mouseOver = new MouseOverHandler()
