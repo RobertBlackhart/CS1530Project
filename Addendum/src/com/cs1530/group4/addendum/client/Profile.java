@@ -146,7 +146,7 @@ public class Profile extends Composite
 
 		Image profileImage = new Image("/addendum/getImage?username=" + username);
 		horizontalPanel.add(profileImage);
-		profileImage.setSize("256", "256");
+		profileImage.setSize("256px", "256px");
 
 		ScrollPanel trophyCase = new ScrollPanel();
 		trophyCase.setStyleName("trophyCase");
@@ -290,7 +290,9 @@ public class Profile extends Composite
 
 	private void setupContactInfoPanel(HorizontalPanel infoRow2)
 	{
-		boolean privateProfile = !username.equals(Cookies.getCookie("loggedIn")) || (username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate);
+		boolean privateProfile = false;
+		if(username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate)
+			privateProfile = true;
 		if(!privateProfile && userProfile.getPhone() == null && userProfile.getEmail() == null && userProfile.getAddress() == null)
 			return;
 
@@ -385,7 +387,9 @@ public class Profile extends Composite
 
 	private void setupBasicInfoPanel(HorizontalPanel infoRow2)
 	{
-		boolean privateProfile = !username.equals(Cookies.getCookie("loggedIn")) || (username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate);
+		boolean privateProfile = false;
+		if(username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate)
+			privateProfile = true;
 		if(!privateProfile && userProfile.getName() == null && userProfile.getGender() == null && userProfile.getBirthday() == null)
 			return;
 
@@ -481,7 +485,9 @@ public class Profile extends Composite
 
 	private void setupEducationPanel(HorizontalPanel infoRow1)
 	{
-		boolean privateProfile = !username.equals(Cookies.getCookie("loggedIn")) || (username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate);
+		boolean privateProfile = false;
+		if(username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate)
+			privateProfile = true;
 		if(!privateProfile && userProfile.getHighSchool() == null && userProfile.getCollege() == null)
 			return;
 
@@ -558,7 +564,9 @@ public class Profile extends Composite
 
 	private void setupStoryPanel(HorizontalPanel infoRow1)
 	{
-		boolean privateProfile = !username.equals(Cookies.getCookie("loggedIn")) || (username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate);
+		boolean privateProfile = false;
+		if(username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate)
+			privateProfile = true;
 		if(!privateProfile && userProfile.getTagline() == null && userProfile.getIntroduction() == null && userProfile.getBraggingRights() == null)
 			return;
 
