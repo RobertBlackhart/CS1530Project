@@ -253,7 +253,7 @@ public class Login extends Composite
 		if(usernameTextBox.getText().equals("Administrator"))
 			main.setContent(new AdminPanel(main), "adminPanel");
 		else
-			main.setContent(new Stream(main), "profile-" + usernameTextBox.getText());
+			main.setContent(new Stream(main), "stream");
 	}
 
 	/**

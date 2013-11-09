@@ -3,10 +3,12 @@ package com.cs1530.group4.addendum.client;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.cs1530.group4.addendum.shared.Achievement;
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
+import com.cs1530.group4.addendum.shared.UserProfile;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -378,4 +380,37 @@ public interface UserServiceAsync
 	 * @custom.called {@link com.google.appengine.api.blobstore.BlobstoreService#delete(com.google.appengine.api.blobstore.BlobKey...)}
 	 */
 	void deleteAttachment(String key, AsyncCallback<Void> callback);
+	
+	/**
+	 * Get the basic information that a user has shared.
+	 *
+	 * @param username the username of the user for which to retrieve information
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
+	 */
+	void getUserProfile(String username, AsyncCallback<UserProfile> callback);
+	
+	/**
+	 * Set the basic information that a user has shared.
+	 *
+	 * @param username the username of the user for which to save profile information
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
+	 */
+	void setUserProfile(String username, UserProfile userProfile, AsyncCallback<Void> callback);
+	
+	/**
+	 * Get a list of the user's achievements (trophies)
+	 *
+	 * @param username the username of the user for which to retrieve information
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
+	 */
+	void getAchievements(String username, AsyncCallback<ArrayList<Achievement>> callback);
 }

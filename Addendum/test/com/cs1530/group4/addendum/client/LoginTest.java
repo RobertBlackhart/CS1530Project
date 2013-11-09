@@ -1,5 +1,7 @@
 package com.cs1530.group4.addendum.client;
 
+import org.junit.Test;
+
 import com.google.gwt.junit.client.GWTTestCase;
 
 public class LoginTest extends GWTTestCase
@@ -19,5 +21,11 @@ public class LoginTest extends GWTTestCase
 	public void testSimple()
 	{
 		assertTrue(true);
+	}
+	
+	@Test
+	public void testLogin()
+	{
+		
 	}
 }

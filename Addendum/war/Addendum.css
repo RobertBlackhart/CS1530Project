@@ -624,3 +624,64 @@ padding: 0px 0px 6px 6px;
 	text-align: center;
 	background-color: White;
 }
+.bold-black {
+	font-weight: bold;
+}
+.largerText {
+	font-size: x-large;
+	font-weight: lighter;
+}
+.storyPanel {
+	border-top: inset;
+	border-width: 5px;
+	border-color: red;
+	background-color: white;
+	margin-left: 20px;
+}
+.profileBackground {
+	background-color: #FDDC9F;
+}
+.educationPanel {
+	border-top: inset;
+	border-width: 5px;
+	border-color: orange;
+	background-color: white;
+}
+.basicInfoPanel {
+	border-top: inset;
+	border-width: 5px;
+	border-color: blue;
+	background-color: white;
+}
+.contactInfoPanel {
+	border-top: inset;
+	border-width: 5px;
+	border-color: violet;
+	background-color: white;
+	margin-left: 20px;
+}
+.profileTabPanel .gwt-TabPanel {
+	margin: none !important;
+}
+.successLabel {
+	color: green;
+	font-style: italic;
+	float: right;
+	margin-right: 5px;
+}
+.errorLabel {
+	color: red;
+	font-style: italic;
+	float: right;
+	margin-right: 5px;
+}
+.profileUserLabel {
+	font-weight: bold;
+	font-size: larger;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.trophyCase {
+	border: 2px ridge;
+	margin-left: 10px;
+}

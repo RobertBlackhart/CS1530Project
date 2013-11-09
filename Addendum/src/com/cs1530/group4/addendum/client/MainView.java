@@ -99,7 +99,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		}
 		else if(historyToken[0].equals("profile"))
 		{
-			content = new Profile(main,historyToken[1]);
+			content = new Profile(main,historyToken[1],true);
 		}
 		else if(historyToken[0].equals("login"))
 			content = new Login(main);

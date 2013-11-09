@@ -157,7 +157,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new Profile(main,comment.getUsername()), "profile-"+comment.getUsername());
+				main.setContent(new Profile(main,comment.getUsername(),true), "profile-"+comment.getUsername());
 			}
 		});
 		

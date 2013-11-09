@@ -54,7 +54,7 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	public void showPrompt()
 	{
 		this.addStyleName(promptStyle);
-		this.setText(this.promptText);
+		this.changeText(this.promptText);
 	}
 
 	/**
@@ -66,17 +66,43 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	 */
 	public void hidePrompt()
 	{
-		this.setText(null);
+		this.changeText(null);
 		this.removeStyleName(promptStyle);
 	}
 
+	private void changeText(String text)
+	{
+		super.setText(text);
+	}
+	
+	@Override
+	public void setText(String text)
+	{
+		this.removeStyleName(promptStyle);
+		super.setText(text);
+	}
+	
+	@Override
+	public String getText()
+	{
+		if(super.getText().equals(promptText))
+			return null;
+		else
+			return super.getText();
+	}
+	
+	private String hasText()
+	{
+		return super.getText();
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.google.gwt.event.dom.client.KeyPressHandler#onKeyPress(com.google.gwt.event.dom.client.KeyPressEvent)
 	 */
 	@Override
 	public void onKeyPress(KeyPressEvent event)
 	{
-		if(promptText.equals(this.getText()) && !(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_TAB))
+		if(promptText.equals(this.hasText()) && !(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_TAB))
 		{
 			hidePrompt();
 		}
@@ -97,7 +123,7 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	@Override
 	public void onClick(ClickEvent event)
 	{
-		if(promptText.equals(this.getText()))
+		if(promptText.equals(this.hasText()))
 			hidePrompt();
 	}
 
@@ -107,7 +133,7 @@ public class PromptedTextBox extends TextBox implements KeyPressHandler, FocusHa
 	@Override
 	public void onBlur(BlurEvent event)
 	{
-		if(getText().length() == 0)
+		if(this.hasText().length() == 0)
 			showPrompt();
 	}
 }

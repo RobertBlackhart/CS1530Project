@@ -14,10 +14,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.cs1530.group4.addendum.client.UserService;
+import com.cs1530.group4.addendum.shared.Achievement;
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
+import com.cs1530.group4.addendum.shared.UserProfile;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -1230,5 +1232,81 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public void deleteAttachment(String key)
 	{
 		blobstoreService.delete(new BlobKey(key));
+	}
+
+	@Override
+	public UserProfile getUserProfile(String username)
+	{
+		UserProfile userProfile = new UserProfile();
+		
+		Entity profileEntity = null;
+		if(memcache.contains("userProfile_" + username))
+			profileEntity = ((Entity) memcache.get("userProfile_" + username));
+		else
+		{
+			try
+			{
+				profileEntity = datastore.get(KeyFactory.createKey("UserProfile", username));
+				memcache.put("userProfile_"+username, profileEntity);
+			}
+			catch(EntityNotFoundException ex)
+			{}
+		}
+		
+		if(profileEntity != null)
+		{
+			if(profileEntity.hasProperty("address"))
+				userProfile.setAddress((String)profileEntity.getProperty("address"));
+			if(profileEntity.hasProperty("birthday"))
+				userProfile.setBirthday((String)profileEntity.getProperty("birthday"));
+			if(profileEntity.hasProperty("braggingRights"))
+				userProfile.setBraggingRights((String)profileEntity.getProperty("braggingRights"));
+			if(profileEntity.hasProperty("college"))
+				userProfile.setCollege((String)profileEntity.getProperty("college"));
+			if(profileEntity.hasProperty("email"))
+				userProfile.setEmail((String)profileEntity.getProperty("email"));
+			if(profileEntity.hasProperty("gender"))
+				userProfile.setGender((String)profileEntity.getProperty("gender"));
+			if(profileEntity.hasProperty("highSchool"))
+				userProfile.setHighSchool((String)profileEntity.getProperty("highSchool"));
+			if(profileEntity.hasProperty("introduction"))
+				userProfile.setIntroduction((String)profileEntity.getProperty("introduction"));
+			if(profileEntity.hasProperty("name"))
+				userProfile.setName((String)profileEntity.getProperty("name"));
+			if(profileEntity.hasProperty("phone"))
+				userProfile.setPhone((String)profileEntity.getProperty("phone"));
+			if(profileEntity.hasProperty("tagline"))
+				userProfile.setTagline((String)profileEntity.getProperty("tagline"));
+		}
+		
+		return userProfile;
+	}
+	
+	@Override
+	public void setUserProfile(String username, UserProfile userProfile)
+	{
+		Entity profileEntity = new Entity("UserProfile",username);
+		profileEntity.setProperty("address", userProfile.getAddress());
+		profileEntity.setProperty("birthday", userProfile.getBirthday());
+		profileEntity.setProperty("braggingRights", userProfile.getBraggingRights());
+		profileEntity.setProperty("college", userProfile.getCollege());
+		profileEntity.setProperty("email", userProfile.getEmail());
+		profileEntity.setProperty("gender", userProfile.getGender());
+		profileEntity.setProperty("highSchool", userProfile.getHighSchool());
+		profileEntity.setProperty("introduction", userProfile.getIntroduction());
+		profileEntity.setProperty("name", userProfile.getName());
+		profileEntity.setProperty("phone", userProfile.getPhone());
+		profileEntity.setProperty("tagline", userProfile.getTagline());
+		
+		datastore.put(profileEntity);
+		memcache.put("userProfile_"+username, profileEntity);
+	}
+
+	@Override
+	public ArrayList<Achievement> getAchievements(String username)
+	{
+		ArrayList<Achievement> achievements = new ArrayList<Achievement>();
+		
+		return achievements;
 	}
 }

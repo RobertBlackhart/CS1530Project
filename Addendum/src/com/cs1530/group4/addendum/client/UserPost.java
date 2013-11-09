@@ -240,7 +240,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new Profile(main,post.getUsername()),"profile-"+post.getUsername());
+				main.setContent(new Profile(main,post.getUsername(),true),"profile-"+post.getUsername());
 			}
 		});
 		
