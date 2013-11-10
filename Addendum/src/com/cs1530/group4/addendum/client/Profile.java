@@ -226,16 +226,15 @@ public class Profile extends Composite
 			@Override
 			public void onSuccess(ArrayList<Achievement> results)
 			{
-				int num = Random.nextInt(10)+1;
-				for(int i=0; i<num; i++)
+				for(Achievement achievement : results)
 				{
 					VerticalPanel panel = new VerticalPanel();
 					panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 					panel.setSpacing(5);
 					Image trophy = new Image("/images/trophy.png");
-					trophy.setTitle("description of " + i);
+					trophy.setTitle(achievement.getDescriptionText());
 					panel.add(trophy);
-					Label label = new Label(String.valueOf(i));
+					Label label = new Label(achievement.getName());
 					panel.add(label);
 					panel.getElement().getStyle().setFloat(Style.Float.LEFT);
 					flowPanel.add(panel);

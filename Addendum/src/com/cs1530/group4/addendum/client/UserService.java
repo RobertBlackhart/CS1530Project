@@ -440,4 +440,17 @@ public interface UserService extends RemoteService
 	 * @custom.called None
 	 */
 	ArrayList<Achievement> getAchievements(String username);
+	
+	/**
+	 * Mark a comment in the database as accepted/unaccepted.
+	 *
+	 * @param comment the comment to mark as accepted/unaccepted
+	 * @param accepted the state of acceptance to mark for this comment
+	 * @param accepter the username of the person doing the accepting/unaccepting
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
+	 */
+	void acceptComment(Comment comment, String accepter, boolean accepted);
 }

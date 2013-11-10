@@ -507,6 +507,8 @@ padding: 0px 0px 6px 6px;
 	font-style: normal;
 	font-family: Arial Black;
 	font-weight: bold;
+	margin-left: 10px;
+	margin-top: 5px;
 }
 .CommentSeperator {
 	color: Black;
@@ -514,6 +516,7 @@ padding: 0px 0px 6px 6px;
 	font-family: Arial;
 	font-weight: normal;
 	border-bottom: 2px ridge #FFAA00;
+	margin-left: 38px;
 }
 .PostComment {
 	font-family:Arial;
@@ -684,4 +687,7 @@ padding: 0px 0px 6px 6px;
 .trophyCase {
 	border: 2px ridge;
 	margin-left: 10px;
+}
+.imageButton {
+	cursor: pointer;
 }

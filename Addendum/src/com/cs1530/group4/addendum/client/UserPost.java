@@ -98,7 +98,11 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		border.setCellWidth(scorePanel, "34px");
 
 		final Image upArrow = new Image("images/default_up.png");
+		upArrow.setStyleName("imageButton");
+		upArrow.setTitle("Click to vote this post up.");
 		final Image downArrow = new Image("images/default_down.png");
+		downArrow.setStyleName("imageButton");
+		downArrow.setTitle("Click to vote this post down.");
 		if(post.isUpvoted())
 			upArrow.setUrl("images/voted_up.png");
 		if(post.isDownvoted())
@@ -125,17 +129,20 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 								upDownVotes++;
 							post.setDownvoted(false);
 							downArrow.setUrl("images/default_down.png");
+							downArrow.setTitle("Click to vote this post down.");
 							if(post.isUpvoted())
 							{
 								scoreLabel.setText(String.valueOf(--upDownVotes));
 								post.setUpvoted(false);
 								upArrow.setUrl("images/default_up.png");
+								upArrow.setTitle("Click to vote this post up.");
 							}
 							else
 							{
 								scoreLabel.setText(String.valueOf(++upDownVotes));
 								post.setUpvoted(true);
 								upArrow.setUrl("images/voted_up.png");
+								upArrow.setTitle("Click to undo this upvote.");
 							}
 						}
 						else //user has upvoted before - undo it
@@ -143,6 +150,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 							scoreLabel.setText(String.valueOf(--upDownVotes));
 							post.setUpvoted(false);
 							upArrow.setUrl("images/default_up.png");
+							upArrow.setTitle("Click to vote this post up.");
 						}
 					}
 				};
@@ -170,17 +178,20 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 								upDownVotes--;
 							post.setUpvoted(false);
 							upArrow.setUrl("images/default_up.png");
+							upArrow.setTitle("Click to vote this post up.");
 							if(post.isDownvoted())
 							{
 								scoreLabel.setText(String.valueOf(++upDownVotes));
 								post.setDownvoted(false);
 								downArrow.setUrl("images/default_down.png");
+								downArrow.setTitle("Click to vote this post down.");
 							}
 							else
 							{
 								scoreLabel.setText(String.valueOf(--upDownVotes));
 								post.setDownvoted(true);
 								downArrow.setUrl("images/voted_down.png");
+								downArrow.setTitle("Click to undo this downvote.");
 							}
 						}
 						else
@@ -188,6 +199,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 							post.setDownvoted(false);
 							scoreLabel.setText(String.valueOf(++upDownVotes));
 							downArrow.setUrl("images/default_down.png");
+							downArrow.setTitle("Click to vote this post down.");
 						}
 					}
 				};
@@ -212,13 +224,11 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			label = "Everyone";
 		Label lblNewLabel = new Label(label);
 		lblNewLabel.setStyleName("postSpaceTitle");
-		lblNewLabel.getElement().getStyle().setProperty("marginLeft", "10px");
-		lblNewLabel.getElement().getStyle().setProperty("marginTop", "5px");
 		postPanel.add(lblNewLabel);
 		
 		HTML html = new HTML("<hr  style=\"width:100%;\" />");
 		postPanel.add(html);
-
+		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		postPanel.add(horizontalPanel);
 		horizontalPanel.setWidth("100%");
@@ -308,7 +318,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		
 		VerticalPanel attachmentsPanel = new VerticalPanel();
 		postPanel.add(attachmentsPanel);
-		
+				
 		if(post.getAttachmentKeys()!= null && post.getAttachmentKeys().size() > 0)
 		{
 			Label lblAttachments = new Label("Attachments:");
@@ -355,6 +365,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 		});
 		addCommentPanel.add(addAComment);
+		
 	}
 	
 	/**

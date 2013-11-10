@@ -14,6 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.cs1530.group4.addendum.client.UserService;
+import com.cs1530.group4.addendum.server.TupleMap.Pair;
 import com.cs1530.group4.addendum.shared.Achievement;
 import com.cs1530.group4.addendum.shared.Comment;
 import com.cs1530.group4.addendum.shared.Course;
@@ -75,6 +76,25 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	
 	/** The {@link Course} index. */
 	Index courseIndex = SearchServiceFactory.getSearchService().getIndex(courseIndexSpec);
+	
+	/** List of achievements. */
+	TupleMap<String,String,String> achievements = new TupleMap<String,String,String>();
+	{
+		achievements.put("niceComment", "Nice Comment", "Write your first comment");
+		achievements.put("goodComment", "Good Comment", "Write 25 comments");
+		achievements.put("greatComment", "Great Comment", "Write 100 comments");
+		achievements.put("casual", "Casual", "Participate for 2 days straight");
+		achievements.put("committed", "Committed", "Participate for 5 days straight");
+		achievements.put("dedicated", "Dedicated", "Participate for 15 days straight");
+		achievements.put("smart", "Smart", "Have 1 comment accepted as an answer");
+		achievements.put("brilliant", "Brilliant", "Have 10 comments accepted as an answer");
+		achievements.put("genius", "Genius", "Have 50 comments accepted as an answer");
+		achievements.put("supporter", "Supporter", "First upvote given");
+		achievements.put("critic", "Critic", "First downvote given");
+		achievements.put("nicePost", "Nice Post", "Write your first post");
+		achievements.put("goodPost", "Good Post", "Write a post that gets 25 upvotes");
+		achievements.put("greatPost", "Great Post", "Write a post that gets 100 upvotes");
+	}
 
 	/* (non-Javadoc)
 	 * @see com.cs1530.group4.addendum.client.UserService#doLogin(java.lang.String, java.lang.String)
@@ -560,6 +580,27 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		//for text search within posts
 		Document doc = Document.newBuilder().setId(String.valueOf(post.getKey().getId())).addField(Field.newBuilder().setName("username").setText(username)).addField(Field.newBuilder().setName("content").setText(postPlain)).addField(Field.newBuilder().setName("time").setDate(time)).addField(Field.newBuilder().setName("level").setText(streamLevel)).build();
 		postIndex.put(doc);
+		
+		Entity userStatsEntity = getUserStats(username);
+		int numPosts = 1;
+		if(userStatsEntity.hasProperty("numPosts"))
+		{
+			numPosts = Integer.valueOf(userStatsEntity.getProperty("numPosts").toString()) + 1;
+			userStatsEntity.setProperty("numPosts", numPosts);
+		}
+		else
+			userStatsEntity.setProperty("numPosts",numPosts);
+
+		checkParticipation(userStatsEntity,username);
+		
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+username, userStatsEntity);
+		
+		Entity achievementEntity = null;
+		if(numPosts == 1)
+			achievementEntity = getAchievementEntity("nicePost");
+		if(achievementEntity != null)
+			addUserToAchievement(achievementEntity,username);
 	}
 
 	/**
@@ -638,6 +679,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			postIndex.put(doc);
 			memcache.put(post.getKey(), post);
 			datastore.put(post);
+			
+			Entity userStatsEntity = getUserStats((String)post.getProperty("username"));
+			checkParticipation(userStatsEntity,(String)post.getProperty("username"));
+			
+			datastore.put(userStatsEntity);
+			memcache.put("userStats_"+(String)post.getProperty("username"), userStatsEntity);
 		}
 	}
 
@@ -814,6 +861,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
 		if(entity.hasProperty("edited"))
 			comment.setLastEdit((Date) entity.getProperty("edited"));
+		if(entity.hasProperty("accepted"))
+			comment.setAccepted(Boolean.valueOf(entity.getProperty("accepted").toString()));
 
 		return comment;
 	}
@@ -824,6 +873,27 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public Boolean upvotePost(String postKey, String user)
 	{
+		Entity userStatsEntity = getUserStats(user);
+		int numUpvote = 1;
+		if(userStatsEntity.hasProperty("numUpvote"))
+		{
+			numUpvote = Integer.valueOf(userStatsEntity.getProperty("numUpvote").toString()) + 1;
+			userStatsEntity.setProperty("numUpvote", numUpvote);
+		}
+		else
+			userStatsEntity.setProperty("numUpvote",numUpvote);
+		
+		Entity achievementEntity = null;
+		if(numUpvote == 1)
+			achievementEntity = getAchievementEntity("supporter");
+		
+		if(achievementEntity != null)
+			addUserToAchievement(achievementEntity,user);
+		
+		checkParticipation(userStatsEntity,user);
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+user, userStatsEntity);
+			
 		return changeScore(postKey, "upvotes", user);
 	}
 
@@ -833,6 +903,27 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public Boolean downvotePost(String postKey, String user)
 	{
+		Entity userStatsEntity = getUserStats(user);
+		int numDownvote = 1;
+		if(userStatsEntity.hasProperty("numDownvote"))
+		{
+			numDownvote = Integer.valueOf(userStatsEntity.getProperty("numDownvote").toString()) + 1;
+			userStatsEntity.setProperty("numDownvote", numDownvote);
+		}
+		else
+			userStatsEntity.setProperty("numDownvote",numDownvote);
+		
+		Entity achievementEntity = null;
+		if(numDownvote == 1)
+			achievementEntity = getAchievementEntity("critic");
+		
+		if(achievementEntity != null)
+			addUserToAchievement(achievementEntity,user);
+		
+		checkParticipation(userStatsEntity,user);
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+user, userStatsEntity);
+		
 		return changeScore(postKey, "downvotes", user);
 	}
 
@@ -876,7 +967,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
 				upUsers.add(user);
 				if(downUsers.remove(user))
-					post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
+					post.setProperty("downvotes", Integer.valueOf(post.getProperty("downvotes").toString()) - 1);
 				post.setProperty("usersVotedUp", upUsers);
 				post.setProperty("usersVotedDown", downUsers);
 				success = true;
@@ -886,7 +977,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
 				downUsers.add(user);
 				if(upUsers.remove(user))
-					post.setProperty(property, Integer.valueOf(post.getProperty(property).toString()) + 1);
+					post.setProperty("upvotes", Integer.valueOf(post.getProperty("upvotes").toString()) - 1);
 				post.setProperty("usersVotedUp", upUsers);
 				post.setProperty("usersVotedDown", downUsers);
 				success = true;
@@ -894,6 +985,14 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			updateScore(post, user);
 			memcache.put(post.getKey(), post);
 			datastore.put(post);
+			
+			Entity achievementEntity = null;
+			if(Integer.valueOf(post.getProperty("upvotes").toString()) == 25)
+				achievementEntity = getAchievementEntity("goodPost");
+			if(Integer.valueOf(post.getProperty("upvotes").toString()) == 100)
+				achievementEntity = getAchievementEntity("greatPost");
+			if(achievementEntity != null)
+				addUserToAchievement(achievementEntity,(String)post.getProperty("username"));
 		}
 
 		return success;
@@ -969,9 +1068,137 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		commentEntity.setProperty("username", comment.getUsername());
 		commentEntity.setProperty("content", new Text(comment.getContent()));
 		commentEntity.setProperty("plusOne", 0);
+		commentEntity.setProperty("accepted", false);
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(), commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
+		
+		Entity userStatsEntity = getUserStats(comment.getUsername());
+		int numComments = 1;
+		if(userStatsEntity.hasProperty("numComments"))
+		{
+			numComments = Integer.valueOf(userStatsEntity.getProperty("numComments").toString()) + 1;
+			userStatsEntity.setProperty("numComments", numComments);
+		}
+		else
+			userStatsEntity.setProperty("numComments",numComments);
+
+		checkParticipation(userStatsEntity,comment.getUsername());
+		
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+comment.getUsername(), userStatsEntity);
+		
+		Entity achievementEntity = null;
+		if(numComments == 1)
+			achievementEntity = getAchievementEntity("niceComment");
+		if(numComments == 25)
+			achievementEntity = getAchievementEntity("goodComment");
+		if(numComments == 100)
+			achievementEntity = getAchievementEntity("greatComment");
+		if(achievementEntity != null)
+			addUserToAchievement(achievementEntity,comment.getUsername());
+		
 		return String.valueOf(commentEntity.getKey().getId());
+	}
+
+	private void checkParticipation(Entity userStatsEntity, String username)
+	{
+		if(userStatsEntity.hasProperty("lastParticipated"))
+		{
+			Date now = new Date(System.currentTimeMillis());
+			Date oneDayAgo = new Date(System.currentTimeMillis()-86400000);
+			Date lastParticipated = (Date)userStatsEntity.getProperty("lastParticipated");
+			int consecutive = 1;
+			if(userStatsEntity.hasProperty("consecutiveDaysParticipated"))
+				consecutive = Integer.valueOf(userStatsEntity.getProperty("consecutiveDaysParticipated").toString());
+			
+			if((now.getDate() != lastParticipated.getDate()) && lastParticipated.compareTo(oneDayAgo) >= 0)
+			{
+				consecutive++;
+				userStatsEntity.setProperty("lastParticipated", now);
+			}
+			else if(lastParticipated.compareTo(oneDayAgo) < 0)
+			{
+				consecutive = 1;
+				userStatsEntity.setProperty("lastParticipated", now);
+			}
+			
+			Entity achievementEntity = null;
+			if(consecutive == 2)
+				achievementEntity = getAchievementEntity("casual");
+			if(consecutive == 5)
+				achievementEntity = getAchievementEntity("committed");
+			if(consecutive == 15)
+				achievementEntity = getAchievementEntity("dedicated");
+			if(achievementEntity != null)
+				addUserToAchievement(achievementEntity,username);
+		}
+		else
+		{
+			userStatsEntity.setProperty("lastParticipated", new Date(System.currentTimeMillis()));
+			userStatsEntity.setProperty("consecutiveDaysParticipated", 1);
+		}		
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addUserToAchievement(Entity achievementEntity, String username)
+	{
+		if(achievementEntity != null)
+		{
+			ArrayList<String> usersEarned = (ArrayList<String>) achievementEntity.getProperty("usersEarned");
+			if(!usersEarned.contains(username))
+			{
+				usersEarned.add(username);
+				datastore.put(achievementEntity);
+				memcache.put("achievement_"+((String)achievementEntity.getProperty("name")), achievementEntity);
+			}
+		}
+	}
+	private Entity getUserStats(String username)
+	{
+		Entity entity = null;
+		if(memcache.contains("userStats_"+username))
+			entity = (Entity)memcache.get("userStats_"+username);
+		else
+		{
+			try
+			{
+				entity = datastore.get(KeyFactory.createKey("UserStats", username));
+			}
+			catch(EntityNotFoundException ex)
+			{
+				entity = new Entity("UserStats",username);
+				datastore.put(entity);
+				memcache.put(entity.getKey(), entity);
+			}
+		}
+		
+		return entity;
+	}
+
+	private Entity getAchievementEntity(String achievementName)
+	{
+		Entity entity = null;
+		if(memcache.contains("achievement_"+achievementName))
+			entity = (Entity)memcache.get("achievement_"+achievementName);
+		else
+		{
+			try
+			{
+				entity = datastore.get(KeyFactory.createKey("Achievement", achievementName));
+			}
+			catch(EntityNotFoundException ex)
+			{
+				Pair<String,String> pair = achievements.get(achievementName);
+				entity = new Entity("Achievement",achievementName);
+				entity.setProperty("name", pair.getLeft());
+				entity.setProperty("description", pair.getRight());
+				entity.setProperty("usersEarned", new ArrayList<String>());
+				datastore.put(entity);
+				memcache.put(entity.getKey(), entity);
+			}
+		}
+		
+		return entity;
 	}
 
 	/* (non-Javadoc)
@@ -980,13 +1207,20 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public String editComment(String commentKey, String commentText)
 	{
-		Entity comment = getComment(commentKey);
+		Entity comment = getCommentEntity(commentKey);
 		if(comment != null)
 		{
 			comment.setProperty("content", new Text(commentText));
 			comment.setProperty("edited", new Date());
 			memcache.put(comment.getKey(), comment);
 			datastore.put(comment);
+			
+			String username = (String)comment.getProperty("username");
+			Entity userStatsEntity = getUserStats(username);
+			checkParticipation(userStatsEntity,username);
+			
+			datastore.put(userStatsEntity);
+			memcache.put("userStats_"+username, userStatsEntity);
 		}
 		return commentKey;
 	}
@@ -1001,7 +1235,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	private Entity getComment(String commentKey)
+	private Entity getCommentEntity(String commentKey)
 	{
 		Entity comment = null;
 		Key key = KeyFactory.createKey("Comment", Long.valueOf(commentKey).longValue());
@@ -1061,7 +1295,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	@Override
 	public void deleteComment(String commentKey)
 	{
-		Entity comment = getComment(commentKey);
+		Entity comment = getCommentEntity(commentKey);
 		if(comment != null)
 		{
 			memcache.delete(comment.getKey());
@@ -1141,7 +1375,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public Boolean plusOne(String commentKey, String requestingUser)
 	{
 		boolean success = false;
-		Entity comment = getComment(commentKey);
+		Entity comment = getCommentEntity(commentKey);
 		if(comment != null)
 		{
 			ArrayList<String> plusOneUsers = new ArrayList<String>();
@@ -1162,6 +1396,21 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				plusOneUsers.add(requestingUser);
 				plusOnes++;
 				success = true;
+				
+				Entity userStatsEntity = getUserStats(requestingUser);
+				int numPlusOnes = 1;
+				if(userStatsEntity.hasProperty("numPlusOnes"))
+				{
+					numPlusOnes = Integer.valueOf(userStatsEntity.getProperty("numPlusOnes").toString()) + 1;
+					userStatsEntity.setProperty("numPlusOnes", numPlusOnes);
+				}
+				else
+					userStatsEntity.setProperty("numPlusOnes",numPlusOnes);
+
+				checkParticipation(userStatsEntity,requestingUser);
+				
+				datastore.put(userStatsEntity);
+				memcache.put("userStats_"+requestingUser, userStatsEntity);
 			}
 
 			comment.setProperty("usersPlusOne", plusOneUsers);
@@ -1302,11 +1551,75 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		memcache.put("userProfile_"+username, profileEntity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Achievement> getAchievements(String username)
 	{
 		ArrayList<Achievement> achievements = new ArrayList<Achievement>();
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		ArrayList<Key> datastoreGets = new ArrayList<Key>();
+		
+		Query q = new Query("Achievement").setKeysOnly();
+		for(Entity entity : datastore.prepare(q).asIterable())
+		{
+			if(memcache.contains(entity.getKey()))
+				entities.add((Entity)memcache.get(entity.getKey()));
+			else
+				datastoreGets.add(entity.getKey());
+		}
+		entities.addAll(datastore.get(datastoreGets).values());
+		
+		for(Entity entity : entities)
+		{
+			ArrayList<String> users = (ArrayList<String>)entity.getProperty("usersEarned");
+			if(users.contains(username))
+			{
+				Achievement achievement = new Achievement();
+				achievement.setName((String)entity.getProperty("name"));
+				achievement.setDescriptionText((String)entity.getProperty("description"));
+				achievements.add(achievement);
+			}
+		}
 		
 		return achievements;
+	}
+
+	@Override
+	public void acceptComment(Comment comment, String accepter, boolean accepted)
+	{
+		Entity entity = getCommentEntity(comment.getCommentKey());
+		entity.setProperty("accepted", accepted);
+		datastore.put(entity);
+		memcache.put(entity.getKey(), entity);
+		
+		Entity userStatsEntity = getUserStats(comment.getUsername());
+		int numAccepted = 1;
+		if(userStatsEntity.hasProperty("numAccepted"))
+		{
+			numAccepted = Integer.valueOf(userStatsEntity.getProperty("numAccepted").toString()) + 1;
+			userStatsEntity.setProperty("numAccepted", numAccepted);
+		}
+		else
+			userStatsEntity.setProperty("numAccepted",numAccepted);
+		
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+comment.getUsername(), userStatsEntity);
+		
+		Entity achievementEntity = null;
+		if(numAccepted == 1)
+			achievementEntity = getAchievementEntity("smart");
+		if(numAccepted == 10)
+			achievementEntity = getAchievementEntity("brilliant");
+		if(numAccepted == 50)
+			achievementEntity = getAchievementEntity("genius");
+		if(achievementEntity != null)
+			addUserToAchievement(achievementEntity,comment.getUsername());
+
+		//counts as participation for the accepter, not the comment author
+		userStatsEntity = getUserStats(accepter);
+		checkParticipation(userStatsEntity,accepter);
+		//save new entity as well
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+accepter, userStatsEntity);
 	}
 }

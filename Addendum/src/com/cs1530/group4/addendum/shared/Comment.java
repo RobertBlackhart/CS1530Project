@@ -28,6 +28,9 @@ public class Comment implements Serializable, Comparable<Comment>
 	/** The plus oned. */
 	private boolean plusOned;
 	
+	/** If this comment has been accepted as an answer by the post's author. */
+	private boolean isAccepted;
+	
 	/**
 	 * Checks if is plus oned.
 	 *
@@ -193,5 +196,15 @@ public class Comment implements Serializable, Comparable<Comment>
 	public void setLastEdit(Date lastEdit)
 	{
 		this.lastEdit = lastEdit;
+	}
+
+	public boolean isAccepted()
+	{
+		return isAccepted;
+	}
+
+	public void setAccepted(boolean isAccepted)
+	{
+		this.isAccepted = isAccepted;
 	}
 }

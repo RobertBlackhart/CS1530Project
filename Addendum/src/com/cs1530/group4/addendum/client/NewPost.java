@@ -446,8 +446,7 @@ public class NewPost extends DialogBox
 			public void onSuccess(Void v)
 			{
 				postBox.hide();
-				String user = Cookies.getCookie("loggedIn");
-				main.setContent(new Stream(main), "profile-" + user);
+				main.setContent(new Stream(main), "stream");
 			}
 		};
 

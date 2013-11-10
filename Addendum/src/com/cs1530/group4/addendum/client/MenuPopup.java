@@ -85,8 +85,7 @@ public class MenuPopup extends PopupPanel implements MouseOverHandler, MouseOutH
 							@Override
 							public void onSuccess(Void v)
 							{
-								String user = Cookies.getCookie("loggedIn");
-								main.setContent(new Stream(main), "profile-" + user);
+								main.setContent(new Stream(main), "stream");
 							}
 						};
 						userService.deletePost(post.getPostKey(), callback);

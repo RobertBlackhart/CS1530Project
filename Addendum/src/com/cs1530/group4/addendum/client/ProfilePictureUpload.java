@@ -86,7 +86,7 @@ public class ProfilePictureUpload extends DialogBox
 			public void onClick(ClickEvent event)
 			{
 				dialog.hide();
-				main.setContent(new Stream(main), "profile-"+username);
+				main.setContent(new Stream(main), "stream");
 			}
 		});
 		Button btnCancel = new Button("Cancel");

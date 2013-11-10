@@ -229,7 +229,7 @@ public class ClassSearch extends DialogBox
 							}
 							localStorage.setItem("loggedIn", user.serialize());
 						}
-						main.setContent(new Stream(main), "profile-" + Cookies.getCookie("loggedIn"));
+						main.setContent(new Stream(main), "stream");
 					}
 				};
 

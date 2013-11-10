@@ -2,7 +2,6 @@ package com.cs1530.group4.addendum.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import com.cs1530.group4.addendum.shared.Post;
 import com.cs1530.group4.addendum.shared.User;
@@ -330,10 +329,8 @@ public class Stream extends Composite
 					return;
 				}
 
-				if(startIndex < 10)
-					prevPage.setVisible(false);
-				else
-					prevPage.setVisible(true);
+				startIndex = 0;
+				prevPage.setVisible(false);
 
 				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
 				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
@@ -374,7 +371,6 @@ public class Stream extends Composite
 	 */
 	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
-		final Date start = new Date(System.currentTimeMillis());
 		updatesPanel.clear();
 		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()
 		{
@@ -399,7 +395,6 @@ public class Stream extends Composite
 					nextPage.setVisible(false);
 					updatesPanel.add(new UserPost(main, post));
 				}
-				System.out.println("time elapsed: " + (System.currentTimeMillis()-start.getTime()));
 			}
 		};
 		userService.getPosts(startIndex, streamLevels, user.getUsername(), sortMethod, callback);
@@ -414,25 +409,28 @@ public class Stream extends Composite
 	 */
 	private void getClasses()
 	{
+		ClickHandler courseClick = new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				Anchor source = (Anchor)event.getSource();
+				startIndex = 0;
+				prevPage.setVisible(false);
+				streamLevel = source.getText().trim();
+				ArrayList<String> streamLevels = new ArrayList<String>();
+				streamLevels.add(streamLevel);
+				getPosts(currentTab, streamLevels, sortMethod);
+			}
+		};
+		
 		classPanel.clear();
 		classPanel.add(allAnchor);
 		for(final String course : user.getCourseList())
 		{
 			Anchor courseAnchor = new Anchor(course);
 			courseAnchor.setStyleName("courseAnchor");
-			courseAnchor.addClickHandler(new ClickHandler()
-			{
-				@Override
-				public void onClick(ClickEvent event)
-				{
-					startIndex = 0;
-					prevPage.setVisible(false);
-					streamLevel = course.trim();
-					ArrayList<String> streamLevels = new ArrayList<String>();
-					streamLevels.add(streamLevel);
-					getPosts(currentTab, streamLevels, sortMethod);
-				}
-			});
+			courseAnchor.addClickHandler(courseClick);
 
 			Image removeCourse = new Image("/images/delete.png");
 			removeCourse.setSize("24px", "24px");
