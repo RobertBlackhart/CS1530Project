@@ -76,6 +76,8 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 
 		if(userPost.post.getUsername().equals(Cookies.getCookie("loggedIn")))
 		{
+			content.getElement().getStyle().setProperty("marginLeft", "38px");
+			
 			VerticalPanel acceptedPanel = new VerticalPanel();
 			acceptedPanel.setWidth("38px");
 			final Image check = new Image();
@@ -131,7 +133,18 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 			acceptedPanel.add(check);
 			headerPanel.add(acceptedPanel);
 		}
-
+		else if(comment.isAccepted())
+		{
+			content.getElement().getStyle().setProperty("marginLeft", "38px");
+			
+			VerticalPanel acceptedPanel = new VerticalPanel();
+			acceptedPanel.setWidth("38px");
+			final Image check = new Image("/images/accepted.png");
+			check.setTitle("This comment was accepted by the post author as a good answer.");
+			acceptedPanel.add(check);
+			headerPanel.add(acceptedPanel);
+		}
+		
 		Image image = new Image("/addendum/getImage?username=" + comment.getUsername());
 		headerPanel.add(image);
 		image.getElement().getStyle().setProperty("marginRight", "10px");

@@ -1150,6 +1150,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				usersEarned.add(username);
 				datastore.put(achievementEntity);
 				memcache.put("achievement_"+((String)achievementEntity.getProperty("name")), achievementEntity);
+				memcache.put(achievementEntity.getKey(), achievementEntity);
 			}
 		}
 	}
@@ -1194,6 +1195,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				entity.setProperty("description", pair.getRight());
 				entity.setProperty("usersEarned", new ArrayList<String>());
 				datastore.put(entity);
+				memcache.put("achievement_"+achievementName, entity);
 				memcache.put(entity.getKey(), entity);
 			}
 		}
