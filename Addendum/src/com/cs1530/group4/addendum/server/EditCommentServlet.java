@@ -43,6 +43,13 @@ public class EditCommentServlet extends HttpServlet
 			comment.setProperty("edited", new Date());
 			memcache.put(comment.getKey(), comment);
 			datastore.put(comment);
+			
+			Entity userStatsEntity = UserServiceImpl.getUserStats((String)comment.getProperty("username"));
+			UserServiceImpl.checkParticipation(userStatsEntity,(String)comment.getProperty("username"));
+			
+			datastore.put(userStatsEntity);
+			memcache.put("userStats_"+(String)comment.getProperty("username"), userStatsEntity);
+			
 			resp.getWriter().print("done");
 		}
 		else

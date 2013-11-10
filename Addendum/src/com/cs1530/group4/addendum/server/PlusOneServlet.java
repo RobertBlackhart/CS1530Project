@@ -59,6 +59,21 @@ public class PlusOneServlet extends HttpServlet
 				plusOneUsers.add(requestingUser);
 				plusOnes++;
 				success = true;
+				
+				Entity userStatsEntity = UserServiceImpl.getUserStats(requestingUser);
+				int numPlusOnes = 1;
+				if(userStatsEntity.hasProperty("numPlusOnes"))
+				{
+					numPlusOnes = Integer.valueOf(userStatsEntity.getProperty("numPlusOnes").toString()) + 1;
+					userStatsEntity.setProperty("numPlusOnes", numPlusOnes);
+				}
+				else
+					userStatsEntity.setProperty("numPlusOnes",numPlusOnes);
+
+				UserServiceImpl.checkParticipation(userStatsEntity,requestingUser);
+				
+				datastore.put(userStatsEntity);
+				memcache.put("userStats_"+requestingUser, userStatsEntity);
 			}
 
 			comment.setProperty("usersPlusOne", plusOneUsers);

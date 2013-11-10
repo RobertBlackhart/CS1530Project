@@ -57,10 +57,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class UserServiceImpl extends RemoteServiceServlet implements UserService
 {
 	/** The datastore. */
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	
 	/** The memcache. */
-	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
+	static MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
 	
 	/** The blobstore service. */
 	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
@@ -78,7 +78,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	Index courseIndex = SearchServiceFactory.getSearchService().getIndex(courseIndexSpec);
 	
 	/** List of achievements. */
-	TupleMap<String,String,String> achievements = new TupleMap<String,String,String>();
+	static TupleMap<String,String,String> achievements = new TupleMap<String,String,String>();
 	{
 		achievements.put("niceComment", "Nice Comment", "Write your first comment");
 		achievements.put("goodComment", "Good Comment", "Write 25 comments");
@@ -1100,7 +1100,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return String.valueOf(commentEntity.getKey().getId());
 	}
 
-	private void checkParticipation(Entity userStatsEntity, String username)
+	public static void checkParticipation(Entity userStatsEntity, String username)
 	{
 		if(userStatsEntity.hasProperty("lastParticipated"))
 		{
@@ -1140,7 +1140,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addUserToAchievement(Entity achievementEntity, String username)
+	public static void addUserToAchievement(Entity achievementEntity, String username)
 	{
 		if(achievementEntity != null)
 		{
@@ -1154,7 +1154,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			}
 		}
 	}
-	private Entity getUserStats(String username)
+	
+	public static Entity getUserStats(String username)
 	{
 		Entity entity = null;
 		if(memcache.contains("userStats_"+username))
@@ -1176,7 +1177,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return entity;
 	}
 
-	private Entity getAchievementEntity(String achievementName)
+	public static Entity getAchievementEntity(String achievementName)
 	{
 		Entity entity = null;
 		if(memcache.contains("achievement_"+achievementName))

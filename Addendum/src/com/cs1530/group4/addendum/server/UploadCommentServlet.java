@@ -46,6 +46,31 @@ public class UploadCommentServlet extends HttpServlet
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(), commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
 		
+		Entity userStatsEntity = UserServiceImpl.getUserStats(comment.getUsername());
+		int numComments = 1;
+		if(userStatsEntity.hasProperty("numComments"))
+		{
+			numComments = Integer.valueOf(userStatsEntity.getProperty("numComments").toString()) + 1;
+			userStatsEntity.setProperty("numComments", numComments);
+		}
+		else
+			userStatsEntity.setProperty("numComments",numComments);
+
+		UserServiceImpl.checkParticipation(userStatsEntity,comment.getUsername());
+		
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+comment.getUsername(), userStatsEntity);
+		
+		Entity achievementEntity = null;
+		if(numComments == 1)
+			achievementEntity = UserServiceImpl.getAchievementEntity("niceComment");
+		if(numComments == 25)
+			achievementEntity = UserServiceImpl.getAchievementEntity("goodComment");
+		if(numComments == 100)
+			achievementEntity = UserServiceImpl.getAchievementEntity("greatComment");
+		if(achievementEntity != null)
+			UserServiceImpl.addUserToAchievement(achievementEntity,comment.getUsername());
+		
 		resp.setContentType("text/plain");
 		resp.getWriter().print("done");
 	}

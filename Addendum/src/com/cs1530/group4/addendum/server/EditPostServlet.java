@@ -57,6 +57,13 @@ public class EditPostServlet extends HttpServlet
 			postIndex.put(doc);
 			memcache.put(post.getKey(), post);
 			datastore.put(post);
+			
+			Entity userStatsEntity = UserServiceImpl.getUserStats((String)post.getProperty("username"));
+			UserServiceImpl.checkParticipation(userStatsEntity,(String)post.getProperty("username"));
+			
+			datastore.put(userStatsEntity);
+			memcache.put("userStats_"+(String)post.getProperty("username"), userStatsEntity);
+			
 			resp.getWriter().print("done");
 		}
 		else

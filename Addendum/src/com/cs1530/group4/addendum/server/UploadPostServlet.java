@@ -73,6 +73,28 @@ public class UploadPostServlet extends HttpServlet
 				.addField(Field.newBuilder().setName("level").setText(streamLevel))
 				.build();
 		postIndex.put(doc);
+		
+		Entity userStatsEntity = UserServiceImpl.getUserStats(username);
+		int numPosts = 1;
+		if(userStatsEntity.hasProperty("numPosts"))
+		{
+			numPosts = Integer.valueOf(userStatsEntity.getProperty("numPosts").toString()) + 1;
+			userStatsEntity.setProperty("numPosts", numPosts);
+		}
+		else
+			userStatsEntity.setProperty("numPosts",numPosts);
+
+		UserServiceImpl.checkParticipation(userStatsEntity,username);
+		
+		datastore.put(userStatsEntity);
+		memcache.put("userStats_"+username, userStatsEntity);
+		
+		Entity achievementEntity = null;
+		if(numPosts == 1)
+			achievementEntity = UserServiceImpl.getAchievementEntity("nicePost");
+		if(achievementEntity != null)
+			UserServiceImpl.addUserToAchievement(achievementEntity,username);
+		
 		resp.setContentType("text/plain");
 		resp.getWriter().print("done");
 	}
