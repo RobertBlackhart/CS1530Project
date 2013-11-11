@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -32,7 +34,13 @@ public class ImageServlet extends HttpServlet
 		{
 			//the mime type is set automatically if known, otherwise it's set as application/octet-stream
 			BlobKey blobKey = new BlobKey(req.getParameter("key"));
+			BlobInfoFactory blobInfoFactory = new BlobInfoFactory(DatastoreServiceFactory.getDatastoreService());
+			BlobInfo blobInfo = blobInfoFactory.loadBlobInfo(blobKey);
+			resp.setContentLength(new Long(blobInfo.getSize()).intValue());
+			resp.setHeader("content-type", blobInfo.getContentType());
+			resp.setHeader("content-disposition", "attachment;filename=" + blobInfo.getFilename());
 	        blobstoreService.serve(blobKey, resp);
+	        
 	        return;
 		}
 		
