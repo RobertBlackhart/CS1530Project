@@ -26,4 +26,16 @@ public class Achievement implements Serializable
 	{
 		this.descriptionText = descriptionText;
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof Achievement)
+		{
+			Achievement other = (Achievement)o;
+			return other.getName().equals(getName());
+		}
+		
+		return false;
+	}
 }

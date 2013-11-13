@@ -533,7 +533,7 @@ padding: 0px 0px 6px 6px;
 .CommentPanelbackcolor {
 	background-color: #FFCF73;
 }
-.USername {
+.USername{
 	color: Black;
 	margin-left: 10px;
 	margin-right: 10px;
@@ -542,6 +542,7 @@ padding: 0px 0px 6px 6px;
 	font-style: normal;
 	font-family: cursive;
 	font-weight: bold;
+	cursor: pointer;
 }
 .logout {
 	backgournd-color:;
@@ -664,6 +665,7 @@ padding: 0px 0px 6px 6px;
 }
 .profileTabPanel .gwt-TabPanel {
 	margin: none !important;
+	padding: none !important;
 }
 .successLabel {
 	color: green;
@@ -683,10 +685,14 @@ padding: 0px 0px 6px 6px;
 	margin-left: 10px;
 	margin-right: 10px;
 }
-.trophyCase {
-	border: 2px ridge;
-	margin-left: 10px;
-}
 .imageButton {
 	cursor: pointer;
+}
+.unearnedTrophy {
+	filter: saturate(0%);
+	/* Browser Specific */
+	-webkit-filter: saturate(0%);
+	-moz-filter: saturate(0%);
+	-o-filter: saturate(0%);
+	-ms-filter: saturate(0%);
 }

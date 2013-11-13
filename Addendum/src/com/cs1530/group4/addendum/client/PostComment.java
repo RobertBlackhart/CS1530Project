@@ -115,7 +115,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 					}
 				}
 
-				private void acceptComment(Comment comment, boolean b)
+				private void acceptComment(Comment comment, boolean accepted)
 				{
 					AsyncCallback<Void> callback = new AsyncCallback<Void>()
 					{
@@ -127,7 +127,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 						public void onSuccess(Void result)
 						{}
 					};
-					userService.acceptComment(comment, userPost.post.getUsername(), b, callback);
+					userService.acceptComment(comment, userPost.post.getUsername(), accepted, userPost.post.getPostKey(), callback);
 				}
 			});
 			acceptedPanel.add(check);

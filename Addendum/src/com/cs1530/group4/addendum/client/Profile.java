@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -90,6 +89,18 @@ public class Profile extends Composite
 		mainPanel = new VerticalPanel();
 		mainPanel.setStyleName("profileBackground");
 		initWidget(mainPanel);
+		
+		Button backButton = new Button("Back to Stream");
+		backButton.setStyleName("ADCButton");
+		backButton.getElement().getStyle().setProperty("marginBottom", "10px");
+		backButton.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				main.setContent(new Stream(main),"stream");
+			}
+		});
+		mainPanel.add(backButton);
 
 		setUserProfile(username);
 	}
@@ -145,14 +156,39 @@ public class Profile extends Composite
 		aboutPanel.add(horizontalPanel);
 
 		Image profileImage = new Image("/addendum/getImage?username=" + username);
-		horizontalPanel.add(profileImage);
+		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		vPanel.setSpacing(5);
+		vPanel.add(profileImage);
+		if(viewProfileAsPrivate)
+		{
+			Anchor changePassword = new Anchor("Change Password");
+			changePassword.addClickHandler(new ClickHandler()
+			{
+				public void onClick(ClickEvent event)
+				{
+					new NewPasswordDialog(username,main,false);
+				}
+			});
+			vPanel.add(changePassword);
+		}
+		horizontalPanel.add(vPanel);
 		profileImage.setSize("256px", "256px");
 
+		ScrollPanel toGetCase = new ScrollPanel();
+		toGetCase.setSize("504px", "256px");
+		getTrophies(toGetCase,false);
 		ScrollPanel trophyCase = new ScrollPanel();
-		trophyCase.setStyleName("trophyCase");
 		trophyCase.setSize("504px", "256px");
-		getTrophies(trophyCase);
-		horizontalPanel.add(trophyCase);
+		getTrophies(trophyCase,true);
+		
+		TabPanel trophyTabs = new TabPanel();
+		trophyTabs.setStyleName("profileTabPanel .gwt-TabPanel");
+		trophyTabs.setSize("504px","256px");
+		trophyTabs.add(trophyCase, "Earned");
+		trophyTabs.add(toGetCase, "Un-Earned");
+		trophyTabs.selectTab(0);
+		horizontalPanel.add(trophyTabs);
 
 		VerticalPanel infoPanel = new VerticalPanel();
 		aboutPanel.add(infoPanel);
@@ -203,7 +239,7 @@ public class Profile extends Composite
 		});
 	}
 
-	private void getTrophies(ScrollPanel trophyCase)
+	private void getTrophies(ScrollPanel trophyCase, final boolean earned)
 	{
 		trophyCase.clear();
 		VerticalPanel vPanel = new VerticalPanel();
@@ -232,6 +268,8 @@ public class Profile extends Composite
 					panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 					panel.setSpacing(5);
 					Image trophy = new Image("/images/trophy.png");
+					if(!earned)
+						trophy.setStyleName("unearnedTrophy");
 					trophy.setTitle(achievement.getDescriptionText());
 					panel.add(trophy);
 					Label label = new Label(achievement.getName());
@@ -242,7 +280,10 @@ public class Profile extends Composite
 			}
 		};
 		
-		userService.getAchievements(username,callback);
+		if(earned)
+			userService.getAchievements(username,callback);
+		else
+			userService.getUnearnedAchievements(username, callback);
 	}
 
 	private void setupPostsPanel(TabPanel tabPanel, final VerticalPanel postPanel)
@@ -317,15 +358,19 @@ public class Profile extends Composite
 		{
 			if(userProfile.getPhone() != null)
 				phoneBox.setText(userProfile.getPhone());
-			flexTable.setWidget(numRows, 0, new Label("Phone Number"));
+			Label phoneLabel = new Label("Phone Number");
+			phoneLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, phoneLabel);
 			flexTable.setWidget(numRows, 1, phoneBox);
 			numRows++;
 		}
 		else if(userProfile.getPhone() != null)
 		{
-			Label phoneLabel = new Label(userProfile.getPhone());
-			flexTable.setWidget(numRows, 0, new Label("Phone Number"));
-			flexTable.setWidget(numRows, 1, phoneLabel);
+			Label infoLabel = new Label(userProfile.getPhone());
+			Label phoneLabel = new Label("Phone Number");
+			phoneLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, phoneLabel);
+			flexTable.setWidget(numRows, 1, infoLabel);
 			numRows++;
 		}
 
@@ -333,15 +378,19 @@ public class Profile extends Composite
 		{
 			if(userProfile.getEmail() != null)
 				emailBox.setText(userProfile.getEmail());
-			flexTable.setWidget(numRows, 0, new Label("Email Address"));
+			Label emailLabel = new Label("Email Address");
+			emailLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, emailLabel);
 			flexTable.setWidget(numRows, 1, emailBox);
 			numRows++;
 		}
 		else if(userProfile.getEmail() != null)
 		{
-			Label emailLabel = new Label(userProfile.getEmail());
-			flexTable.setWidget(numRows, 0, new Label("Email Address"));
-			flexTable.setWidget(numRows, 1, emailLabel);
+			Label infoLabel = new Label(userProfile.getEmail());
+			Label emailLabel = new Label("Email Address");
+			emailLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, emailLabel);
+			flexTable.setWidget(numRows, 1, infoLabel);
 			numRows++;
 		}
 
@@ -349,14 +398,18 @@ public class Profile extends Composite
 		{
 			if(userProfile.getAddress() != null)
 				addressBox.setText(userProfile.getAddress());
-			flexTable.setWidget(numRows, 0, new Label("Street Address"));
+			Label streetLabel = new Label("Street Address");
+			streetLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, streetLabel);
 			flexTable.setWidget(numRows, 1, addressBox);
 			numRows++;
 		}
 		else if(userProfile.getAddress() != null)
 		{
 			Label addressLabel = new Label(userProfile.getAddress());
-			flexTable.setWidget(numRows, 0, new Label("Street Address"));
+			Label streetLabel = new Label("Street Address");
+			streetLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, streetLabel);
 			flexTable.setWidget(numRows, 1, addressLabel);
 			numRows++;
 		}
@@ -415,15 +468,19 @@ public class Profile extends Composite
 		{
 			if(userProfile.getName() != null)
 				nameBox.setText(userProfile.getName());
-			flexTable.setWidget(numRows, 0, new Label("Real Name"));
+			Label nameLabel = new Label("Real Name");
+			nameLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, nameLabel);
 			flexTable.setWidget(numRows, 1, nameBox);
 			numRows++;
 		}
 		else if(userProfile.getName() != null)
 		{
-			Label nameLabel = new Label(userProfile.getName());
-			flexTable.setWidget(numRows, 0, new Label("Real Name"));
-			flexTable.setWidget(numRows, 1, nameLabel);
+			Label infoLabel = new Label(userProfile.getName());
+			Label nameLabel = new Label("Real Name");
+			nameLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, nameLabel);
+			flexTable.setWidget(numRows, 1, infoLabel);
 			numRows++;
 		}
 
@@ -431,15 +488,19 @@ public class Profile extends Composite
 		{
 			if(userProfile.getGender() != null)
 				genderBox.setText(userProfile.getGender());
-			flexTable.setWidget(numRows, 0, new Label("Gender"));
+			Label genderLabel = new Label("Gender");
+			genderLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, genderLabel);
 			flexTable.setWidget(numRows, 1, genderBox);
 			numRows++;
 		}
 		else if(userProfile.getGender() != null)
 		{
-			Label genderLabel = new Label(userProfile.getGender());
-			flexTable.setWidget(numRows, 0, new Label("Gender"));
-			flexTable.setWidget(numRows, 1, genderLabel);
+			Label infoLabel = new Label(userProfile.getGender());
+			Label genderLabel = new Label("Gender");
+			genderLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, genderLabel);
+			flexTable.setWidget(numRows, 1, infoLabel);
 			numRows++;
 		}
 
@@ -447,15 +508,19 @@ public class Profile extends Composite
 		{
 			if(userProfile.getBirthday() != null)
 				birthdayBox.setText(userProfile.getBirthday());
-			flexTable.setWidget(numRows, 0, new Label("Birthday"));
+			Label birthdayLabel = new Label("Birthday");
+			birthdayLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, birthdayLabel);
 			flexTable.setWidget(numRows, 1, birthdayBox);
 			numRows++;
 		}
 		else if(userProfile.getBirthday() != null)
 		{
-			Label birthdayLabel = new Label(userProfile.getBirthday());
-			flexTable.setWidget(numRows, 0, new Label("Birthday"));
-			flexTable.setWidget(numRows, 1, birthdayLabel);
+			Label infoLabel = new Label(userProfile.getBirthday());
+			Label birthdayLabel = new Label("Birthday");
+			birthdayLabel.setStyleName("bold-black");
+			flexTable.setWidget(numRows, 0, birthdayLabel);
+			flexTable.setWidget(numRows, 1, infoLabel);
 			numRows++;
 		}
 

@@ -36,7 +36,7 @@ public class NewPasswordDialog extends DialogBox
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	public NewPasswordDialog(final String username, final MainView main)
+	public NewPasswordDialog(final String username, final MainView main, final boolean redirect)
 	{
 		FlexTable flexTable = new FlexTable();
 		setWidget(flexTable);
@@ -81,10 +81,17 @@ public class NewPasswordDialog extends DialogBox
 						if(result != null)
 						{
 							dialog.hide();
-							Cookies.setCookie("loggedIn", username);
-							Storage localStorage = Storage.getLocalStorageIfSupported();
-							localStorage.setItem("loggedIn", result.serialize());
-							main.setContent(new Stream(main), "stream");
+							if(redirect)
+							{
+								Cookies.setCookie("loggedIn", username);
+								Storage localStorage = Storage.getLocalStorageIfSupported();
+								localStorage.setItem("loggedIn", result.serialize());
+								main.setContent(new Stream(main), "stream");
+							}
+							else
+							{
+								Window.alert("Success. Your password has been changed.");
+							}
 						}
 						else
 							Window.alert("There was a problem changing your password.");

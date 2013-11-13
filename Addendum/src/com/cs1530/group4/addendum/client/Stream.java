@@ -201,8 +201,15 @@ public class Stream extends Composite
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		userPanel.add(horizontalPanel);
 
-		Label usernameLabel = new Label(user.getUsername());
+		Anchor usernameLabel = new Anchor(user.getUsername());
 		usernameLabel.setStyleName("USername");
+		usernameLabel.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				main.setContent(new Profile(main,user.getUsername(),true), "profile-"+user.getUsername());
+			}
+		});
 		horizontalPanel.add(usernameLabel);
 
 		Anchor logoutAnchor = new Anchor("Logout");

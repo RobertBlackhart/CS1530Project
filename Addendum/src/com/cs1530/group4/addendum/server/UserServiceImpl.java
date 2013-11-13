@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -1106,17 +1107,21 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		{
 			Date now = new Date(System.currentTimeMillis());
 			Date oneDayAgo = new Date(System.currentTimeMillis()-86400000);
+			//start at beginning of oneDayAgo
+			long dayOffset = oneDayAgo.getHours()*60*60*1000 + oneDayAgo.getMinutes()*60*1000 + oneDayAgo.getSeconds()*1000;
+			oneDayAgo.setTime(oneDayAgo.getTime()-dayOffset);
+			
 			Date lastParticipated = (Date)userStatsEntity.getProperty("lastParticipated");
 			int consecutive = 1;
 			if(userStatsEntity.hasProperty("consecutiveDaysParticipated"))
 				consecutive = Integer.valueOf(userStatsEntity.getProperty("consecutiveDaysParticipated").toString());
 			
-			if((now.getDate() != lastParticipated.getDate()) && lastParticipated.compareTo(oneDayAgo) >= 0)
+			if(lastParticipated.compareTo(oneDayAgo) >= 0)
 			{
 				consecutive++;
 				userStatsEntity.setProperty("lastParticipated", now);
 			}
-			else if(lastParticipated.compareTo(oneDayAgo) < 0)
+			else
 			{
 				consecutive = 1;
 				userStatsEntity.setProperty("lastParticipated", now);
@@ -1559,20 +1564,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public ArrayList<Achievement> getAchievements(String username)
 	{
 		ArrayList<Achievement> achievements = new ArrayList<Achievement>();
-		ArrayList<Entity> entities = new ArrayList<Entity>();
-		ArrayList<Key> datastoreGets = new ArrayList<Key>();
 		
-		Query q = new Query("Achievement").setKeysOnly();
-		for(Entity entity : datastore.prepare(q).asIterable())
-		{
-			if(memcache.contains(entity.getKey()))
-				entities.add((Entity)memcache.get(entity.getKey()));
-			else
-				datastoreGets.add(entity.getKey());
-		}
-		entities.addAll(datastore.get(datastoreGets).values());
-		
-		for(Entity entity : entities)
+		for(Entity entity : getAchievementEntities())
 		{
 			ArrayList<String> users = (ArrayList<String>)entity.getProperty("usersEarned");
 			if(users.contains(username))
@@ -1587,9 +1580,78 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		return achievements;
 	}
 
-	@Override
-	public void acceptComment(Comment comment, String accepter, boolean accepted)
+	private ArrayList<Entity> getAchievementEntities()
 	{
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		ArrayList<Key> datastoreGets = new ArrayList<Key>();
+		
+		Query q = new Query("Achievement").setKeysOnly();
+		for(Entity entity : datastore.prepare(q).asIterable())
+		{
+			if(memcache.contains(entity.getKey()))
+				entities.add((Entity)memcache.get(entity.getKey()));
+			else
+				datastoreGets.add(entity.getKey());
+		}
+		entities.addAll(datastore.get(datastoreGets).values());
+		for(Entity entity : entities)
+			memcache.put(entity.getKey(), entity);
+		
+		return entities;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Achievement> getUnearnedAchievements(String username)
+	{
+		ArrayList<Achievement> achievementList = new ArrayList<Achievement>();
+		
+		for(Entry<String,Pair<String,String>> entry : achievements)
+		{
+			Achievement achievement = new Achievement();
+			achievement.setName(entry.getValue().getLeft());
+			achievement.setDescriptionText(entry.getValue().getRight());
+			achievementList.add(achievement);
+		}
+		for(Entity entity : getAchievementEntities())
+		{
+			ArrayList<String> users = (ArrayList<String>)entity.getProperty("usersEarned");
+			if(users.contains(username))
+			{
+				Achievement achievement = new Achievement();
+				achievement.setName((String)entity.getProperty("name"));
+				achievement.setDescriptionText((String)entity.getProperty("description"));
+				achievementList.remove(achievement);
+			}
+		}
+		
+		return achievementList;
+	}
+	
+	@Override
+	public void acceptComment(Comment comment, String accepter, boolean accepted, String associatedPost)
+	{
+		ArrayList<Key> datastoreGet = new ArrayList<Key>();
+		ArrayList<Entity> commentEntities = new ArrayList<Entity>();
+		
+		Query q = new Query("Comment").setKeysOnly();
+		q.setFilter(new FilterPredicate("postKey", FilterOperator.EQUAL, associatedPost));
+		for(Entity entity : datastore.prepare(q).asIterable())
+		{
+			if(memcache.contains(entity.getKey()))
+				commentEntities.add((Entity)memcache.get(entity.getKey()));
+			else
+				datastoreGet.add(entity.getKey());
+		}
+		commentEntities.addAll(datastore.get(datastoreGet).values());
+		
+		for(Entity entity : commentEntities)
+		{
+			entity.setProperty("accepted", false);
+			memcache.put(entity.getKey(), entity);
+		}
+		datastore.put(commentEntities);
+		
 		Entity entity = getCommentEntity(comment.getCommentKey());
 		entity.setProperty("accepted", accepted);
 		datastore.put(entity);

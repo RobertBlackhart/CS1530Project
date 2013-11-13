@@ -1,8 +1,12 @@
 package com.cs1530.group4.addendum.server;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-public class TupleMap<K, V1, V2>
+import com.cs1530.group4.addendum.server.TupleMap.Pair;
+
+public class TupleMap<K, V1, V2> implements Iterable<Map.Entry<K, Pair<V1,V2>>>
 {
 	private HashMap<K, Pair<V1, V2>> map;
 
@@ -27,6 +31,12 @@ public class TupleMap<K, V1, V2>
 		Pair<V1, V2> pair = map.get(key);
 
 		return pair;
+	}
+	
+	@Override
+	public Iterator<Map.Entry<K, Pair<V1, V2>>> iterator()
+	{
+		return map.entrySet().iterator();
 	}
 
 	static class Pair<L, R>

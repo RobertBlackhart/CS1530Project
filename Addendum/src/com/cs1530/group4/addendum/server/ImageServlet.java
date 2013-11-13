@@ -32,7 +32,6 @@ public class ImageServlet extends HttpServlet
 	{
 		if(req.getParameter("key") != null)
 		{
-			//the mime type is set automatically if known, otherwise it's set as application/octet-stream
 			BlobKey blobKey = new BlobKey(req.getParameter("key"));
 			BlobInfoFactory blobInfoFactory = new BlobInfoFactory(DatastoreServiceFactory.getDatastoreService());
 			BlobInfo blobInfo = blobInfoFactory.loadBlobInfo(blobKey);

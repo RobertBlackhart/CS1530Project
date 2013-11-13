@@ -94,7 +94,7 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		}
 		else if(historyToken[0].equals("passwordReset"))
 		{
-			new NewPasswordDialog(historyToken[1],this);
+			new NewPasswordDialog(historyToken[1],this,true);
 			return;
 		}
 		else if(historyToken[0].equals("profile"))

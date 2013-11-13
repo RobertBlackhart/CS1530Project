@@ -442,15 +442,27 @@ public interface UserService extends RemoteService
 	ArrayList<Achievement> getAchievements(String username);
 	
 	/**
-	 * Mark a comment in the database as accepted/unaccepted.
+	 * Get a list of the user's unearned achievements (trophies)
 	 *
-	 * @param comment the comment to mark as accepted/unaccepted
-	 * @param accepted the state of acceptance to mark for this comment
-	 * @param accepter the username of the person doing the accepting/unaccepting
+	 * @param username the username of the user for which to retrieve information
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	void acceptComment(Comment comment, String accepter, boolean accepted);
+	ArrayList<Achievement> getUnearnedAchievements(String username);
+	
+	/**
+	 * Mark a comment in the database as accepted/unaccepted.
+	 *
+	 * @param comment the comment to mark as accepted/unaccepted
+	 * @param accepted the state of acceptance to mark for this comment
+	 * @param accepter the username of the person doing the accepting/unaccepting
+	 * @param associatedPostKey the keystring of the post that this comment belongs to
+	 * 
+	 * @custom.accessed None
+	 * @custom.changed None
+	 * @custom.called None
+	 */
+	void acceptComment(Comment comment, String accepter, boolean accepted, String associatedPostKey);
 }

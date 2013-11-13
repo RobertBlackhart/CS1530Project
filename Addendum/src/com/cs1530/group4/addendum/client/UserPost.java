@@ -313,8 +313,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		scroll = new ScrollPanel();
 		commentPanel = new VerticalPanel();
 		commentPanel.setWidth("100%");
-		if(post.getComments().size() > 0)
-			commentPanel.setStyleName("CommentPanelbackcolor");
+		commentPanel.setStyleName("CommentPanelbackcolor");
 		
 		VerticalPanel attachmentsPanel = new VerticalPanel();
 		postPanel.add(attachmentsPanel);
@@ -410,6 +409,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					commentPanel.add(hidePanel);
 					for(Comment comment : post.getComments())
 						commentPanel.add(new PostComment(main,comment,userPost));
+					
 					adjustCommentScroll();
 				}
 			};
@@ -423,7 +423,18 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 					isExpanded = false;
 					commentPanel.clear();
 					commentPanel.add(expandPanel);
-					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),userPost));
+					boolean addedAccepted = false;
+					commentPanel.add(expandPanel);
+					for(Comment comment : post.getComments())
+					{
+						if(comment.isAccepted() && !comment.equals(comments.get(comments.size()-1)))
+						{
+							commentPanel.add(new PostComment(main,comment,userPost));
+							addedAccepted = true;
+						}
+					}
+					if(!addedAccepted)
+						commentPanel.add(new PostComment(main,comments.get(comments.size()-1),userPost));
 					adjustCommentScroll();
 				}
 			};
@@ -438,8 +449,18 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 			else
 			{
+				boolean addedAccepted = false;
 				commentPanel.add(expandPanel);
-				commentPanel.add(new PostComment(main,comments.get(comments.size()-1),userPost));
+				for(Comment comment : post.getComments())
+				{
+					if(comment.isAccepted() && !comment.equals(comments.get(comments.size()-1)))
+					{
+						commentPanel.add(new PostComment(main,comment,userPost));
+						addedAccepted = true;
+					}
+				}
+				if(!addedAccepted)
+					commentPanel.add(new PostComment(main,comments.get(comments.size()-1),userPost));
 			}
 		}
 		else
