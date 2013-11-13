@@ -160,7 +160,7 @@ public class Profile extends Composite
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		vPanel.setSpacing(5);
 		vPanel.add(profileImage);
-		if(viewProfileAsPrivate)
+		if(username.equals(Cookies.getCookie("loggedIn")) && viewProfileAsPrivate)
 		{
 			Anchor changePassword = new Anchor("Change Password");
 			changePassword.addClickHandler(new ClickHandler()
