@@ -73,14 +73,11 @@ public class Stream extends Composite
 	/** The prevPage anchor. */
 	Anchor prevPage;
 	
-	/** The all classes anchor. */
-	Anchor allAnchor;
-	
 	/** The tab panel. */
 	TabPanel tabPanel;
 	
 	/** The search panel. */
-	VerticalPanel searchPanel;
+	HTMLPanel searchPanel;
 	
 	/** A reference to this Stream object. */
 	Stream stream = this;
@@ -222,9 +219,7 @@ public class Stream extends Composite
 		});
 
 		classPanel = new HTMLPanel("");
-		//classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		classPanel.setStyleName("classPanel");
-		//classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
 		addClassButton = new Button("Add A Class");
@@ -235,22 +230,6 @@ public class Stream extends Composite
 			public void onClick(ClickEvent event)
 			{
 				new ClassSearch(main);
-			}
-		});
-		allAnchor = new Anchor("All Classes");
-		allAnchor.setText("ALL CLASSES");
-		allAnchor.setStyleName("courseAnchor");
-		allAnchor.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		allAnchor.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				streamLevel = "all";
-				ArrayList<String> streamLevels = new ArrayList<String>();
-				streamLevels.add(streamLevel);
-				streamLevels.addAll(user.getCourseList());
-				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		});
 
@@ -311,9 +290,9 @@ public class Stream extends Composite
 		tabPanel = new TabPanel();
 		tabPanel.setSize("800px", "89");
 
-		HTMLPanel popularUpdatesPanel = new HTMLPanel("<div></div>");
+		HTMLPanel popularUpdatesPanel = new HTMLPanel("");
 		popularUpdatesPanel.setWidth("100%");
-		HTMLPanel newUpdatesPanel = new HTMLPanel("<div></div>");
+		HTMLPanel newUpdatesPanel = new HTMLPanel("");
 		newUpdatesPanel.setWidth("100%");
 		tabPanel.add(popularUpdatesPanel, "Popular", false);
 		tabPanel.add(newUpdatesPanel, "New", false);
@@ -395,6 +374,13 @@ public class Stream extends Composite
 					nextPage.setVisible(false);
 					updatesPanel.add(new UserPost(main, post));
 				}
+				
+				if(count == 0)
+				{
+					Label noPostsFound = new Label("No posts found");
+					noPostsFound.setStyleName("noPosts");
+					updatesPanel.add(noPostsFound);
+				}
 			}
 		};
 		userService.getPosts(startIndex, streamLevels, user.getUsername(), sortMethod, callback);
@@ -414,15 +400,31 @@ public class Stream extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				for(int i=0; i<classPanel.getWidgetCount(); i++)
+				{
+					if(classPanel.getWidget(i) instanceof HTMLPanel)
+						((HTMLPanel)classPanel.getWidget(i)).getWidget(1).setStyleName("courseAnchor");
+					if(classPanel.getWidget(i) instanceof Anchor)
+						classPanel.getWidget(i).setStyleName("courseAnchor");
+				}
 				Anchor source = (Anchor)event.getSource();
+				source.setStyleName("arrow_box");
 				startIndex = 0;
 				prevPage.setVisible(false);
 				streamLevel = source.getText().trim();
+				if(streamLevel.equals("ALL CLASSES"))
+					streamLevel = "all";
 				ArrayList<String> streamLevels = new ArrayList<String>();
 				streamLevels.add(streamLevel);
+				if(streamLevel.equals("all"))
+					streamLevels.addAll(user.getCourseList());
 				getPosts(currentTab, streamLevels, sortMethod);
 			}
 		};
+		Anchor allAnchor = new Anchor("All Classes");
+		allAnchor.setText("ALL CLASSES");
+		allAnchor.setStyleName("arrow_box");
+		allAnchor.addClickHandler(courseClick);
 		
 		classPanel.clear();
 		classPanel.add(allAnchor);
@@ -433,8 +435,8 @@ public class Stream extends Composite
 			courseAnchor.addClickHandler(courseClick);
 
 			Image removeCourse = new Image("/images/delete.png");
-			removeCourse.setSize("24px", "24px");
-			removeCourse.setAltText(course);
+			removeCourse.setStyleName("removeCourse");
+			removeCourse.setTitle("Remove " + course + "from my list");
 			removeCourse.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
@@ -443,10 +445,9 @@ public class Stream extends Composite
 						removeCourse(((Image) event.getSource()).getAltText());
 				}
 			});
-			HorizontalPanel classRow = new HorizontalPanel();
-			classRow.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-			classRow.add(courseAnchor);
+			HTMLPanel classRow = new HTMLPanel("");
 			classRow.add(removeCourse);
+			classRow.add(courseAnchor);
 			classPanel.add(classRow);
 		}
 		classPanel.add(addClassButton);
@@ -506,19 +507,21 @@ public class Stream extends Composite
 			{
 				if(searchPanel == null)
 				{
-					searchPanel = new VerticalPanel();
-					searchPanel.setWidth("600px");
-					searchPanel.setSpacing(15);
+					searchPanel = new HTMLPanel("");
+					searchPanel.setWidth("100%");
 					tabPanel.add(searchPanel, "Search Results");
-				}
-				if(posts.size() == 0)
-				{
-					searchPanel.clear();
-					searchPanel.add(new Label("No results found for '" + searchString + "'"));
-					return;
 				}
 				tabPanel.selectTab(2);
 				searchPanel.clear();
+				
+				if(posts.size() == 0)
+				{
+					searchPanel.clear();
+					Label noResults = new Label("No results found for '" + searchString + "'");
+					noResults.setStyleName("noPosts");
+					searchPanel.add(noResults);
+					return;
+				}
 
 				Collections.sort(posts, Post.PostScoreComparator);
 				int count = 0;

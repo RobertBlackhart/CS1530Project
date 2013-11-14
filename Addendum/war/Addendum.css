@@ -557,8 +557,7 @@ padding: 0px 0px 6px 6px;
 	font: cursive;
 	size: 12;
 	font-size: 12px;
-	font-family: cursive;
-	
+	font-family: cursive;	
 }
 . {
 }
@@ -569,12 +568,14 @@ padding: 0px 0px 6px 6px;
 	font-size: 14px;
 	font-family: cursive;
 	font-weight: bold;
+	text-align: right;
+	padding-right: 10px;
 	background-color: #FFBD40;
 	border-top-right-radius:20px;
 	border-bottom-right-radius:20px;
 }
-.courseAnchor {
-	margin-right: 10px;
+.noPosts {
+	color: black;
 	font-size: 14px;
 	font-family: cursive;
 	font-weight: bold;
@@ -757,6 +758,7 @@ padding: 0px 0px 6px 6px;
 }
 .usernamePanel {
 	margin-bottom: 10px;
+	text-align: center;
 }
 .changeProfilePictureLabel {
 	color: black;
@@ -781,4 +783,51 @@ padding: 0px 0px 6px 6px;
 }
 .streamProfileImage {
 	cursor: pointer;
+}
+.classRow {
+	margin-top: 3px;
+}
+.courseAnchor {
+	text-decoration: none;
+	margin-top: 3px;
+	margin-left: 10px;
+	font-size: 14px;
+	font-family: cursive;
+	font-weight: bold;
+}
+.arrow_box {
+	text-decoration: none;
+	color: white;
+	margin-left: 6px;
+	position: relative;
+	background: #BF5B30;
+	border: 2px solid #FFBD40;
+}
+.arrow_box:after, .arrow_box:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(191, 91, 48, 0);
+	border-left-color: #BF5B30;
+	border-width: 12px;
+	margin-top: -12px;
+}
+.arrow_box:before {
+	border-color: rgba(255, 189, 64, 0);
+	border-left-color: #FFBD40;
+	border-width: 15px;
+	margin-top: -15px;
+}
+.removeCourse {
+	width: 24px;
+	height: 24px;
+	vertical-align: middle;
 }
