@@ -516,6 +516,7 @@ padding: 0px 0px 6px 6px;
 	font-family: Arial;
 	font-weight: normal;
 	border-bottom: 2px ridge #FFAA00;
+	clear: both;
 }
 .PostComment {
 	font-family:Arial;
@@ -523,12 +524,13 @@ padding: 0px 0px 6px 6px;
 	color: Black;
 	padding-left: 6px;
 }
-.userpostcomment {
+.userPostContent {
 	color: black;
 	padding-left: 6px;
 	font-size: 16px;
 	font-family: Calibri;
 	font-weight: normal;
+	clear: left;
 }
 .CommentPanelbackcolor {
 	background-color: #FFCF73;
@@ -618,6 +620,7 @@ padding: 0px 0px 6px 6px;
 	margin-left: 10px;
 	height: 13px;
 	width: 21px;
+	float: left;
 }
 .dialog-padding {
 	padding: 10px;
@@ -695,4 +698,48 @@ padding: 0px 0px 6px 6px;
 	-moz-filter: saturate(0%);
 	-o-filter: saturate(0%);
 	-ms-filter: saturate(0%);
+}
+.triangleMenu {
+	float: right
+}
+.postProfileImage {
+	float: left;
+	margin: 5px;
+	width: 46px;
+	height: 46px;
+}
+.postInfoPanel {
+	float: left;
+}
+.scorePanel {
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.postPanel {
+}
+.postBorder {
+	
+}
+.commentProfileImage {
+	float: left;
+	margin: 5px;
+	width: 28px;
+	height: 28px;
+}
+.commentTime {
+	color: black;
+	float: left;
+}
+.commentName {
+	color: #9D5C19;
+	font-variant: small-caps;
+	font-weight: bold;
+}
+.plusOneLabel {
+	color: Gray;
+	margin-left: 10px;
+	font-style: italic;
+	font-weight: bold;
+	float: left;
 }

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import com.cs1530.group4.addendum.shared.Comment;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -17,7 +18,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -57,29 +58,18 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 	 */
 	public PostComment(final MainView main, final Comment comment, final UserPost userPost)
 	{
-		VerticalPanel rowPanel = new VerticalPanel();
-		rowPanel.setStyleName("CommentPanelbackcolor");
-		rowPanel.setWidth("100%");
-		initWidget(rowPanel);
-
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		horizontalPanel.setWidth("100%");
-
-		addDomHandler(this, MouseOverEvent.getType());
-		addDomHandler(this, MouseOutEvent.getType());
+		HTMLPanel horizontalPanel = new HTMLPanel("<div></div>");
+		initWidget(horizontalPanel);
 
 		HTML content = new HTML(comment.getContent());
-		content.setStyleName("CommentSeperator");
-
-		HorizontalPanel headerPanel = new HorizontalPanel();
-		horizontalPanel.add(headerPanel);
 
 		if(userPost.post.getUsername().equals(Cookies.getCookie("loggedIn")))
 		{
 			content.getElement().getStyle().setProperty("marginLeft", "38px");
-			
+
 			VerticalPanel acceptedPanel = new VerticalPanel();
 			acceptedPanel.setWidth("38px");
+			acceptedPanel.getElement().getStyle().setFloat(Style.Float.LEFT);
 			final Image check = new Image();
 			check.setStyleName("imageButton");
 			if(comment.isAccepted())
@@ -131,46 +121,72 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 				}
 			});
 			acceptedPanel.add(check);
-			headerPanel.add(acceptedPanel);
+			horizontalPanel.add(acceptedPanel);
 		}
 		else if(comment.isAccepted())
 		{
 			content.getElement().getStyle().setProperty("marginLeft", "38px");
-			
+
 			VerticalPanel acceptedPanel = new VerticalPanel();
+			acceptedPanel.getElement().getStyle().setFloat(Style.Float.LEFT);
 			acceptedPanel.setWidth("38px");
 			final Image check = new Image("/images/accepted.png");
 			check.setTitle("This comment was accepted by the post author as a good answer.");
 			acceptedPanel.add(check);
-			headerPanel.add(acceptedPanel);
+			horizontalPanel.add(acceptedPanel);
 		}
-		
-		Image image = new Image("/addendum/getImage?username=" + comment.getUsername());
-		headerPanel.add(image);
-		image.getElement().getStyle().setProperty("marginRight", "10px");
-		image.setSize("28px", "28px");
 
-		VerticalPanel verticalPanel = new VerticalPanel();
-		headerPanel.add(verticalPanel);
+		addDomHandler(this, MouseOverEvent.getType());
+		addDomHandler(this, MouseOutEvent.getType());
+
+		menu = new Image("images/menu.png");
+		menu.setStyleName("triangleMenu");
+		horizontalPanel.add(menu);
+		menu.setSize("24px", "24px");
+		menu.setVisible(false);
+		menu.getElement().getStyle().setProperty("marginRight", "5px");
+		popup = new CommentMenuPopup(main, menu, comment, userPost);
+		menu.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				if(popup.isShowing())
+					popup.hide();
+				else
+					popup.showRelativeTo(menu);
+			}
+		});
+
+		Image image = new Image("/addendum/getImage?username=" + comment.getUsername());
+		image.setStyleName("commentProfileImage");
+		horizontalPanel.add(image);
 
 		Anchor usernameLabel = new Anchor(comment.getUsername());
-		usernameLabel.setStyleName("gwt-Label-bold");
-		verticalPanel.add(usernameLabel);
+		horizontalPanel.add(usernameLabel);
+		usernameLabel.setStyleName("commentName");
 
-		HorizontalPanel timePanel = new HorizontalPanel();
+		usernameLabel.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				main.setContent(new Profile(main, comment.getUsername(), true), "profile-" + comment.getUsername());
+			}
+		});
+
+		HTMLPanel panel = new HTMLPanel("<div></div>");
+		horizontalPanel.add(panel);
 		Label lblCommenttime = new Label(getFormattedTime(comment));
-		lblCommenttime.setStyleName("gwt-Label-grey");
+		panel.add(lblCommenttime);
+		lblCommenttime.setStyleName("commentTime");
 
 		final Label plusOnesLabel = new Label("+" + String.valueOf(comment.getPlusOnes()));
-		plusOnesLabel.setStyleName("gwt-Label-grey-bold");
-		if(comment.getPlusOnes() == 0)
-			plusOnesLabel.setVisible(false);
+		panel.add(plusOnesLabel);
+		plusOnesLabel.setStyleName("plusOneLabel");
 
 		plusOneButton = new Image("/images/plus_one_default.png");
+		panel.add(plusOneButton);
 		plusOneButton.setStyleName("plusOneButton");
 		plusOneButton.setVisible(false);
-		if(comment.isPlusOned())
-			plusOneButton.setUrl("/images/plus_one_checked.png");
 		plusOneButton.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event)
@@ -222,43 +238,13 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 			}
 		});
 
-		timePanel.add(lblCommenttime);
-		timePanel.add(plusOnesLabel);
-		timePanel.add(plusOneButton);
-		verticalPanel.add(timePanel);
+		horizontalPanel.add(content);
+		content.setStyleName("CommentSeperator");
 
-		usernameLabel.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				main.setContent(new Profile(main, comment.getUsername(), true), "profile-" + comment.getUsername());
-			}
-		});
-
-		menu = new Image("images/menu.png");
-		menu.setSize("24px", "24px");
-		menu.setVisible(false);
-		menu.getElement().getStyle().setProperty("marginRight", "5px");
-		popup = new CommentMenuPopup(main, menu, comment, userPost);
-		menu.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				if(popup.isShowing())
-					popup.hide();
-				else
-					popup.showRelativeTo(menu);
-			}
-		});
-
-		HorizontalPanel menuPanel = new HorizontalPanel();
-		menuPanel.setWidth("100%");
-		menuPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		menuPanel.add(menu);
-		horizontalPanel.add(menuPanel);
-
-		rowPanel.add(horizontalPanel);
-		rowPanel.add(content);
+		if(comment.getPlusOnes() == 0)
+			plusOnesLabel.setVisible(false);
+		if(comment.isPlusOned())
+			plusOneButton.setUrl("/images/plus_one_checked.png");
 	}
 
 	/**
