@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -55,10 +56,10 @@ public class Stream extends Composite
 	UserServiceAsync userService = UserService.Util.getInstance();
 	
 	/** The current tab. */
-	VerticalPanel currentTab;
+	HTMLPanel currentTab;
 	
 	/** The class panel. */
-	VerticalPanel classPanel;
+	HTMLPanel classPanel;
 	
 	/** The offset of post results to fetch from. */
 	int startIndex = 0;
@@ -102,35 +103,28 @@ public class Stream extends Composite
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		User u = User.deserialize(localStorage.getItem("loggedIn"));
 		user = u;
-		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		vPanel.getElement().getStyle().setProperty("marginBottom", "10px");
-
+		HTMLPanel vPanel = new HTMLPanel("");
 		initWidget(vPanel);
-		vPanel.setSize("406px", "162px");
 
-		Grid grid = new Grid(1, 2);
+		HTMLPanel grid = new HTMLPanel("");
 		vPanel.add(grid);
-		vPanel.setCellHorizontalAlignment(grid, HasHorizontalAlignment.ALIGN_RIGHT);
-
-		Button createPost = new Button("Create a new post");
-		grid.setWidget(0, 0, createPost);
-		createPost.setHeight("30px");
-		createPost.setStyleName("ADCButton");
-		createPost.addClickHandler(new ClickHandler()
-		{
-			public void onClick(ClickEvent event)
-			{
-				NewPost editor = new NewPost(main, user.getCourseList(), null);
-				editor.show();
-			}
-		});
 
 		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
-		grid.setWidget(0, 1, searchBox);
-		searchBox.setHeight("25px");
-		searchBox.setAlignment(TextAlignment.CENTER);
+		grid.add(searchBox);
 		searchBox.setStyleName("profileSearchbox");
+		
+				Button createPost = new Button("Create a new post");
+				grid.add(createPost);
+				createPost.setHeight("30px");
+				createPost.setStyleName("createPostButton");
+				createPost.addClickHandler(new ClickHandler()
+				{
+					public void onClick(ClickEvent event)
+					{
+						NewPost editor = new NewPost(main, user.getCourseList(), null);
+						editor.show();
+					}
+				});
 		searchBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			@Override
@@ -147,19 +141,18 @@ public class Stream extends Composite
 		hPanel.setStyleName("profileMainPanel");
 		vPanel.add(hPanel);
 
-		VerticalPanel userPanel = new VerticalPanel();
-		userPanel.getElement().getStyle().setProperty("marginRight", "30px");
+		HTMLPanel userPanel = new HTMLPanel("<div></div>");
+		userPanel.setStyleName("userPanel");
 		hPanel.add(userPanel);
 
-		AbsolutePanel absolutePanel = new AbsolutePanel();
+		HTMLPanel absolutePanel = new HTMLPanel("");
 		absolutePanel.setStyleName("profilePic");
-		absolutePanel.setSize("128px", "128px");
 		userPanel.add(absolutePanel);
 
 		Image image = new Image("/addendum/getImage?username=" + user.getUsername());
+		image.setStyleName("streamProfileImage");
 		final Label changeImageLabel = new Label("Change Image");
-		changeImageLabel.setStyleName("gwt-DecoratorPanel-white");
-		changeImageLabel.setSize("128px", "28px");
+		changeImageLabel.setStyleName("changeProfilePictureLabel");
 		MouseOverHandler mouseOver = new MouseOverHandler()
 		{
 			@Override
@@ -196,9 +189,10 @@ public class Stream extends Composite
 		image.setSize("128px", "128px");
 
 		changeImageLabel.setVisible(false);
-		absolutePanel.add(changeImageLabel, -5, 105);
+		absolutePanel.add(changeImageLabel);
 
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		HTMLPanel horizontalPanel = new HTMLPanel("<div></div>");
+		horizontalPanel.setStyleName("usernamePanel");
 		userPanel.add(horizontalPanel);
 
 		Anchor usernameLabel = new Anchor(user.getUsername());
@@ -227,10 +221,10 @@ public class Stream extends Composite
 			}
 		});
 
-		classPanel = new VerticalPanel();
-		classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		classPanel.setStyleName("Anchor");
-		classPanel.setSpacing(3);
+		classPanel = new HTMLPanel("");
+		//classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		classPanel.setStyleName("classPanel");
+		//classPanel.setSpacing(3);
 		userPanel.add(classPanel);
 
 		addClassButton = new Button("Add A Class");
@@ -260,7 +254,8 @@ public class Stream extends Composite
 			}
 		});
 
-		HorizontalPanel nextPrevPanel = new HorizontalPanel();
+		HTMLPanel nextPrevPanel = new HTMLPanel("<div></div>");
+		nextPrevPanel.setStyleName("nextPrevPanel");
 		nextPage = new Anchor("Next 10 Posts");
 		nextPage.setStyleName("courseAnchor");
 		nextPage.setVisible(false);
@@ -316,9 +311,9 @@ public class Stream extends Composite
 		tabPanel = new TabPanel();
 		tabPanel.setSize("800px", "89");
 
-		VerticalPanel popularUpdatesPanel = new VerticalPanel();
+		HTMLPanel popularUpdatesPanel = new HTMLPanel("<div></div>");
 		popularUpdatesPanel.setWidth("100%");
-		VerticalPanel newUpdatesPanel = new VerticalPanel();
+		HTMLPanel newUpdatesPanel = new HTMLPanel("<div></div>");
 		newUpdatesPanel.setWidth("100%");
 		tabPanel.add(popularUpdatesPanel, "Popular", false);
 		tabPanel.add(newUpdatesPanel, "New", false);
@@ -340,7 +335,7 @@ public class Stream extends Composite
 				prevPage.setVisible(false);
 
 				sortMethod = tabPanel.getTabBar().getTabHTML(event.getSelectedItem());
-				currentTab = (VerticalPanel) tabPanel.getWidget(event.getSelectedItem());
+				currentTab = (HTMLPanel) tabPanel.getWidget(event.getSelectedItem());
 				if(user.getCourseList() != null)
 				{
 					ArrayList<String> streamLevels = new ArrayList<String>();
@@ -352,10 +347,8 @@ public class Stream extends Composite
 				}
 			}
 		});
-		popularUpdatesPanel.setSpacing(15);
-		newUpdatesPanel.setSpacing(15);
 
-		currentTab = (VerticalPanel) tabPanel.getWidget(0);
+		currentTab = (HTMLPanel) tabPanel.getWidget(0);
 
 		getClasses();
 		tabPanel.selectTab(0);
@@ -376,7 +369,7 @@ public class Stream extends Composite
 	 * @custom.changed None
 	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getPosts(int, ArrayList, String, String)}
 	 */
-	private void getPosts(final VerticalPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
+	private void getPosts(final HTMLPanel updatesPanel, ArrayList<String> streamLevels, final String sortMethod)
 	{
 		updatesPanel.clear();
 		AsyncCallback<ArrayList<Post>> callback = new AsyncCallback<ArrayList<Post>>()

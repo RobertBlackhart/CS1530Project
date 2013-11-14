@@ -89,7 +89,6 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 */
 	public UserPost(MainView m, Post p)
 	{
-		long start = System.currentTimeMillis();
 		main = m;
 		post = p;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
@@ -333,7 +332,6 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			}
 		});
 		addCommentPanel.add(addAComment);
-		System.out.println("time: " + (System.currentTimeMillis() - start));
 	}
 
 	private String getTimeText()

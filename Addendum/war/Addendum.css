@@ -445,6 +445,9 @@ a:visited {
 	border: 2px solid;
 	border-color: #ffbf40;
 	border-radius:15px;
+	height: 25px;
+	text-align: center;
+	float: right;
 }
 .profilePanel {
 	color: white;
@@ -490,6 +493,8 @@ a:visited {
 	border-bottom: 10px ridge;
 	border-right-color: #A65500;
 	border-bottom-color:#A65500;
+	width: 128px;
+	height: 128px;
 }
 .profileTablPanel {
 padding: 0px 0px 6px 6px;
@@ -560,7 +565,7 @@ padding: 0px 0px 6px 6px;
 .gwt-TabLayoutPanelTab { 
 
 }
-.Anchor {
+.classPanel {
 	font-size: 14px;
 	font-family: cursive;
 	font-weight: bold;
@@ -742,4 +747,38 @@ padding: 0px 0px 6px 6px;
 	font-style: italic;
 	font-weight: bold;
 	float: left;
+}
+.userPanel {
+	float: left;
+	margin-right: 15px;
+}
+.tabPanel {
+	float: left;
+}
+.usernamePanel {
+	margin-bottom: 10px;
+}
+.changeProfilePictureLabel {
+	color: black;
+	font-size: small;
+	font-family: Arial, sans-serif;
+	background-color: white;
+	position: relative;
+	top: -19px;
+	text-align: center;
+	cursor: pointer;
+}
+.createPostButton {
+	float: right;
+	color: White;
+	font-size: 14px;
+	border-radius:15px;
+	font-family: Arial Black;
+	background-color: #BF5B30;
+}
+.nextPrevPanel {
+	text-align: center;
+}
+.streamProfileImage {
+	cursor: pointer;
 }
