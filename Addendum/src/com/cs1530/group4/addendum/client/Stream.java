@@ -28,61 +28,66 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 /**
- * The Stream class is the main view for the users of Addendum.  It allows them to interact with other user's content and post content of their own.
+ * The Stream class is the main view for the users of Addendum. It allows them
+ * to interact with other user's content and post content of their own.
  */
 public class Stream extends Composite
 {
 	/** The application's MainView. */
 	MainView main;
-	
+
 	/** The stream level that we are currently filtering by. */
 	String streamLevel = "all";
-	
+
 	/** The current sort method. */
 	String sortMethod = "Popular";
-	
+
 	/** An object representing the currently logged in user. */
 	User user;
-	
+
 	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
-	
+
 	/** The current tab. */
 	HTMLPanel currentTab;
-	
+
 	/** The class panel. */
-	HTMLPanel classPanel;
-	
+	VerticalPanel classPanel;
+
 	/** The offset of post results to fetch from. */
 	int startIndex = 0;
-	
+
 	/** The offset of the search results to fetch from. */
 	int searchStart = 0;
-	
+
 	/** The nextPage anchor. */
 	Anchor nextPage;
-	
+
 	/** The prevPage anchor. */
 	Anchor prevPage;
-	
+
 	/** The tab panel. */
 	TabPanel tabPanel;
-	
+
 	/** The search panel. */
 	HTMLPanel searchPanel;
-	
+
 	/** A reference to this Stream object. */
 	Stream stream = this;
-	
+
 	/** The addClass button. */
 	Button addClassButton;
 
 	/**
-	 * The Stream class is responsible for displaying posts to the user as well as all of the other UI associated with creating posts and comments.
-	 *
-	 * @param m the MainView of the application
+	 * The Stream class is responsible for displaying posts to the user as well
+	 * as all of the other UI associated with creating posts and comments.
+	 * 
+	 * @param m
+	 *            the MainView of the application
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
@@ -103,19 +108,19 @@ public class Stream extends Composite
 		final PromptedTextBox searchBox = new PromptedTextBox("Search for a post...", "promptText");
 		grid.add(searchBox);
 		searchBox.setStyleName("profileSearchbox");
-		
-				Button createPost = new Button("Create a new post");
-				grid.add(createPost);
-				createPost.setHeight("30px");
-				createPost.setStyleName("createPostButton");
-				createPost.addClickHandler(new ClickHandler()
-				{
-					public void onClick(ClickEvent event)
-					{
-						NewPost editor = new NewPost(main, user.getCourseList(), null);
-						editor.show();
-					}
-				});
+
+		Button createPost = new Button("Create a new post");
+		grid.add(createPost);
+		createPost.setHeight("30px");
+		createPost.setStyleName("createPostButton");
+		createPost.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				NewPost editor = new NewPost(main, user.getCourseList(), null);
+				editor.show();
+			}
+		});
 		searchBox.addKeyPressHandler(new KeyPressHandler()
 		{
 			@Override
@@ -165,7 +170,7 @@ public class Stream extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				ProfilePictureUpload profilePic = new ProfilePictureUpload(main,user.getUsername());
+				ProfilePictureUpload profilePic = new ProfilePictureUpload(main, user.getUsername());
 				profilePic.show();
 			}
 		};
@@ -192,7 +197,7 @@ public class Stream extends Composite
 		{
 			public void onClick(ClickEvent event)
 			{
-				main.setContent(new Profile(main,user.getUsername(),true), "profile-"+user.getUsername());
+				main.setContent(new Profile(main, user.getUsername(), true), "profile-" + user.getUsername());
 			}
 		});
 		horizontalPanel.add(usernameLabel);
@@ -212,20 +217,11 @@ public class Stream extends Composite
 			}
 		});
 
-		classPanel = new HTMLPanel("");
+		classPanel = new VerticalPanel();
+		classPanel.setSpacing(3);
+		classPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		classPanel.setStyleName("classPanel");
 		userPanel.add(classPanel);
-
-		addClassButton = new Button("Add A Class");
-		addClassButton.setStyleName("ADCButton-addRemoveClasses");
-		addClassButton.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				new ClassSearch(main);
-			}
-		});
 
 		HTMLPanel nextPrevPanel = new HTMLPanel("<div></div>");
 		nextPrevPanel.setStyleName("nextPrevPanel");
@@ -331,12 +327,19 @@ public class Stream extends Composite
 	}
 
 	/**
-	 * Fetches the posts from the datastore that have a streamLevel == any of the streamLevels in the ArrayList provided.
-	 * After fetching - sorts, creates and adds the posts to the updatesPanel provided.
-	 *
-	 * @param updatesPanel The panel in which to display a list of posts returned by the server
-	 * @param streamLevels A list of stream levels (aka course names) which to filter the posts by
-	 * @param sortMethod A string signifying in which order to sort the posts (by date, by score, etc)
+	 * Fetches the posts from the datastore that have a streamLevel == any of
+	 * the streamLevels in the ArrayList provided. After fetching - sorts,
+	 * creates and adds the posts to the updatesPanel provided.
+	 * 
+	 * @param updatesPanel
+	 *            The panel in which to display a list of posts returned by the
+	 *            server
+	 * @param streamLevels
+	 *            A list of stream levels (aka course names) which to filter the
+	 *            posts by
+	 * @param sortMethod
+	 *            A string signifying in which order to sort the posts (by date,
+	 *            by score, etc)
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
@@ -368,7 +371,7 @@ public class Stream extends Composite
 					nextPage.setVisible(false);
 					updatesPanel.add(new UserPost(main, post));
 				}
-				
+
 				if(count == 0)
 				{
 					Label noPostsFound = new Label("No posts found");
@@ -381,8 +384,9 @@ public class Stream extends Composite
 	}
 
 	/**
-	 * Populate the user's class panel with the classes they belong to.  Call after adding or removing a class or to initialize the stream.
-	 *
+	 * Populate the user's class panel with the classes they belong to. Call
+	 * after adding or removing a class or to initialize the stream.
+	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
 	 * @custom.called None
@@ -394,14 +398,14 @@ public class Stream extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				for(int i=0; i<classPanel.getWidgetCount(); i++)
+				for(int i = 0; i < classPanel.getWidgetCount(); i++)
 				{
 					if(classPanel.getWidget(i) instanceof HTMLPanel)
-						((HTMLPanel)classPanel.getWidget(i)).getWidget(1).setStyleName("courseAnchor");
+						((HTMLPanel) classPanel.getWidget(i)).getWidget(1).setStyleName("courseAnchor");
 					if(classPanel.getWidget(i) instanceof Anchor)
 						classPanel.getWidget(i).setStyleName("courseAnchor");
 				}
-				Anchor source = (Anchor)event.getSource();
+				Anchor source = (Anchor) event.getSource();
 				source.setStyleName("arrow_box");
 				startIndex = 0;
 				prevPage.setVisible(false);
@@ -419,9 +423,20 @@ public class Stream extends Composite
 		allAnchor.setText("ALL CLASSES");
 		allAnchor.setStyleName("arrow_box");
 		allAnchor.addClickHandler(courseClick);
-		
+
 		classPanel.clear();
 		classPanel.add(allAnchor);
+
+		addClassButton = new Button("Add A Class");
+		addClassButton.setStyleName("ADCButton-addRemoveClasses");
+		addClassButton.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				new ClassSearch(main);
+			}
+		});
 		for(final String course : user.getCourseList())
 		{
 			Anchor courseAnchor = new Anchor(course);
@@ -431,6 +446,7 @@ public class Stream extends Composite
 			Image removeCourse = new Image("/images/delete.png");
 			removeCourse.setStyleName("removeCourse");
 			removeCourse.setTitle("Remove " + course + "from my list");
+			removeCourse.setAltText(course.trim());
 			removeCourse.addClickHandler(new ClickHandler()
 			{
 				public void onClick(ClickEvent event)
@@ -449,8 +465,10 @@ public class Stream extends Composite
 
 	/**
 	 * Removes the specified course from the users list of courses.
-	 *
-	 * @param course The course name to be removed (in the format 'CourseName+CourseNumber')
+	 * 
+	 * @param course
+	 *            The course name to be removed (in the format
+	 *            'CourseName+CourseNumber')
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
@@ -475,14 +493,16 @@ public class Stream extends Composite
 				getClasses();
 			}
 		};
-		
+
 		userService.removeCourse(course, Cookies.getCookie("loggedIn"), callback);
 	}
 
 	/**
-	 * Searches the database for posts which match the given query.  It will then display all results in a new panel.
-	 *
-	 * @param searchString the search string
+	 * Searches the database for posts which match the given query. It will then
+	 * display all results in a new panel.
+	 * 
+	 * @param searchString
+	 *            the search string
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
@@ -507,7 +527,7 @@ public class Stream extends Composite
 				}
 				tabPanel.selectTab(2);
 				searchPanel.clear();
-				
+
 				if(posts.size() == 0)
 				{
 					searchPanel.clear();
