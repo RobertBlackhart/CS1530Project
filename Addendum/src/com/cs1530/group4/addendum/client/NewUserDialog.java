@@ -191,7 +191,6 @@ public class NewUserDialog extends DialogBox
 		flexTable.getCellFormatter().setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable.getCellFormatter().setHorizontalAlignment(7, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable.getFlexCellFormatter().setColSpan(6, 0, 5);
-		flexTable.getFlexCellFormatter().setColSpan(4, 0, 5);
 		setStyleName("ADCBasic");
 
 		setGlassEnabled(true);
