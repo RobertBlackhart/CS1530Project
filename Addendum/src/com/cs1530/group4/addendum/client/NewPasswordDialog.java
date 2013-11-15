@@ -107,7 +107,19 @@ public class NewPasswordDialog extends DialogBox
 				userService.changePassword(username, passwordTextBox_1.getText(), callback);
 			}
 		});
+		
+		Button btnCancel = new Button("Cancel");
+		btnCancel.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event)
+			{
+				dialog.hide();
+			}
+		});
+		btnCancel.setStyleName("ADCButton");
+		flexTable.setWidget(2, 0, btnCancel);
 		flexTable.setWidget(2, 1, changePasswordButton);
+		flexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
 		setStyleName("ADCBasic");
 		setGlassEnabled(true);
