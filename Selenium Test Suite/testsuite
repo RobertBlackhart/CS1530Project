@@ -20,6 +20,9 @@
 <tr><td><a href="newUser_allBlank">newUser_blankFirstName_blankLastName_blankEmail_blankUsername_blankPassword</a></td></tr>
 <tr><td><a href="newUser_validFirstName_allBlank">newUser_validFirstName_blankLastName_blankEmail_blankUsername_blankPassword</a></td></tr>
 <tr><td><a href="newUser_validFirstName_validLastName_allBlank">newUser_validFirstName_validLastName_blankEmail_blankUsername_blankPassword</a></td></tr>
+<tr><td><a href="newUser_blankFirstName_validLastname_validEmail_blankUsername_blankPassword">newUser_blankFirstName_validLastname_validEmail_blankUsername_blankPassword</a></td></tr>
+<tr><td><a href="newUser_blankFirstName_blankLastName_validEmail_validUsername_blankPassword">newUser_blankFirstName_blankLastName_validEmail_validUsername_blankPassword</a></td></tr>
+<tr><td><a href="newUser_blankFirstName_validLastname_blankEmail_validUsername_validPassword">newUser_blankFirstName_validLastname_blankEmail_validUsername_validPassword</a></td></tr>
 </tbody></table>
 </body>
 </html>

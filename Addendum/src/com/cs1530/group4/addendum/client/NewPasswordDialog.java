@@ -71,6 +71,12 @@ public class NewPasswordDialog extends DialogBox
 					return;
 				}
 				
+				if(passwordTextBox.getText().length() == 0)
+				{
+					Window.alert("Your password cannot be blank");
+					return;
+				}
+				
 				AsyncCallback<User> callback = new AsyncCallback<User>()
 				{
 					@Override
