@@ -24,6 +24,9 @@
 <tr><td><a href="newUser_blankFirstName_blankLastName_validEmail_validUsername_blankPassword">newUser_blankFirstName_blankLastName_validEmail_validUsername_blankPassword</a></td></tr>
 <tr><td><a href="newUser_blankFirstName_validLastname_blankEmail_validUsername_validPassword">newUser_blankFirstName_validLastname_blankEmail_validUsername_validPassword</a></td></tr>
 <tr><td><a href="resetPassword_blankFirst_blankSecond">resetPassword_blankFirst_blankSecond</a></td></tr>
+<tr><td><a href="resetPassword_blankFirst_validSecond">resetPassword_blankFirst_validSecond</a></td></tr>
+<tr><td><a href="resetPassword_validFirst_blankSecond">resetPassword_validFirst_blankSecond</a></td></tr>
+<tr><td><a href="resetPassword_validFirst_validSecond">resetPassword_validFirst_validSecond</a></td></tr>
 </tbody></table>
 </body>
 </html>

@@ -108,7 +108,7 @@ public class Login extends Composite
 		{
 			public void onKeyPress(KeyPressEvent event)
 			{
-				if(event.getCharCode() == KeyCodes.KEY_ENTER)
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
 					login();
 			}
 		});
@@ -125,7 +125,7 @@ public class Login extends Composite
 		{
 			public void onKeyPress(KeyPressEvent event)
 			{
-				if(event.getCharCode() == KeyCodes.KEY_ENTER)
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
 					login();
 			}
 		});

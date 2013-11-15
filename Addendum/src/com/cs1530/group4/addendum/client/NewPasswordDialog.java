@@ -19,18 +19,20 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
  */
 public class NewPasswordDialog extends DialogBox
 {
-	
+
 	/** A reference to this NewPassworDialog object. */
 	NewPasswordDialog dialog = this;
-	
+
 	/** The a static instance of the service used for RPC calls. */
 	UserServiceAsync userService = UserService.Util.getInstance();
 
 	/**
 	 * Instantiates a new new password dialog.
-	 *
-	 * @param username the user's username
-	 * @param main the appliation's {@link MainView}
+	 * 
+	 * @param username
+	 *            the user's username
+	 * @param main
+	 *            the appliation's {@link MainView}
 	 * 
 	 * @custom.accessed None
 	 * @custom.changed None
@@ -70,17 +72,19 @@ public class NewPasswordDialog extends DialogBox
 					Window.alert("Passwords do not match");
 					return;
 				}
-				
-				if(passwordTextBox.getText().length() == 0)
+
+				if(passwordTextBox.getText().length() == 0 || passwordTextBox_1.getText().length() == 0)
 				{
 					Window.alert("Your password cannot be blank");
 					return;
 				}
-				
+
 				AsyncCallback<User> callback = new AsyncCallback<User>()
 				{
 					@Override
-					public void onFailure(Throwable caught){}
+					public void onFailure(Throwable caught)
+					{}
+
 					@Override
 					public void onSuccess(User result)
 					{
@@ -103,11 +107,11 @@ public class NewPasswordDialog extends DialogBox
 							Window.alert("There was a problem changing your password.");
 					}
 				};
-				
+
 				userService.changePassword(username, passwordTextBox_1.getText(), callback);
 			}
 		});
-		
+
 		Button btnCancel = new Button("Cancel");
 		btnCancel.addClickHandler(new ClickHandler()
 		{

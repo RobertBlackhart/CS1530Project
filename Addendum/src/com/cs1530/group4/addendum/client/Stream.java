@@ -126,7 +126,7 @@ public class Stream extends Composite
 			@Override
 			public void onKeyPress(KeyPressEvent event)
 			{
-				if(event.getCharCode() == KeyCodes.KEY_ENTER)
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
 				{
 					postSearch(searchBox.getText());
 				}
