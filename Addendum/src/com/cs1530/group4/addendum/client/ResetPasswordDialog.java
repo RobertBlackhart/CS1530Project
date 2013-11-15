@@ -88,10 +88,19 @@ public class ResetPasswordDialog extends DialogBox
 		{
 			public void onClick(ClickEvent event)
 			{
+				if(usernameTextBox.getText().length() == 0)
+				{
+					Window.alert("The username cannot be blank.");
+					return;
+				}
+				
 				AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>()
 				{
 					@Override
-					public void onFailure(Throwable caught){}
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("There was an unknown error.");
+					}
 					@Override
 					public void onSuccess(Boolean result)
 					{

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="login_blankUsername_blankPassword">Login_blankUsername_blankPassword</a></td></tr>
+<tr><td><a href="login_filledUsername_blankPassword">Login_filledUsername_blankPassword</a></td></tr>
+<tr><td><a href="login_blankUsername_filledPassword">Login_blankUsername_filledPassword</a></td></tr>
+<tr><td><a href="login_invalidCredentials">Login_invalidCredentials</a></td></tr>
+<tr><td><a href="login_validCredentials">Login_validCredentials</a></td></tr>
+<tr><td><a href="forgotPassword_usernameBlank">forgotPassword_usernameBlank</a></td></tr>
+<tr><td><a href="forgotPassword_invalidUsername">forgotPassword_invalidUsername</a></td></tr>
+<tr><td><a href="forgotPassword_validUsername">forgotPassword_validUsername</a></td></tr>
+<tr><td><a href="newUser_allValid">newUser_validFirstName_validLastName_validEmail_validUsername_validPassword</a></td></tr>
+<tr><td><a href="newUser_allBlank">newUser_blankFirstName_blankLastName_blankEmail_blankUsername_blankPassword</a></td></tr>
+<tr><td><a href="newUser_validFirstName_allBlank">newUser_validFirstName_blankLastName_blankEmail_blankUsername_blankPassword</a></td></tr>
+<tr><td><a href="newUser_validFirstName_validLastName_allBlank">newUser_validFirstName_validLastName_blankEmail_blankUsername_blankPassword</a></td></tr>
+</tbody></table>
+</body>
+</html>
