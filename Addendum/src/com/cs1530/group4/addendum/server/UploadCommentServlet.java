@@ -72,6 +72,6 @@ public class UploadCommentServlet extends HttpServlet
 			UserServiceImpl.addUserToAchievement(achievementEntity,comment.getUsername());
 		
 		resp.setContentType("text/plain");
-		resp.getWriter().print("done");
+		resp.getWriter().print(commentEntity.getKey().getId());
 	}
 }

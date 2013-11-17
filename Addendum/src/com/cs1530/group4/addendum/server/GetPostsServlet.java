@@ -168,7 +168,7 @@ public class GetPostsServlet extends HttpServlet
 		else
 			post.setReported(false);
 		if(entity.hasProperty("reportReason"))
-			post.setReportReason((String)entity.getProperty("reportReason"));
+			post.setReportReason((String) entity.getProperty("reportReason"));
 		if(entity.hasProperty("attachmentKeys"))
 			post.setAttachmentKeys((ArrayList<String>)entity.getProperty("attachmentKeys"));
 		if(entity.hasProperty("attachmentNames"))
@@ -224,6 +224,8 @@ public class GetPostsServlet extends HttpServlet
 		comment.setCommentKey(String.valueOf(entity.getKey().getId()));
 		if(entity.hasProperty("edited"))
 			comment.setLastEdit((Date) entity.getProperty("edited"));
+		if(entity.hasProperty("accepted"))
+			comment.setAccepted(Boolean.valueOf(entity.getProperty("accepted").toString()));
 
 		return comment;
 	}

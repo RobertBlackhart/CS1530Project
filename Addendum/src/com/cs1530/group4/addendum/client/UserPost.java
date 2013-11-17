@@ -93,6 +93,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		post = p;
 		upDownVotes = post.getUpvotes() - post.getDownvotes();
 		HorizontalPanel border = new HorizontalPanel();
+		border.setStyleName("postBorder");
 		border.setBorderWidth(1);
 		border.setWidth("100%");
 		initWidget(border);

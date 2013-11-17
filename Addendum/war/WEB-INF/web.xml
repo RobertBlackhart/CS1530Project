@@ -77,6 +77,14 @@
 		<servlet-name>CreateUserServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.CreateUserServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>AcceptCommentServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.AcceptCommentServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeleteAttachmentServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.DeleteAttachmentServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -140,6 +148,14 @@
 	<servlet-mapping>
 		<servlet-name>CreateUserServlet</servlet-name>
 		<url-pattern>/addendum/createUser</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AcceptCommentServlet</servlet-name>
+		<url-pattern>/addendum/acceptComment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteAttachmentServlet</servlet-name>
+		<url-pattern>/addendum/deleteAttachment</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>

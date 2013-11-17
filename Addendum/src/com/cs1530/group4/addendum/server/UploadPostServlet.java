@@ -20,6 +20,7 @@ import com.google.appengine.api.search.Index;
 import com.google.appengine.api.search.IndexSpec;
 import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @SuppressWarnings("serial")
 public class UploadPostServlet extends HttpServlet
@@ -48,6 +49,8 @@ public class UploadPostServlet extends HttpServlet
 		String streamLevel = req.getParameter("level");
 		Gson gson = new Gson();
 		Date now = gson.fromJson(req.getParameter("time"), Date.class);
+		ArrayList<String> attachmentKeys = gson.fromJson(req.getParameter("attachmentKeys"), new TypeToken<ArrayList<String>>(){}.getType());
+		ArrayList<String> attachmentNames = gson.fromJson(req.getParameter("attachmentNames"), new TypeToken<ArrayList<String>>(){}.getType());
 		
 		Entity post = new Entity("Post");
 		post.setProperty("username", username);
@@ -57,8 +60,8 @@ public class UploadPostServlet extends HttpServlet
 		post.setProperty("time", now);
 		post.setProperty("upvotes", 0);
 		post.setProperty("downvotes", 0);
-		post.setProperty("attachmentKeys", new ArrayList<String>());
-		post.setProperty("attachmentNames", new ArrayList<String>());
+		post.setProperty("attachmentKeys", attachmentKeys);
+		post.setProperty("attachmentNames", attachmentNames);
 		post.setProperty("usersVotedUp", new ArrayList<String>());
 		post.setProperty("usersVotedDown", new ArrayList<String>());
 		datastore.put(post);
