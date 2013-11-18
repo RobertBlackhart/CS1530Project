@@ -85,6 +85,10 @@
 		<servlet-name>DeleteAttachmentServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.DeleteAttachmentServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>PostSearchServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.PostSearchServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -156,6 +160,10 @@
 	<servlet-mapping>
 		<servlet-name>DeleteAttachmentServlet</servlet-name>
 		<url-pattern>/addendum/deleteAttachment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PostSearchServlet</servlet-name>
+		<url-pattern>/addendum/postSearch</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>

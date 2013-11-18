@@ -48,7 +48,6 @@ import com.google.gwt.widgetideas.client.ProgressBar;
  */
 public class NewPost extends DialogBox
 {
-	
 	/** A reference to this NewPost object. */
 	NewPost postBox = this;
 	
@@ -426,7 +425,7 @@ public class NewPost extends DialogBox
 	 */
 	private void submitPost(final Button submitButton, final Post post)
 	{
-		if(editor.getHTML().length() == 0)
+		if(editor.getText().length() == 0)
 		{
 			errorLabel.setVisible(true);
 			return;

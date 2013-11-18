@@ -28,6 +28,7 @@
 <tr><td><a href="resetPassword_validFirst_blankSecond">resetPassword_validFirst_blankSecond</a></td></tr>
 <tr><td><a href="resetPassword_validFirst_validSecond">resetPassword_validFirst_validSecond</a></td></tr>
 <tr><td><a href="search">search</a></td></tr>
+<tr><td><a href="newPost_invalidText_Everyone">newPost_invlidText_Everyone</a></td></tr>
 </tbody></table>
 </body>
 </html>
