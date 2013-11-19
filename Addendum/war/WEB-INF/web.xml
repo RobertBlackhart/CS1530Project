@@ -89,6 +89,14 @@
 		<servlet-name>PostSearchServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.PostSearchServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GetUserProfileServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.GetUserProfileServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GetAchievementsServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.GetAchievementsServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -164,6 +172,14 @@
 	<servlet-mapping>
 		<servlet-name>PostSearchServlet</servlet-name>
 		<url-pattern>/addendum/postSearch</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetUserProfileServlet</servlet-name>
+		<url-pattern>/addendum/getUserProfile</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetAchievementsServlet</servlet-name>
+		<url-pattern>/addendum/getAchievements</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
