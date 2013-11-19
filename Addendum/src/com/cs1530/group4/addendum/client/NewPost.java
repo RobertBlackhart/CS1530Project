@@ -319,29 +319,32 @@ public class NewPost extends DialogBox
 		lblAttachments.setStyleName("NewPostBackLabel");
 		attachmentsPanel.add(lblAttachments);
 		
-		for(int i=0; i<attachmentKeys.size(); i++)
+		if(attachmentKeys != null)
 		{
-			final HorizontalPanel attachmentLine = new HorizontalPanel();
-			attachmentLine.setSpacing(5);
-			attachmentLine.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-			
-			final String key = attachmentKeys.get(i);
-			String name = attachmentNames.get(i);
-			Anchor anchor = new Anchor(name, "/addendum/getImage?key="+key,"_blank");
-			Image delete = new Image("/images/delete.png");
-			delete.setSize("16px", "16px");
-			delete.addClickHandler(new ClickHandler()
+			for(int i=0; i<attachmentKeys.size(); i++)
 			{
-				public void onClick(ClickEvent event)
+				final HorizontalPanel attachmentLine = new HorizontalPanel();
+				attachmentLine.setSpacing(5);
+				attachmentLine.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+				
+				final String key = attachmentKeys.get(i);
+				String name = attachmentNames.get(i);
+				Anchor anchor = new Anchor(name, "/addendum/getImage?key="+key,"_blank");
+				Image delete = new Image("/images/delete.png");
+				delete.setSize("16px", "16px");
+				delete.addClickHandler(new ClickHandler()
 				{
-					deleteList.add(key);
-					attachmentsPanel.remove(attachmentLine);
-				}
-			});
-			
-			attachmentLine.add(anchor);
-			attachmentLine.add(delete);
-			attachmentsPanel.add(attachmentLine);
+					public void onClick(ClickEvent event)
+					{
+						deleteList.add(key);
+						attachmentsPanel.remove(attachmentLine);
+					}
+				});
+				
+				attachmentLine.add(anchor);
+				attachmentLine.add(delete);
+				attachmentsPanel.add(attachmentLine);
+			}
 		}
 
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
