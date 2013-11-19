@@ -44,23 +44,8 @@ public class LoginServlet extends HttpServlet
 
 		if(userEntity != null)
 		{
-			//only test for valid email in production because the dev server doesn't handle email properly
-			if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production)
-			{
-				if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
-					user = null;
-				else if(userEntity.hasProperty("password"))
-				{
-					if(userEntity.getProperty("password").toString().equals(password))
-					{
-						user = new User(username);
-						if(userEntity.hasProperty("courseList"))
-							user.setCourseList(((ArrayList<String>)userEntity.getProperty("courseList")));
-						else
-							user.setCourseList(new ArrayList<String>());
-					}
-				}
-			}
+			if(userEntity.hasProperty("emailValid") && !(Boolean)userEntity.getProperty("emailValid"))
+				user = null;
 			else if(userEntity.hasProperty("password"))
 			{
 				if(userEntity.getProperty("password").toString().equals(password))
@@ -70,6 +55,9 @@ public class LoginServlet extends HttpServlet
 						user.setCourseList(((ArrayList<String>)userEntity.getProperty("courseList")));
 					else
 						user.setCourseList(new ArrayList<String>());
+					
+					user.setFirstName(userEntity.getProperty("firstName").toString());
+					user.setLastName(userEntity.getProperty("lastName").toString());
 				}
 			}
 		}
