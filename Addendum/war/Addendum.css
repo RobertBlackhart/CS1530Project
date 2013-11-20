@@ -523,6 +523,13 @@ padding: 0px 0px 6px 6px;
 	border-bottom: 2px ridge #FFAA00;
 	clear: both;
 }
+.CommentNotSeperator {
+	color: Black;
+	font-size: 14px;
+	font-family: Arial;
+	font-weight: normal;
+	clear: both;
+}
 .PostComment {
 	font-family:Arial;
 	font-size: 14px;
@@ -830,4 +837,10 @@ padding: 0px 0px 6px 6px;
 	width: 24px;
 	height: 24px;
 	vertical-align: middle;
+}
+.attachmentFileName {
+	color: black;
+}
+.attachmentAnchor {
+	display: block;
 }

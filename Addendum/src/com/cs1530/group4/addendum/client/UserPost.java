@@ -325,10 +325,6 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				commentBox = new CommentBox(addAComment, post, userPost);
-				commentBox.setVisible(false);
-				addCommentPanel.add(commentBox);
-				commentBox.setWidth("100%");
 				showCommentBox(null);
 			}
 		});
@@ -491,21 +487,15 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 	 */
 	public void showCommentBox(Comment comment)
 	{
+		if(commentBox != null)
+			((FlowPanel) addAComment.getParent()).remove(commentBox);
+		
+		commentBox = new CommentBox(addAComment, post, userPost,comment);
+		commentBox.setWidth("100%");
+		((FlowPanel) addAComment.getParent()).add(commentBox);
+				
 		addAComment.setVisible(false);
-		commentBox.setVisible(true);
 		commentBox.textArea.setFocus(true);
-		if(comment != null)
-		{
-			commentBox.textArea.setHTML(comment.getContent());
-			commentBox.isEdit = true;
-			commentBox.editComment = comment;
-		}
-		else
-		{
-			commentBox.textArea.setText("");
-			commentBox.isEdit = false;
-			commentBox.editComment = null;
-		}
 	}
 
 	/**

@@ -238,8 +238,32 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		});
 
 		horizontalPanel.add(content);
-		content.setStyleName("CommentSeperator");
 
+		HTMLPanel attachmentsPanel = new HTMLPanel("");
+		if(comment.isAccepted() || comment.getUsername().equals(Cookies.getCookie("loggedIn")))
+			attachmentsPanel.getElement().getStyle().setProperty("marginLeft", "38px");
+		horizontalPanel.add(attachmentsPanel);
+
+		if(comment.getAttachmentKeys() != null && comment.getAttachmentKeys().size() > 0)
+		{
+			Label lblAttachments = new Label("Attachments:");
+			lblAttachments.setStyleName("NewPostBackLabel");
+			attachmentsPanel.add(lblAttachments);
+			attachmentsPanel.setStyleName("CommentSeperator");
+			content.setStyleName("CommentNotSeperator");
+
+			for(int i = 0; i < comment.getAttachmentKeys().size(); i++)
+			{
+				String key = comment.getAttachmentKeys().get(i);
+				String name = comment.getAttachmentNames().get(i);
+				Anchor anchor = new Anchor(name, "/addendum/getImage?key=" + key, "_blank");
+				anchor.setStyleName("attachmentAnchor");
+				attachmentsPanel.add(anchor);
+			}
+		}
+		else
+			content.setStyleName("CommentSeperator");
+		
 		if(comment.getPlusOnes() == 0)
 			plusOnesLabel.setVisible(false);
 		if(comment.isPlusOned())

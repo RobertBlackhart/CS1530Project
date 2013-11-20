@@ -1,6 +1,7 @@
 package com.cs1530.group4.addendum.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 // TODO: Auto-generated Javadoc
@@ -30,6 +31,12 @@ public class Comment implements Serializable, Comparable<Comment>
 	
 	/** If this comment has been accepted as an answer by the post's author. */
 	private boolean isAccepted;
+	
+	/** The attachment keys. */
+	private ArrayList<String> attachmentKeys = new ArrayList<String>();
+	
+	/** The attachment names. */
+	private ArrayList<String> attachmentNames = new ArrayList<String>();
 	
 	/**
 	 * Checks if is plus oned.
@@ -206,5 +213,25 @@ public class Comment implements Serializable, Comparable<Comment>
 	public void setAccepted(boolean isAccepted)
 	{
 		this.isAccepted = isAccepted;
+	}
+
+	public ArrayList<String> getAttachmentKeys()
+	{
+		return attachmentKeys;
+	}
+
+	public void setAttachmentKeys(ArrayList<String> attachmentKeys)
+	{
+		this.attachmentKeys = attachmentKeys;
+	}
+
+	public ArrayList<String> getAttachmentNames()
+	{
+		return attachmentNames;
+	}
+
+	public void setAttachmentNames(ArrayList<String> attachmentNames)
+	{
+		this.attachmentNames = attachmentNames;
 	}
 }

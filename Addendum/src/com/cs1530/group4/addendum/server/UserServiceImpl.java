@@ -864,6 +864,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			comment.setLastEdit((Date) entity.getProperty("edited"));
 		if(entity.hasProperty("accepted"))
 			comment.setAccepted(Boolean.valueOf(entity.getProperty("accepted").toString()));
+		if(entity.hasProperty("attachmentKeys"))
+			comment.setAttachmentKeys((ArrayList<String>)entity.getProperty("attachmentKeys"));
+		if(entity.hasProperty("attachmentNames"))
+			comment.setAttachmentNames((ArrayList<String>)entity.getProperty("attachmentNames"));
 
 		return comment;
 	}
@@ -1061,7 +1065,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @see com.cs1530.group4.addendum.client.UserService#uploadComment(java.lang.String, com.cs1530.group4.addendum.shared.Comment)
 	 */
 	@Override
-	public String uploadComment(String postKey, Comment comment)
+	public String uploadComment(String postKey, Comment comment, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames)
 	{
 		Entity commentEntity = new Entity("Comment");
 		commentEntity.setProperty("postKey", postKey);
@@ -1070,6 +1074,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		commentEntity.setProperty("content", new Text(comment.getContent()));
 		commentEntity.setProperty("plusOne", 0);
 		commentEntity.setProperty("accepted", false);
+		commentEntity.setProperty("attachmentKeys", attachmentKeys);
+		commentEntity.setProperty("attachmentNames", attachmentNames);
 		datastore.put(commentEntity);
 		memcache.put(commentEntity.getKey(), commentEntity); //when looking up posts, do a key only query and check if they are in memcache first
 		
@@ -1213,13 +1219,15 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @see com.cs1530.group4.addendum.client.UserService#editComment(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public String editComment(String commentKey, String commentText)
+	public String editComment(String commentKey, String commentText, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames)
 	{
 		Entity comment = getCommentEntity(commentKey);
 		if(comment != null)
 		{
 			comment.setProperty("content", new Text(commentText));
 			comment.setProperty("edited", new Date());
+			comment.setProperty("attachmentKeys", attachmentKeys);
+			comment.setProperty("attachmentNames", attachmentNames);
 			memcache.put(comment.getKey(), comment);
 			datastore.put(comment);
 			

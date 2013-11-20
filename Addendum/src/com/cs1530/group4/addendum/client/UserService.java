@@ -182,7 +182,7 @@ public interface UserService extends RemoteService
 	 * @custom.changed Comment
 	 * @custom.called None
 	 */
-	String uploadComment(String postKey, Comment comment);
+	String uploadComment(String postKey, Comment comment, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames);
 	
 	/**
 	 * Upvote post.
@@ -236,7 +236,7 @@ public interface UserService extends RemoteService
 	 * @custom.changed Comment
 	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
-	String editComment(String commentKey, String commentText);
+	String editComment(String commentKey, String commentText, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames);
 	
 	/**
 	 * Delete post.

@@ -155,7 +155,7 @@ public interface UserServiceAsync
 	 * @custom.changed Comment
 	 * @custom.called None
 	 */
-	void uploadComment(String postKey, Comment comment, AsyncCallback<String> callback);
+	void uploadComment(String postKey, Comment comment, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames, AsyncCallback<String> callback);
 	
 	/**
 	 * Upvote post.
@@ -209,7 +209,7 @@ public interface UserServiceAsync
 	 * @custom.changed Comment
 	 * @custom.called {@link com.cs1530.group4.addendum.server.UserServiceImpl#getComment(String commentKey)}
 	 */
-	void editComment(String commentKey, String commentText, AsyncCallback<String> callback);
+	void editComment(String commentKey, String commentText, ArrayList<String> attachmentKeys, ArrayList<String> attachmentNames, AsyncCallback<String> callback);
 	
 	/**
 	 * Delete post.
