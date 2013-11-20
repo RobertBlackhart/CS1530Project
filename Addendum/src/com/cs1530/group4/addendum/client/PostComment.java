@@ -240,7 +240,7 @@ public class PostComment extends Composite implements MouseOverHandler, MouseOut
 		horizontalPanel.add(content);
 
 		HTMLPanel attachmentsPanel = new HTMLPanel("");
-		if(comment.isAccepted() || comment.getUsername().equals(Cookies.getCookie("loggedIn")))
+		if(comment.isAccepted() || userPost.post.getUsername().equals(Cookies.getCookie("loggedIn")))
 			attachmentsPanel.getElement().getStyle().setProperty("marginLeft", "38px");
 		horizontalPanel.add(attachmentsPanel);
 

@@ -1300,20 +1300,28 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		q.setFilter(new FilterPredicate("postKey", FilterOperator.EQUAL, postKey));
 		for(Entity result : datastore.prepare(q).asIterable())
 		{
-			memcache.delete(result.getKey());
-			datastore.delete(result.getKey());
+			deleteComment(String.valueOf(result.getKey().getId()));
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see com.cs1530.group4.addendum.client.UserService#deleteComment(java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void deleteComment(String commentKey)
 	{
 		Entity comment = getCommentEntity(commentKey);
 		if(comment != null)
 		{
+			if(comment.hasProperty("attachmentKeys") && comment.getProperty("attachmentKeys") != null)
+			{
+				for(String key : (ArrayList<String>)comment.getProperty("attachmentKeys"))
+				{
+					blobstoreService.delete(new BlobKey(key));
+				}
+			}
+			
 			memcache.delete(comment.getKey());
 			datastore.delete(comment.getKey());
 		}

@@ -151,7 +151,7 @@ public class CommentBox extends Composite
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				if(textArea.getHTML().length() == 0)
+				if(textArea.getText().length() == 0)
 				{
 					errorLabel.setVisible(true);
 					return;
@@ -167,6 +167,10 @@ public class CommentBox extends Composite
 				}
 				else
 					comment = new Comment(Cookies.getCookie("loggedIn"),textArea.getHTML());
+				
+				comment.setAttachmentNames(attachmentNames);
+				comment.setAttachmentKeys(attachmentKeys);
+				
 				AsyncCallback<String> callback = new AsyncCallback<String>()
 				{
 					@Override
@@ -196,8 +200,6 @@ public class CommentBox extends Composite
 						attachmentNames.remove(attachmentKeys.indexOf(key));
 						attachmentKeys.remove(key);
 					}
-					comment.setAttachmentNames(attachmentNames);
-					comment.setAttachmentKeys(attachmentKeys);
 					userService.editComment(comment.getCommentKey(), comment.getContent(), attachmentKeys, attachmentNames, callback);
 				}
 				else
