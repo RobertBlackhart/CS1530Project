@@ -97,6 +97,10 @@
 		<servlet-name>GetAchievementsServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.GetAchievementsServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CourseSearchServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.CourseSearchServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -180,6 +184,10 @@
 	<servlet-mapping>
 		<servlet-name>GetAchievementsServlet</servlet-name>
 		<url-pattern>/addendum/getAchievements</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CourseSearchServlet</servlet-name>
+		<url-pattern>/addendum/courseSearch</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>

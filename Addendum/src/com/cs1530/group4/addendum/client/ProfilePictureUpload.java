@@ -6,8 +6,6 @@ import java.util.Map;
 import org.moxieapps.gwt.uploader.client.Uploader;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteHandler;
-import org.moxieapps.gwt.uploader.client.events.FileDialogStartEvent;
-import org.moxieapps.gwt.uploader.client.events.FileDialogStartHandler;
 import org.moxieapps.gwt.uploader.client.events.FileQueueErrorEvent;
 import org.moxieapps.gwt.uploader.client.events.FileQueueErrorHandler;
 import org.moxieapps.gwt.uploader.client.events.FileQueuedEvent;
@@ -21,6 +19,7 @@ import org.moxieapps.gwt.uploader.client.events.UploadProgressHandler;
 import org.moxieapps.gwt.uploader.client.events.UploadSuccessEvent;
 import org.moxieapps.gwt.uploader.client.events.UploadSuccessHandler;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -76,7 +75,7 @@ public class ProfilePictureUpload extends DialogBox
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		vPanel.add(new Label("For best results, use a picture with a square aspect ration (i.e. 128px x 128px)"));
+		vPanel.add(new Label("For best results, use a picture with a square aspect ratio (i.e. 128px x 128px)"));
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		Button okButton = new Button("OK");
@@ -85,6 +84,11 @@ public class ProfilePictureUpload extends DialogBox
 		{
 			public void onClick(ClickEvent event)
 			{
+				if(key == null)
+				{
+					Window.alert("No image uploaded.  Please select an image file from your computer.");
+					return;
+				}
 				dialog.hide();
 				main.setContent(new Stream(main), "stream");
 			}
@@ -121,15 +125,31 @@ public class ProfilePictureUpload extends DialogBox
 		final Uploader uploader = new Uploader();
 		setUploadUrl(uploader,username);
 		uploader.setButtonImageURL("/images/add_files.png")
+				.setFileTypes("*.jpg;*.gif;*.png;")
 				.setButtonWidth(133)
 				.setButtonHeight(22)
-				.setFileSizeLimit("5 MB")
+				.setFileSizeLimit("2 MB")
 				.setButtonCursor(Uploader.Cursor.HAND)
 				.setButtonAction(Uploader.ButtonAction.SELECT_FILE)
 				.setFileQueuedHandler(new FileQueuedHandler()
 		{
 		public boolean onFileQueued(final FileQueuedEvent fileQueuedEvent)
 		{
+			if(!fileQueuedEvent.getFile().getType().contains("image"))
+			{
+				Window.alert("You must choose a valid image file.");
+				uploader.cancelUpload(fileQueuedEvent.getFile().getId(), false);
+				return true;
+			}
+			if(key != null)
+			{
+				// Clear the uploads that have completed, if none are in process  
+				progressBarPanel.clear();
+				progressBars.clear();
+				cancelButtons.clear();
+				panelImages.clear();
+				deleteAttachment(key);
+			}
 			// Create a Progress Bar for this file  
 			final ProgressBar progressBar = new ProgressBar(0.0, 1.0, 0.0, new CancelProgressBarTextFormatter());
 			progressBar.setTitle(fileQueuedEvent.getFile().getName());
@@ -172,20 +192,7 @@ public class ProfilePictureUpload extends DialogBox
 		public boolean onUploadComplete(UploadCompleteEvent uploadCompleteEvent)
 		{
 			cancelButtons.get(uploadCompleteEvent.getFile().getId()).removeFromParent();
-			uploader.startUpload();
-			return true;
-		}
-	}).setFileDialogStartHandler(new FileDialogStartHandler()
-	{
-		public boolean onFileDialogStartEvent(FileDialogStartEvent fileDialogStartEvent)
-		{
-			if(uploader.getStats().getUploadsInProgress() <= 0)
-			{
-				// Clear the uploads that have completed, if none are in process  
-				progressBarPanel.clear();
-				progressBars.clear();
-				cancelButtons.clear();
-			}
+			//uploader.startUpload();
 			return true;
 		}
 	}).setFileDialogCompleteHandler(new FileDialogCompleteHandler()
@@ -196,23 +203,22 @@ public class ProfilePictureUpload extends DialogBox
 			{
 				if(uploader.getStats().getUploadsInProgress() <= 0)
 				{
+					setUploadUrl(uploader,username);
 					uploader.startUpload();
 				}
 			}
 			return true;
 		}
-	})
-        .setFileQueueErrorHandler(new FileQueueErrorHandler() {  
+	}).setFileQueueErrorHandler(new FileQueueErrorHandler() {  
             public boolean onFileQueueError(FileQueueErrorEvent fileQueueErrorEvent) {  
                 Window.alert("Upload of file " + fileQueueErrorEvent.getFile().getName() + " failed due to [" +  
                         fileQueueErrorEvent.getErrorCode().toString() + "]: " + fileQueueErrorEvent.getMessage()  
                 );  
                 return true;  
             }  
-        })  
-        .setUploadErrorHandler(new UploadErrorHandler() {  
+        }).setUploadErrorHandler(new UploadErrorHandler() {  
             public boolean onUploadError(UploadErrorEvent uploadErrorEvent) {  
-                cancelButtons.get(uploadErrorEvent.getFile().getId()).removeFromParent();  
+                //cancelButtons.get(uploadErrorEvent.getFile().getId()).removeFromParent();  
                 Window.alert("Upload of file " + uploadErrorEvent.getFile().getName() + " failed due to [" +  
                         uploadErrorEvent.getErrorCode().toString() + "]: " + uploadErrorEvent.getMessage()  
                 );  
@@ -224,6 +230,10 @@ public class ProfilePictureUpload extends DialogBox
 			public boolean onUploadSuccess(UploadSuccessEvent event)
 			{
 				key = event.getServerData();
+				Image preview = new Image(GWT.getHostPageBaseURL()+"addendum/getImage?key="+key);
+				preview.setSize("128px", "128px");
+				panelImages.add(preview);
+				dialog.center();
 				return true;
 			}
 		});
