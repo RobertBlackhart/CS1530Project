@@ -287,6 +287,7 @@ public class UserPost extends Composite implements MouseOverHandler, MouseOutHan
 		commentPanel.setStyleName("CommentPanelbackcolor");
 
 		VerticalPanel attachmentsPanel = new VerticalPanel();
+		attachmentsPanel.setStyleName("attachmentPanel");
 		postPanel.add(attachmentsPanel);
 
 		if(post.getAttachmentKeys() != null && post.getAttachmentKeys().size() > 0)

@@ -1,22 +1,24 @@
-body { 
+body {
 	color: black;
 	font-size: small;
 	font-family: Arial, sans-serif;
 	background-color: white;
 }
 
-a {	
+a {
 	color: darkblue;
 }
 
-a:visited {	
-	color: darkblue; 
+a:visited {
+	color: darkblue;
 }
 
 .gwt-DialogBox {
+	
 }
 
 .gwt-DialogBox .Caption {
+	
 }
 
 .gwt-MenuBar {
@@ -35,6 +37,7 @@ a:visited {
 }
 
 .gwt-Tree {
+	
 }
 
 .gwt-Tree .gwt-TreeItem {
@@ -61,20 +64,22 @@ a:visited {
 }
 
 .gwt-StackPanel .gwt-StackPanelItem-selected {
+	
 }
 
 .gwt-TabPanel {
-  margin: 10px 10px 0px 0px !important;
-  border: #A60C00 !important;
+	margin: 10px 10px 0px 0px !important;
+	border: #A60C00 !important;
 }
 
-.gwt-TabPanelBottom { 
-	border-radius: 5px !important; 
+.gwt-TabPanelBottom {
+	border-radius: 5px !important;
 	border: 5px solid !important;
-	border-color: #A60C00 !important; 
-} 
+	border-color: #A60C00 !important;
+}
 
 .gwt-TabBar {
+	
 }
 
 .gwt-TabBarItem {
@@ -85,155 +90,169 @@ a:visited {
 	cursor: pointer !important;
 	background-color: #BF3A30 !important;
 	margin-right: 2px !important;
-	border-top-left-radius:5px !important;
-	border-top-right-radius:5px !important;
+	border-top-left-radius: 5px !important;
+	border-top-right-radius: 5px !important;
 }
 
 .gwt-TabBarItem-selected {
-  	color: White !important;
+	color: White !important;
 	font-size: 14px !important;
 	font-family: sans-serif !important;
 	font-weight: bolder !important;
 	background-color: #A60C00 !important;
-	border-top-left-radius:5px !important;
-	border-top-right-radius:5px !important;
+	border-top-left-radius: 5px !important;
+	border-top-right-radius: 5px !important;
 	cursor: default !important;
 }
 
 .gwt-PushButton-up {
-  background-color: #C3D9FF;
-  padding: 2px;
-  border: 2px solid transparent;
-  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205)
+		rgb(232, 241, 255);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-PushButton-up-hovering {
-  background-color: #C3D9FF;
-  padding: 2px;
-  border: 2px solid transparent;
-  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205)
+		rgb(232, 241, 255);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-PushButton-down {
-  background-color: #C3D9FF;
-  padding: 2px;
-  border: 2px solid transparent;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-PushButton-down-hovering {
-  background-color: #C3D9FF;
-  padding: 2px;
-  border: 2px solid transparent;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-ToggleButton-up {
-  background-color: #C3D9FF;
-  padding: 2px;
-  border: 2px solid transparent;
-  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205)
+		rgb(232, 241, 255);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-ToggleButton-up-hovering {
-  background-color: #C3D9FF;
-  padding: 2px;
-  border: 2px solid transparent;
-  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205)
+		rgb(232, 241, 255);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-ToggleButton-down {
-  background-color: #C3D9FF;
-  padding: 2px;
-  background-color: #E8F1FF;
-  border: 2px solid transparent;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	background-color: #E8F1FF;
+	border: 2px solid transparent;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-ToggleButton-down-hovering {
-  background-color: #C3D9FF;
-  padding: 2px;
-  background-color: #E8F1FF;
-  border: 2px solid transparent;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
-  cursor: pointer;
-  cursor: hand;
+	background-color: #C3D9FF;
+	padding: 2px;
+	background-color: #E8F1FF;
+	border: 2px solid transparent;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .gwt-RichTextArea {
-  border: 1px solid black;
-  background-color: white;
+	border: 1px solid black;
+	background-color: white;
 }
 
 .gwt-RichTextToolbar {
-  background-color: #C3D9FF;
-  padding: 2px;
+	background-color: #C3D9FF;
+	padding: 2px;
 }
 
 .gwt-RichTextToolbar .gwt-PushButton-up {
-  margin-right: 2px;
-  border: 1px solid #C3D9FF;
+	margin-right: 2px;
+	border: 1px solid #C3D9FF;
 }
 
 .gwt-RichTextToolbar .gwt-PushButton-up-hovering {
-  margin-right: 2px;
-  border: 1px solid #C3D9FF;
-  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+	margin-right: 2px;
+	border: 1px solid #C3D9FF;
+	border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205)
+		rgb(232, 241, 255);
 }
 
 .gwt-RichTextToolbar .gwt-PushButton-down {
-  margin-right: 2px;
-  border: 1px solid #C3D9FF;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+	margin-right: 2px;
+	border: 1px solid #C3D9FF;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
 }
 
 .gwt-RichTextToolbar .gwt-PushButton-down-hovering {
-  margin-right: 2px;
-  border: 1px solid #C3D9FF;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+	margin-right: 2px;
+	border: 1px solid #C3D9FF;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
 }
 
 .gwt-RichTextToolbar .gwt-ToggleButton-up {
-  margin-right: 2px;
-  border: 1px solid #C3D9FF;
+	margin-right: 2px;
+	border: 1px solid #C3D9FF;
 }
 
 .gwt-RichTextToolbar .gwt-ToggleButton-up-hovering {
-  margin-right: 2px;
-  border: 1px solid #C3D9FF;
-  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+	margin-right: 2px;
+	border: 1px solid #C3D9FF;
+	border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205)
+		rgb(232, 241, 255);
 }
 
 .gwt-RichTextToolbar .gwt-ToggleButton-down {
-  margin-right: 2px;
-  background-color: #E8F1FF;
-  border: 1px solid #C3D9FF;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+	margin-right: 2px;
+	background-color: #E8F1FF;
+	border: 1px solid #C3D9FF;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
 }
 
 .gwt-RichTextToolbar .gwt-ToggleButton-down-hovering {
-  margin-right: 2px;
-  background-color: #E8F1FF;
-  border: 1px solid #C3D9FF;
-  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+	margin-right: 2px;
+	background-color: #E8F1FF;
+	border: 1px solid #C3D9FF;
+	border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255)
+		rgb(157, 174, 205);
 }
 
 .gwt-HorizontalSplitPanel {
-
+	
 }
 
 .gwt-HorizontalSplitPanel .splitter {
@@ -242,7 +261,7 @@ a:visited {
 }
 
 .gwt-HorizontalSplitPanel .left {
-  background-color: #E8EEF7;
+	background-color: #E8EEF7;
 }
 
 .gwt-VerticalSplitPanel {
@@ -276,6 +295,7 @@ a:visited {
 	background-color: #e8eef7;
 	cursor: hand;
 }
+
 .gwt-Label-Login {
 	color: Navy;
 	font-size: 14px;
@@ -283,10 +303,12 @@ a:visited {
 	font-family: Arial;
 	font-weight: bold;
 }
+
 .gwt-CheckBox-Login {
 	color: Red;
 	font-family: Arial;
 }
+
 .gwt-Label-Error {
 	color: White;
 	padding: 5px;
@@ -294,36 +316,46 @@ a:visited {
 	text-align: center;
 	background-color: Red;
 }
+
 .gwt-DecoratorPanel-Login {
 	background-color: khaki;
 }
+
 .gwt-Label-User {
 	font-size: larger;
 	font-weight: bold;
 }
+
 .gwt-DecoratorPanel-SignUp {
 	background-color: Aqua;
 }
-.gwt-border {
 
+.gwt-border {
+	
 }
+
 .gwt-Button-LeftMargin {
 	margin-left: 20px;
 }
+
 .gwt-Label-grey {
 	color: Black;
 }
+
 .gwt-Label-bold {
 	color: #9D5C19;
 	font-variant: small-caps;
 	font-weight: bold;
 }
+
 .promptText {
-    color: #999;
+	color: #999;
 }
+
 .gwt-DecoratorPanel-newComment {
 	background-color: #FFCF73;
 }
+
 .gwt-DecoratorPanel-white {
 	color: black;
 	margin: 5px;
@@ -331,13 +363,16 @@ a:visited {
 	font-family: Arial, sans-serif;
 	background-color: white;
 }
+
 .menuitem {
 	background-color: #FF7940;
 }
+
 .menuitem:HOVER {
 	background-color: #D04103;
 	cursor: pointer;
 }
+
 .whatever {
 	color: White;
 	font-variant: small-caps;
@@ -346,6 +381,7 @@ a:visited {
 	font-family: monospace;
 	font-weight: 900;
 }
+
 .ADCBasic {
 	color: White;
 	border: 10px solid;
@@ -355,83 +391,97 @@ a:visited {
 	font-weight: 600;
 	line-height: normal;
 	background-color: #FFA240;
-	border-color:#A65500;
+	border-color: #A65500;
 }
+
 .ADCTextbox {
 	border: 2px solid;
 	border-color: #A65500;
-	border-radius:15px;
+	border-radius: 15px;
 }
+
 .ADCButton {
 	color: White;
 	font-size: 14px;
-	border-radius:15px;
+	border-radius: 15px;
 	font-family: Arial Black;
 	background-color: #BF5B30;
 }
+
 .CSLabel {
 	color: White;
 	font-family: Arial Black;
 	background-color: #ffaa00;
-	border-top-left-radius:15px;
-	border-top-right-radius:15px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 }
+
 .CSListbox {
 	border: 5px solid;
 	font-family: Arial Black;
 	border-color: #ffbf40;
-	border-radius:5px;
+	border-radius: 5px;
 }
+
 .Login {
 	background-image: url('Background.jpg');
-	background-repeat:no-repeat;
-	background-attachment:scroll;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
 	background-position: center, 60px;
-	
 }
+
 .LoginTitle {
-	image: url('Background.jpg');
+	image: url('/images/Background.jpg');
 }
+
 .LoginBox {
 	
 }
+
 .LoginPanel {
 	position: center, center;
 }
+
 .LoginButton {
 	color: White;
 	font-size: 14px;
 	font-family: Arial Black;
 	background-color: darkgrey;
 }
+
 .MenuPopUp {
 	border: 2px solid #A63100;
 	font-family: Arial Black;
 	background-color: #FF7940;
 	border-radius: 5px;
 }
+
 .NewPostBackground {
 	border: 8px solid #FFAA00;
 	font-size: 15pt;
 	font-family: Arial Black;
 	background-color: #FFD073;
-	border-radius:5px;
+	border-radius: 5px;
 }
+
 .NewPostBottomLine {
 	border-top: 2px ridge;
 	border-top-color: #FFAA00;
 }
+
 .NewPostToolBar {
 	border: 2px solid;
 	border-color: #FFAA00;
-	border-radius:5px;
-	background-color:#FFAA00;
+	border-radius: 5px;
+	background-color: #FFAA00;
 }
+
 .NewPostBackLabel {
 	font-size: 13px;
 	font-family: Arial Black;
 	color: black;
 }
+
 .NewUserDialogTitle {
 	color: White;
 	font-variant: small-caps;
@@ -440,25 +490,28 @@ a:visited {
 	font-family: Arial Black;
 	font-weight: 900
 }
+
 .profileSearchbox {
 	color: Silver;
 	border: 2px solid;
 	border-color: #ffbf40;
-	border-radius:15px;
+	border-radius: 15px;
 	height: 25px;
 	text-align: center;
 	float: right;
 }
+
 .profilePanel {
 	color: white;
 	border: 10px solid #A66D00;
-	border-radius:25px;
+	border-radius: 25px;
 	font-size: 36px;
 	font-family: sans-serif;
 	font-weight: 600;
 	line-height: normal;
 	background-color: #FFCF73;
 }
+
 .newUserDialogTitle {
 	color: White;
 	font-size: 36px;
@@ -466,18 +519,22 @@ a:visited {
 	font-family: cursive;
 	font-weight: 900;
 }
+
 .CommentBox {
-		border-bottom: 2px ridge;
-		border-bottom-color: #FFAA00;
+	border-bottom: 2px ridge;
+	border-bottom-color: #FFAA00;
 }
+
 .CommentBoxBackground {
 	font-family: Arial;
 	background-color: #FFCF73;
 }
+
 .UserPostBackround {
 	font-family: Arial Black;
 	background-color: #FF6140;
 }
+
 .profileMainPanel {
 	color: White;
 	border-top: 10px ridge;
@@ -486,24 +543,28 @@ a:visited {
 	font-weight: 600;
 	line-height: normal;
 	background-color: #FDDC9F;
-	border-top-color:#A65500;
+	border-top-color: #A65500;
 }
+
 .profilePic {
 	border-right: 10px ridge;
 	border-bottom: 10px ridge;
 	border-right-color: #A65500;
-	border-bottom-color:#A65500;
+	border-bottom-color: #A65500;
 	width: 128px;
 	height: 128px;
 }
+
 .profileTablPanel {
-padding: 0px 0px 6px 6px;
+	padding: 0px 0px 6px 6px;
 }
+
 .Mainview {
-	border : 2px ridge;
+	border: 2px ridge;
 	border-color: #FFAA00;
 	border-radius: 5px;
 }
+
 .postSpaceTitle {
 	color: #F17D4C;
 	font-stretch: normal;
@@ -515,6 +576,7 @@ padding: 0px 0px 6px 6px;
 	margin-left: 10px;
 	margin-top: 5px;
 }
+
 .CommentSeperator {
 	color: Black;
 	font-size: 14px;
@@ -522,20 +584,25 @@ padding: 0px 0px 6px 6px;
 	font-weight: normal;
 	border-bottom: 2px ridge #FFAA00;
 	clear: both;
+	margin-left: 5px;
 }
+
 .CommentNotSeperator {
 	color: Black;
 	font-size: 14px;
 	font-family: Arial;
 	font-weight: normal;
 	clear: both;
+	margin-left: 5px;
 }
+
 .PostComment {
-	font-family:Arial;
+	font-family: Arial;
 	font-size: 14px;
 	color: Black;
 	padding-left: 6px;
 }
+
 .userPostContent {
 	color: black;
 	padding-left: 6px;
@@ -544,10 +611,12 @@ padding: 0px 0px 6px 6px;
 	font-weight: normal;
 	clear: left;
 }
+
 .CommentPanelbackcolor {
 	background-color: #FFCF73;
 }
-.USername{
+
+.USername {
 	color: Black;
 	margin-left: 10px;
 	margin-right: 10px;
@@ -558,19 +627,22 @@ padding: 0px 0px 6px 6px;
 	font-weight: bold;
 	cursor: pointer;
 }
+
 .logout {
 	backgournd-color:;
-	Color:Red;
+	Color: Red;
 	font: cursive;
 	size: 12;
 	font-size: 12px;
-	font-family: cursive;	
+	font-family: cursive;
 }
-. {
-}
-.gwt-TabLayoutPanelTab { 
 
+.{
 }
+.gwt-TabLayoutPanelTab {
+	
+}
+
 .classPanel {
 	font-size: 14px;
 	font-family: cursive;
@@ -578,27 +650,30 @@ padding: 0px 0px 6px 6px;
 	text-align: right;
 	padding-right: 10px;
 	background-color: #FFBD40;
-	border-top-right-radius:20px;
-	border-bottom-right-radius:20px;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
+
 .noPosts {
 	color: black;
 	font-size: 14px;
 	font-family: cursive;
 	font-weight: bold;
 }
-.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs 
-{
+
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
 	background: none !important;
 }
+
 .ADCButton-addRemoveClasses {
 	color: White;
 	margin-top: 10px;
-	border-radius:15px;
+	border-radius: 15px;
 	font-size: 14px;
 	font-family: Arial Black;
 	background-color: #BF5B30;
 }
+
 .expandCloseLink {
 	-webkit-transition: color .218s;
 	transition: color .218s;
@@ -608,12 +683,13 @@ padding: 0px 0px 6px 6px;
 	padding-right: 5px;
 	text-transform: none;
 }
+
 .expandCloseLink:HOVER {
 	color: #427fed;
 	cursor: pointer;
-	text-decoration:underline;
-	
+	text-decoration: underline;
 }
+
 .whatever-small {
 	color: White;
 	font-variant: small-caps;
@@ -622,12 +698,14 @@ padding: 0px 0px 6px 6px;
 	font-family: monospace;
 	font-weight: 900;
 }
+
 .gwt-Label-grey-bold {
 	color: Gray;
 	margin-left: 10px;
 	font-style: italic;
 	font-weight: bold;
 }
+
 .plusOneButton {
 	cursor: pointer;
 	margin-left: 10px;
@@ -635,21 +713,26 @@ padding: 0px 0px 6px 6px;
 	width: 21px;
 	float: left;
 }
+
 .dialog-padding {
 	padding: 10px;
 }
+
 .change-profile-image {
 	font-weight: bold;
 	text-align: center;
 	background-color: White;
 }
+
 .bold-black {
 	font-weight: bold;
 }
+
 .largerText {
 	font-size: x-large;
 	font-weight: lighter;
 }
+
 .storyPanel {
 	border-top: inset;
 	border-width: 5px;
@@ -657,21 +740,25 @@ padding: 0px 0px 6px 6px;
 	background-color: white;
 	margin-left: 20px;
 }
+
 .profileBackground {
 	background-color: #FDDC9F;
 }
+
 .educationPanel {
 	border-top: inset;
 	border-width: 5px;
 	border-color: orange;
 	background-color: white;
 }
+
 .basicInfoPanel {
 	border-top: inset;
 	border-width: 5px;
 	border-color: blue;
 	background-color: white;
 }
+
 .contactInfoPanel {
 	border-top: inset;
 	border-width: 5px;
@@ -679,76 +766,92 @@ padding: 0px 0px 6px 6px;
 	background-color: white;
 	margin-left: 20px;
 }
+
 .profileTabPanel .gwt-TabPanel {
 	margin: none !important;
 	padding: none !important;
 }
+
 .successLabel {
 	color: green;
 	font-style: italic;
 	float: right;
 	margin-right: 5px;
 }
+
 .errorLabel {
 	color: red;
 	font-style: italic;
 	float: right;
 	margin-right: 5px;
 }
+
 .profileUserLabel {
 	font-weight: bold;
 	font-size: larger;
 	margin-left: 10px;
 	margin-right: 10px;
 }
+
 .imageButton {
 	cursor: pointer;
 }
+
 .unearnedTrophy {
 	filter: saturate(0%);
-	/* Browser Specific */
 	-webkit-filter: saturate(0%);
 	-moz-filter: saturate(0%);
 	-o-filter: saturate(0%);
 	-ms-filter: saturate(0%);
 }
+
 .triangleMenu {
 	float: right
 }
+
 .postProfileImage {
 	float: left;
 	margin: 5px;
 	width: 46px;
 	height: 46px;
 }
+
 .postInfoPanel {
 	float: left;
 }
+
 .scorePanel {
 	float: left;
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
 .postPanel {
+	
 }
+
 .postBorder {
 	margin-bottom: 15px;
 }
+
 .commentProfileImage {
 	float: left;
 	margin: 5px;
 	width: 28px;
 	height: 28px;
 }
+
 .commentTime {
 	color: black;
 	float: left;
 }
+
 .commentName {
 	color: #9D5C19;
 	font-variant: small-caps;
 	font-weight: bold;
 }
+
 .plusOneLabel {
 	color: Gray;
 	margin-left: 10px;
@@ -756,17 +859,21 @@ padding: 0px 0px 6px 6px;
 	font-weight: bold;
 	float: left;
 }
+
 .userPanel {
 	float: left;
 	margin-right: 15px;
 }
+
 .tabPanel {
 	float: left;
 }
+
 .usernamePanel {
 	margin-bottom: 10px;
 	text-align: center;
 }
+
 .changeProfilePictureLabel {
 	color: black;
 	font-size: small;
@@ -777,23 +884,28 @@ padding: 0px 0px 6px 6px;
 	text-align: center;
 	cursor: pointer;
 }
+
 .createPostButton {
 	float: right;
 	color: White;
 	font-size: 14px;
-	border-radius:15px;
+	border-radius: 15px;
 	font-family: Arial Black;
 	background-color: #BF5B30;
 }
+
 .nextPrevPanel {
 	text-align: center;
 }
+
 .streamProfileImage {
 	cursor: pointer;
 }
+
 .classRow {
 	margin-top: 3px;
 }
+
 .courseAnchor {
 	text-decoration: none;
 	margin-top: 3px;
@@ -802,6 +914,7 @@ padding: 0px 0px 6px 6px;
 	font-family: cursive;
 	font-weight: bold;
 }
+
 .arrow_box {
 	text-decoration: none;
 	color: white;
@@ -810,7 +923,8 @@ padding: 0px 0px 6px 6px;
 	background: #BF5B30;
 	border: 2px solid #FFBD40;
 }
-.arrow_box:after, .arrow_box:before {
+
+.arrow_box:after,.arrow_box:before {
 	left: 100%;
 	top: 50%;
 	border: solid transparent;
@@ -827,20 +941,27 @@ padding: 0px 0px 6px 6px;
 	border-width: 12px;
 	margin-top: -12px;
 }
+
 .arrow_box:before {
 	border-color: rgba(255, 189, 64, 0);
 	border-left-color: #FFBD40;
 	border-width: 15px;
 	margin-top: -15px;
 }
+
 .removeCourse {
 	width: 24px;
 	height: 24px;
 	vertical-align: middle;
 }
+
 .attachmentFileName {
 	color: black;
 }
+
 .attachmentAnchor {
 	display: block;
+}
+.attachmentPanel {
+	margin-left: 6px;
 }

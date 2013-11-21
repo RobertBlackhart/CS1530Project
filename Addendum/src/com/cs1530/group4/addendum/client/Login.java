@@ -66,7 +66,7 @@ public class Login extends Composite
 		initWidget(verticalPanel);
 		verticalPanel.setSize("843px", "657px");
 
-		Image image = new Image("image001.jpg");
+		Image image = new Image("images/image001.png");
 		image.setStyleName("LoginTitle");
 		verticalPanel.add(image);
 		verticalPanel.setCellVerticalAlignment(image, HasVerticalAlignment.ALIGN_MIDDLE);

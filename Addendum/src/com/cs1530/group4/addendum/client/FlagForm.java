@@ -109,6 +109,8 @@ public class FlagForm extends DialogBox
 					}
 					reason = otherBox.getText();
 				}
+				Window.alert("Thank you for the report.  An administrator will look at it shortly.");
+				form.hide();
 				if(postOrComment == POST)
 					userService.flagPost(key, reason, true, callback);
 				else

@@ -1,15 +1,7 @@
 <module rename-to="addendum">
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
-	
-	<!-- Attempt to speed up compilation time -->
-	<collapse-all-properties />
 			
-	<!-- Include GWTUpload library -->
-	<inherits name="gwtupload.GWTUpload"/>
-	<!-- Load dinamically predefined styles in the library when the application starts -->
-	<stylesheet src="Upload.css"/>
-	
 	<inherits name="org.moxieapps.gwt.uploader.Uploader"/>
 	<inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
    	<inherits name='com.google.gwt.libideas.LibIdeas' />
