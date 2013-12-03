@@ -70,11 +70,50 @@ public class DeletePostServlet extends HttpServlet
 		q.setFilter(new FilterPredicate("postKey", FilterOperator.EQUAL, postKey));
 		for(Entity result : datastore.prepare(q).asIterable())
 		{
-			memcache.delete(result.getKey());
-			datastore.delete(result.getKey());
+			deleteComment(String.valueOf(result.getKey().getId()));
 		}
 		
 		resp.getWriter().print("done");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void deleteComment(String commentKey)
+	{
+		Entity comment = getCommentEntity(commentKey);
+		if(comment != null)
+		{
+			if(comment.hasProperty("attachmentKeys") && comment.getProperty("attachmentKeys") != null)
+			{
+				for(String key : (ArrayList<String>)comment.getProperty("attachmentKeys"))
+				{
+					blobstoreService.delete(new BlobKey(key));
+				}
+			}
+			
+			memcache.delete(comment.getKey());
+			datastore.delete(comment.getKey());
+		}
+	}
+	
+	private Entity getCommentEntity(String commentKey)
+	{
+		Entity comment = null;
+		Key key = KeyFactory.createKey("Comment", Long.valueOf(commentKey).longValue());
+		if(memcache.contains(key))
+			comment = (Entity) memcache.get(key);
+		else
+		{
+			try
+			{
+				comment = datastore.get(key);
+			}
+			catch(EntityNotFoundException ex)
+			{
+				System.out.println(commentKey + " is an invalid commentKey");
+			}
+		}
+
+		return comment;
 	}
 	
 	private Entity getPost(String postKey)

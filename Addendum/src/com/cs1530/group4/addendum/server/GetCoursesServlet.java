@@ -7,24 +7,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.cs1530.group4.addendum.shared.Course;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import com.google.gson.Gson;
 
 @SuppressWarnings("serial")
-public class DeleteCommentServlet extends HttpServlet
+public class GetCoursesServlet extends HttpServlet
 {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
-	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
@@ -39,44 +36,55 @@ public class DeleteCommentServlet extends HttpServlet
 	@SuppressWarnings("unchecked")
 	private void performActions(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
-		resp.setContentType("text/plain");
-		Entity comment = getComment(req.getParameter("commentKey"));
-		if(comment != null)
+		ArrayList<Course> userCourses = new ArrayList<Course>();
+		String username = req.getParameter("username");
+		Entity userEntity = getUserEntity(username);
+
+		if(userEntity != null)
 		{
-			if(comment.hasProperty("attachmentKeys") && comment.getProperty("attachmentKeys") != null)
+			ArrayList<String> courses = (ArrayList<String>) userEntity.getProperty("courseList");
+			for(String course : courses)
 			{
-				for(String key : (ArrayList<String>)comment.getProperty("attachmentKeys"))
+				Entity courseEntity = null;
+				if(memcache.contains("course_" + course))
+					courseEntity = ((Entity) memcache.get("course_" + course));
+				else
 				{
-					blobstoreService.delete(new BlobKey(key));
+					try
+					{
+						courseEntity = datastore.get(KeyFactory.createKey("Course", course));
+						memcache.put("course_"+course,courseEntity);
+					}
+					catch(EntityNotFoundException e1){}
 				}
+				if(courseEntity != null)
+					userCourses.add(UserServiceImpl.getCourse(courseEntity));
 			}
-			
-			memcache.delete(comment.getKey());
-			datastore.delete(comment.getKey());
-			resp.getWriter().print("done");
 		}
-		else
-			resp.getWriter().print("error");
+				
+		resp.setContentType("application/json");
+		Gson gson = new Gson();
+		String json = gson.toJson(userCourses);
+		resp.getWriter().print(json);
 	}
 
-	private Entity getComment(String commentKey)
+	private Entity getUserEntity(String username)
 	{
-		Entity comment = null;
-		Key key = KeyFactory.createKey("Comment", Long.valueOf(commentKey).longValue());
-		if(memcache.contains(key))
-			comment = (Entity) memcache.get(key);
+		Entity user = null;
+		if(memcache.contains("user_" + username))
+			user = ((Entity) memcache.get("user_" + username));
 		else
 		{
 			try
 			{
-				comment = datastore.get(key);
+				user = datastore.get(KeyFactory.createKey("User", username));
+				memcache.put("user_"+username, user);
 			}
 			catch(EntityNotFoundException ex)
 			{
-				System.out.println(commentKey + " is an invalid commentKey");
+				ex.printStackTrace();
 			}
 		}
-
-		return comment;
+		return user;
 	}
 }

@@ -358,7 +358,7 @@ public class Stream extends Composite
 			public void onSuccess(ArrayList<Post> posts)
 			{
 				int count = 0;
-
+				
 				for(Post post : posts)
 				{
 					count++;

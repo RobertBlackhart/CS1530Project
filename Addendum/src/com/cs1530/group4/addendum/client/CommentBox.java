@@ -154,6 +154,7 @@ public class CommentBox extends Composite
 				if(textArea.getText().length() == 0)
 				{
 					errorLabel.setVisible(true);
+					btnSubmit.setEnabled(true);
 					return;
 				}
 				

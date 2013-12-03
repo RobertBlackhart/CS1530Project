@@ -248,7 +248,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		if(memcache.contains("course_" + subjectCode + catalogueNumber))
 			courseEntity = ((Entity) memcache.get("course_" + subjectCode + catalogueNumber));
 		else
-			courseEntity = getEntityFromDatastore(subjectCode, catalogueNumber);
+			courseEntity = getCourseEntity(subjectCode, catalogueNumber);
 
 		if(courseEntity != null) //we have an exact match
 		{
@@ -296,7 +296,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				{
 					String code = document.getOnlyField("subjectCode").getText();
 					int num = document.getOnlyField("catalogueNumber").getNumber().intValue();
-					Entity entity = getEntityFromDatastore(code, num);
+					Entity entity = getCourseEntity(code, num);
 					if(entity != null)
 					{
 						Course course = getCourse(entity);
@@ -314,7 +314,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 				{
 					String code = document.getOnlyField("subjectCode").getText();
 					int num = document.getOnlyField("catalogueNumber").getNumber().intValue();
-					Entity entity = getEntityFromDatastore(code, num);
+					Entity entity = getCourseEntity(code, num);
 					if(entity != null)
 					{
 						Course course = getCourse(entity);
@@ -339,16 +339,22 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	private Entity getEntityFromDatastore(String subjectCode, int catalogueNumber)
+	private Entity getCourseEntity(String subjectCode, int catalogueNumber)
 	{
 		Entity courseEntity = null;
-		try
+		if(memcache.contains("course_" + subjectCode + catalogueNumber))
+			courseEntity = ((Entity) memcache.get("course_" + subjectCode + catalogueNumber));
+		else
 		{
-			courseEntity = datastore.get(KeyFactory.createKey("Course", subjectCode + catalogueNumber + "")); //"" should guard against null problems
-		}
-		catch(EntityNotFoundException e1)
-		{
-			courseEntity = null;
+			try
+			{
+				courseEntity = datastore.get(KeyFactory.createKey("Course", subjectCode + catalogueNumber + "")); //"" should guard against null problems
+				memcache.put("course_"+subjectCode+catalogueNumber, courseEntity);
+			}
+			catch(EntityNotFoundException e1)
+			{
+				courseEntity = null;
+			}
 		}
 
 		return courseEntity;
@@ -364,7 +370,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	private Course getCourse(Entity entity)
+	public static Course getCourse(Entity entity)
 	{
 		String code = entity.getProperty("subjectCode").toString();
 		int num = Integer.parseInt(entity.getProperty("catalogueNumber").toString());
@@ -752,7 +758,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.called None
 	 */
 	@SuppressWarnings("unchecked")
-	private Post postFromEntity(Entity entity, String requestingUser)
+	private static Post postFromEntity(Entity entity, String requestingUser)
 	{
 		Post post = new Post();
 		if(entity.getProperty("postContent") instanceof String)
@@ -804,7 +810,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	private ArrayList<Comment> getComments(String postKey, String requestingUser)
+	private static ArrayList<Comment> getComments(String postKey, String requestingUser)
 	{
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 		ArrayList<Key> datastoreGet = new ArrayList<Key>();
@@ -841,7 +847,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.called None
 	 */
 	@SuppressWarnings("unchecked")
-	private Comment commentFromEntity(Entity entity, String requestingUser)
+	private static Comment commentFromEntity(Entity entity, String requestingUser)
 	{
 		Comment comment = new Comment();
 		if(entity.getProperty("content") instanceof String)
@@ -945,7 +951,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.called {@link #getPost(String)}, {@link #updateScore(Entity, String)}
 	 */
 	@SuppressWarnings("unchecked")
-	private Boolean changeScore(String postKey, String property, String user)
+	public static Boolean changeScore(String postKey, String property, String user)
 	{
 		boolean success = false;
 		Entity post = getPost(postKey);
@@ -1013,7 +1019,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.changed None
 	 * @custom.called None
 	 */
-	private Entity getPost(String postKey)
+	private static Entity getPost(String postKey)
 	{
 		Entity post = null;
 		Key key = KeyFactory.createKey("Post", Long.valueOf(postKey).longValue());
@@ -1044,14 +1050,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.changed Post
 	 * @custom.called {@link #postFromEntity(Entity, String)}
 	 */
-	private void updateScore(Entity entity, String user)
+	public static void updateScore(Entity entity, String user)
 	{
 		Post post = postFromEntity(entity, user);
 		int s = post.getUpvotes() - post.getDownvotes();
 		double order = Math.log10(Math.max(Math.abs(s), 1));
 		int sign = 1;
-		if(s == 0)
-			sign = 0;
 		if(s < 0)
 			sign = -1;
 		double secondsSinceRedditEpoch = System.currentTimeMillis() / 1000 - 1134028003;
@@ -1458,7 +1462,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 * @custom.called None
 	 */
 	@SuppressWarnings("unchecked")
-	private User userFromEntity(Entity userEntity)
+	public static User userFromEntity(Entity userEntity)
 	{
 		User user = new User();
 		user.setUsername(userEntity.getProperty("username").toString());

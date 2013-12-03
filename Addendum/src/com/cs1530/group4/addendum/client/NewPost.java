@@ -431,6 +431,7 @@ public class NewPost extends DialogBox
 		if(editor.getText().length() == 0)
 		{
 			errorLabel.setVisible(true);
+			submitButton.setEnabled(true);
 			return;
 		}
 

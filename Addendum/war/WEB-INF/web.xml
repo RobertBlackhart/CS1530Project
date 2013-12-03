@@ -97,6 +97,18 @@
 		<servlet-name>CourseSearchServlet</servlet-name>
 		<servlet-class>com.cs1530.group4.addendum.server.CourseSearchServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>VoteServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.VoteServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GetCoursesServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.GetCoursesServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>AddDeleteCourseServlet</servlet-name>
+		<servlet-class>com.cs1530.group4.addendum.server.AddDeleteCourseServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserService</servlet-name>
 		<url-pattern>/addendum/login</url-pattern>
@@ -185,11 +197,23 @@
 		<servlet-name>CourseSearchServlet</servlet-name>
 		<url-pattern>/addendum/courseSearch</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>VoteServlet</servlet-name>
+		<url-pattern>/addendum/vote</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetCoursesServlet</servlet-name>
+		<url-pattern>/addendum/getUserCourses</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AddDeleteCourseServlet</servlet-name>
+		<url-pattern>/addendum/addDeleteCourses</url-pattern>
+	</servlet-mapping>
 
 	<security-constraint>
 		<web-resource-collection>
-			 <web-resource-name>Protected Area</web-resource-name> 
-             <url-pattern>/*</url-pattern> 
+			<web-resource-name>Protected Area</web-resource-name>
+			<url-pattern>/*</url-pattern>
 		</web-resource-collection>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>

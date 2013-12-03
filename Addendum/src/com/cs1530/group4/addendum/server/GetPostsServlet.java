@@ -226,6 +226,10 @@ public class GetPostsServlet extends HttpServlet
 			comment.setLastEdit((Date) entity.getProperty("edited"));
 		if(entity.hasProperty("accepted"))
 			comment.setAccepted(Boolean.valueOf(entity.getProperty("accepted").toString()));
+		if(entity.hasProperty("attachmentKeys"))
+			comment.setAttachmentKeys((ArrayList<String>)entity.getProperty("attachmentKeys"));
+		if(entity.hasProperty("attachmentNames"))
+			comment.setAttachmentNames((ArrayList<String>)entity.getProperty("attachmentNames"));
 
 		return comment;
 	}
