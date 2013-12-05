@@ -438,4 +438,6 @@ public interface UserServiceAsync
 	 * @custom.called None
 	 */
 	void acceptComment(Comment comment, String accepter, boolean accepted, String associatedPostKey, AsyncCallback<Void> callback);
+	
+	void dbLoad(String values, AsyncCallback<Void> callback);
 }

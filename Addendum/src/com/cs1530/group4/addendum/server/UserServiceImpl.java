@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.UUID;
 
 import javax.mail.Message;
@@ -452,7 +453,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		ArrayList<Post> reportedPosts = new ArrayList<Post>();
 
 		Query q = new Query("Post");
-		q.setFilter(new FilterPredicate("reported", FilterOperator.EQUAL, "true"));
+		q.setFilter(new FilterPredicate("reported", FilterOperator.EQUAL, true));
 		for(Entity entity : datastore.prepare(q).asIterable())
 		{
 			reportedPosts.add(postFromEntity(entity, "Administrator"));
@@ -469,7 +470,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		Entity post = getPost(postKey);
 		if(post != null)
 		{
-			post.setProperty("reported", true);
+			post.setProperty("reported", setFlagged);
 			post.setProperty("reportReason", reason);
 			memcache.put(post.getKey(), post);
 			datastore.put(post);
@@ -1706,5 +1707,35 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		//save new entity as well
 		datastore.put(userStatsEntity);
 		memcache.put("userStats_"+accepter, userStatsEntity);
+	}
+
+	@Override
+	public void dbLoad(String values)
+	{
+		Scanner scanner = new Scanner(values);
+		String username, password, email, firstName, lastName;
+		while(scanner.hasNextLine())
+		{
+			Scanner lineScanner = new Scanner(scanner.nextLine());
+			username = lineScanner.next();
+			password = lineScanner.next();
+			email = lineScanner.next();
+			firstName = lineScanner.next();
+			lastName = lineScanner.next();
+			
+			Entity user = new Entity("User", username);
+			user.setProperty("username", username);
+			user.setProperty("password", password);
+			user.setProperty("email", email);
+			user.setProperty("emailValid", true); //assume a valid email when using dbLoadMode
+			user.setProperty("uuid", UUID.randomUUID().toString());
+			user.setProperty("firstName", firstName);
+			user.setProperty("lastName", lastName);
+
+			memcache.put("user_" + username, user);
+			datastore.put(user);
+			lineScanner.close();
+		}
+		scanner.close();
 	}
 }

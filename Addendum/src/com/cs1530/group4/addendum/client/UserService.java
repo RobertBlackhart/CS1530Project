@@ -465,4 +465,6 @@ public interface UserService extends RemoteService
 	 * @custom.called None
 	 */
 	void acceptComment(Comment comment, String accepter, boolean accepted, String associatedPostKey);
+	
+	void dbLoad(String values);
 }
