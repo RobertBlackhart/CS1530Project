@@ -7,6 +7,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,7 +17,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MainView implements EntryPoint, ValueChangeHandler<String>
 {
-	
 	/** The content panel. */
 	private VerticalPanel contentPanel;
 	
@@ -47,6 +47,8 @@ public class MainView implements EntryPoint, ValueChangeHandler<String>
 		History.newItem(historyToken);
 		contentPanel.clear();
 		contentPanel.add(content);
+		Anchor helpAnchor = new Anchor("Help Mode","tutorial.html","_blank");
+		contentPanel.add(helpAnchor);
 	}
 
 	/**

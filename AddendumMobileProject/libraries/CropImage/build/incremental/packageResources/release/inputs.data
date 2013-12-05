@@ -1,0 +1,16 @@
+# incremental data. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1381595179000 945 9d4f019105495d5829e1207a2892a3034087abad /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/ic_rotate_left.png
+1381595179000 2249 fa00ab044eebd78508b18c8e27a8419b092319eb /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/btn_crop_operator.9.png
+1381595179000 2199 0f309e2b581c0c046af1cf013d76ebc7624215f5 /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/btn_crop_pressed.9.png
+1381595179000 931 47c74d714d51945b33063a33a0a8a042e8a17751 /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/ic_rotate_right.png
+1381595179000 2241 93328d7ef79f2baff69d9771c8f1cc9d18da95aa /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/layout/cropimage.xml
+1381595179000 2085 937868c035ff98144a4fa0075971d7451acce024 /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/camera_crop_width.png
+1381595179000 556 2e1cc7b7c74e3f8533ac032fd62ab9f16683e6cc /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/values/styles.xml
+1381595179000 2100 a96c63a0d37e0a3e5ee696a0aa95a84512778e30 /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/camera_crop_height.png
+1381595179000 412 e5b87d6af2f43fa01ad9075f7acf3174b900a4fe /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/values-cs/strings.xml
+1381595179000 3225 e381e50d16157fc585fd5f21c959e3608c2e598e /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable-xhdpi/indicator_autocrop.png
+1381595179000 469 db5f6035e95f1d73a9d306e8417945668d71402c /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/layout/main.xml
+1381595179000 560 0364eb1de21a14ee8146a68de0766871f987c0ee /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/drawable/selector_crop_button.xml
+1381595179000 378 3ee87ced7c5e0e262fce6cd6df0d0d7e8e287196 /home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/res/values/strings.xml

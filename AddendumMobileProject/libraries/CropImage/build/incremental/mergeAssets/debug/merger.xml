@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/src/main/assets" />
+        <source path="/home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/home/master/Dropbox/Android Studio/AddendumMobileProject/libraries/CropImage/src/debug/assets" />
+    </dataSet>
+
+</merger>

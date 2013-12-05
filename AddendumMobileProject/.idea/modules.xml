@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AddendumMobile/AddendumMobile.iml" filepath="$PROJECT_DIR$/AddendumMobile/AddendumMobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AddendumMobileProject.iml" filepath="$PROJECT_DIR$/AddendumMobileProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/CropImage/CropImage.iml" filepath="$PROJECT_DIR$/libraries/CropImage/CropImage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/android-flowlayout/android-flowlayout.iml" filepath="$PROJECT_DIR$/libraries/android-flowlayout/android-flowlayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
+    </modules>
+  </component>
+</project>
+
